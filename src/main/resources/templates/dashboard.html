@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!-- head 내용 -->
+</head>
+<body>
+<div sec:authorize="isAuthenticated()">
+    Only Authenticated user can see this Text
+</div>
+
+<!--인증시 사용된 객체에 대한 정보-->
+<b>PrincipalDetials:</b>
+<div sec:authentication="principal"></div>
+
+<b>User:</b>
+<div sec:authentication="principal.user"></div>
+
+<b>Attributes:</b>
+<div sec:authentication="principal.attributes"></div>
+
+<!--인증시 사용된 객체의 Username (ID)-->
+<b>Authenticated username:</b>
+<div sec:authentication="name"></div>
+</body>
+</html>

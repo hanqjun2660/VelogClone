@@ -4,20 +4,22 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.Date;
 
-@Entity(name = "User")
+@Entity
 @Table(name = "TBL_USER")
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
 @Getter
+@ToString
 @SequenceGenerator(
         name = "USER_SEQ_GENERATOR"
-        , sequenceName = "USER_SEQ_GENERATOR"
+        , sequenceName = "USER_SEQ"
         , initialValue = 1
         , allocationSize = 1
 )
@@ -46,6 +48,9 @@ public class User {
     @Column(name = "PROVIDER")
     private String provider;
 
+    @Column(name = "PROFILE_IMG")
+    private String profileImg;
+
     @Column(name = "USER_NICKNAME")
     private String userNickname;
 
@@ -68,13 +73,15 @@ public class User {
     private String userHomepage;
 
     @Column(name = "ROLE_NO")
-    private String roleNo;
+    private Long roleNo;
 
     @Builder
-    public User(String userId, String userPw, String userEmail, String userNickname, String userIntroduce, String userBlogName, String userFacebook, String userGithub, String userTwitter, String userHomepage) {
+    public User(String userId, String userPw, String userEmail, String provider, String profileImg, String userNickname, String userIntroduce, String userBlogName, String userFacebook, String userGithub, String userTwitter, String userHomepage) {
         this.userId = userId;
         this.userPw = userPw;
         this.userEmail = userEmail;
+        this.provider = provider;
+        this.profileImg = profileImg;
         this.userNickname = userNickname;
         this.userIntroduce = userIntroduce;
         this.userBlogName = userBlogName;
