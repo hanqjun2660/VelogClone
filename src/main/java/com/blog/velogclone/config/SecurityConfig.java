@@ -1,5 +1,6 @@
 package com.blog.velogclone.config;
 
+import com.blog.velogclone.handler.AuthenticationAccessDeniedHandler;
 import com.blog.velogclone.service.PrincipalOauthUserService;
 import jakarta.servlet.DispatcherType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -19,7 +19,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
+    private AuthenticationAccessDeniedHandler accessDeniedHandler;
 
     @Autowired
     private PrincipalOauthUserService principalOauthUserService;
