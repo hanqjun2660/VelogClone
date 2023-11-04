@@ -40,9 +40,9 @@ public class SecurityConfig {
                 )
                 .formLogin(login -> login
                         .loginPage("/")
-                        .loginProcessingUrl("/login")
-                        .usernameParameter("userid")
-                        .usernameParameter("userpassword")
+                        .loginProcessingUrl("/member/login")
+                        .usernameParameter("userId")
+                        .passwordParameter("pwd")
                         .defaultSuccessUrl("/dashboard")
                 )
                 .oauth2Login(login -> login
