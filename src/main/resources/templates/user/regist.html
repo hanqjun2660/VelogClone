@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="common/layout/dependencies :: fragment-dependencies"></div>
+    <link rel="stylesheet" href="/css/loginForm.css">
+</head>
+<body class="text-center">
+    <main class="form-signin">
+        <form id="loginForm" method="post" action="/member/login">
+            <img class="mb-4" src="/images/clog_logo.png" alt="" width="100" height="90">
+            <h1 class="h3 mb-3 fw-bolder text-secondary">Login</h1>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디 입력...">
+                <label for="userId">아이디</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
+                <label for="pwd">비밀번호</label>
+            </div>
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> 아이디 저장
+                </label>
+            </div>
+            <button id="registUser" class="w-100 mb-3 btn btn-lg btn-secondary" type="button">회원가입</button>
+            <button id="loginbtn" class="w-100 mb-3 btn btn-lg btn-primary" type="submit">로그인</button>
+            <button id="kakao" class="w-100 btn btn-lg btn-warning text-light" type="button">카카오톡 시작하기</button>
+            <p class="mt-5 mb-3 text-muted">&copy; hanqjun2660</p>
+        </form>
+    </main>
+</body>
+
+<script>
+    var kakaobtn = document.querySelector('#kakao');
+
+    var registUser = document.querySelector('#registUser');
+
+    $(document).ready(function () {
+       evt.kakaoLogin();
+    });
+
+    var evt = {
+        kakaoLogin : function () {
+            kakaobtn.addEventListener('click', function () {
+               location.href = "/oauth2/authorization/kakao";
+            });
+        },
+
+        registUser : function () {
+            registUser.addEventListener('click', function () {
+                location.href = "/user/regist";
+            });
+        }
+    }
+</script>
+</html>
