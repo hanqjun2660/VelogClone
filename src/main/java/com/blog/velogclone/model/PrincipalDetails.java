@@ -1,7 +1,6 @@
 package com.blog.velogclone.model;
 
 import com.blog.velogclone.entity.User;
-import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,7 +49,6 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-
                 return roleName;
             }
         });

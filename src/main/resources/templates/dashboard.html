@@ -39,16 +39,17 @@
     </div>
 </nav>
 <div class="row row-cols-1 row-cols-md-4 g-4 px-4">
-    <div class="col">
+    <div class="col" th:each="post : ${posts}">
         <div class="card">
             <img src="/images/clog_text_logo.png" class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 class="card-title"><strong>Card title</strong></h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <h5 class="card-title fs-6"><strong th:text="${post.postTitle}"></strong></h5>
+                <p class="card-text" style="font-size: 15px;" th:text="${post.postBody}"></p>
             </div>
-            <small class="text-body-secondary ps-3 mb-2">Last updated 3 mins ago</small>
-            <div class="card-footer">
-                <small class="text-body-secondary">Last updated 3 mins ago</small>
+            <small class="text-body-secondary ps-3 mb-2" style="font-size: 13px;" th:text="${#dates.format(post.createDate, 'yyyy년 MM월 dd일')}"></small>
+            <div class="card-footer d-flex justify-content-between">
+                <small class="text-body-secondary" th:text="'by ' + ${post.userNo}"></small>
+                <small class="text-body-secondary text-end" th:text="'&hearts; ' + ${post.postLike}"></small>
             </div>
         </div>
     </div>

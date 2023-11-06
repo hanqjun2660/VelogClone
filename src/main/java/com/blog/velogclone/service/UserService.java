@@ -2,7 +2,6 @@ package com.blog.velogclone.service;
 
 import com.blog.velogclone.entity.User;
 import com.blog.velogclone.model.PrincipalDetails;
-import com.blog.velogclone.model.UserDTO;
 import com.blog.velogclone.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
