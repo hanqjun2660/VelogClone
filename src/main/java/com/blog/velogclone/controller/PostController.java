@@ -1,2 +1,11 @@
-package com.blog.velogclone.controller;public class PostController {
+package com.blog.velogclone.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class PostController {
+
+    @GetMapping("/dashboard")
+    public void dashbaord() {}
 }

@@ -2,8 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="fragment-dependencies">
     <meta charset="UTF-8">
-    <title>Clog</title>
-
+    <th:block th:if="${title} != null">
+        <title th:text="${title}"></title>
+    </th:block>
+    <th:block th:if="${title == null}">
+        <title>Clog</title>
+    </th:block>
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>

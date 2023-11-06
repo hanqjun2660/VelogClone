@@ -2,57 +2,112 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="common/layout/dependencies :: fragment-dependencies"></div>
-    <link rel="stylesheet" href="/css/loginForm.css">
+    <link rel="stylesheet" href="/css/regist.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha.js"></script>
 </head>
-<body class="text-center">
-    <main class="form-signin">
-        <form id="loginForm" method="post" action="/member/login">
-            <img class="mb-4" src="/images/clog_logo.png" alt="" width="100" height="90">
-            <h1 class="h3 mb-3 fw-bolder text-secondary">Login</h1>
+<body>
+    <div class="container">
+        <div class="input-form-backgroud row">
+            <div class="input-form col-md-12 mx-auto">
+                <h4 class="mb-3">회원가입</h4>
+                <form id="validation-form" class="validation-form">
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="userid">아이디(필수)</label>
+                            <input type="text" class="form-control" id="userid" placeholder="영문 숫자조합 6자리 이상" value="" required>
+                        </div>
+                    </div>
 
-            <div class="form-floating">
-                <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디 입력...">
-                <label for="userId">아이디</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
-                <label for="pwd">비밀번호</label>
-            </div>
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="password">비밀번호(필수)</label>
+                            <input type="password" class="form-control" id="password" placeholder="영문 숫자조합 8자리 이상" value="" required>
+                        </div>
+                    </div>
 
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me"> 아이디 저장
-                </label>
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="usernickname">닉네임</label>
+                            <input type="text" class="form-control" id="usernickname" placeholder="" value="">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="email">이메일</label>
+                            <input type="text" class="form-control" id="email" placeholder="ex) example@clog.com" value="">
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">가입 완료</button>
+                    </div>
+                </form>
             </div>
-            <button id="registUser" class="w-100 mb-3 btn btn-lg btn-secondary" type="button">회원가입</button>
-            <button id="loginbtn" class="w-100 mb-3 btn btn-lg btn-primary" type="submit">로그인</button>
-            <button id="kakao" class="w-100 btn btn-lg btn-warning text-light" type="button">카카오톡 시작하기</button>
-            <p class="mt-5 mb-3 text-muted">&copy; hanqjun2660</p>
-        </form>
-    </main>
+        </div>
+        <footer class="my-3 text-center text-small">
+            <p class="mb-1 text-light">&copy; hanqjun2660</p>
+        </footer>
+    </div>
 </body>
 
 <script>
-    var kakaobtn = document.querySelector('#kakao');
-
-    var registUser = document.querySelector('#registUser');
-
-    $(document).ready(function () {
-       evt.kakaoLogin();
-    });
-
-    var evt = {
-        kakaoLogin : function () {
-            kakaobtn.addEventListener('click', function () {
-               location.href = "/oauth2/authorization/kakao";
-            });
+    var fn = {
+        validateUserID : function (userid) {
+            var pattern = /^[a-zA-Z0-9]{6,}$/;
+            return pattern.test(userid);
         },
-
-        registUser : function () {
-            registUser.addEventListener('click', function () {
-                location.href = "/user/regist";
-            });
+        validatePassword : function (password) {
+            var pattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]).{8,}$/;
+            return pattern.test(password);
+        },
+        validateEmail : function (email) {
+            var pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            return pattern.test(email);
+        },
+        sha512 : function (password) {
+            var sha512 = new jsSHA('SHA-512', 'TEXT');
+            sha512.update(password);
+            return sha512.getHash('HEX');
         }
     }
+
+    $("#validation-form").submit(function(event) {
+        event.preventDefault(); // 기본 제출 동작 방지
+
+        var userid = $("#userid").val();
+        var password = $("#password").val();
+        var usernickname = $("#usernickname").val();
+        var email = $("#email").val();
+
+        // 각 입력 필드별 유효성 검사
+        if (!fn.validateUserID(userid)) {
+            alert("사용자 ID는 6자리 이상의 영문 숫자조합이어야 합니다.");
+        } else if (!fn.validatePassword(password)) {
+            alert("비밀번호는 6자리 이상의 영문 숫자조합이어야 합니다.");
+        } else if (!fn.validateEmail(email)) {
+            alert("유효한 이메일 주소를 입력해주세요.");
+        } else {
+            // 유효성 검사 통과 시 POST 요청 보내기
+            $.ajax({
+                type: "POST",
+                url: "/user/regist",
+                data: JSON.stringify({
+                    userId: userid,
+                    userPw: fn.sha512(password),
+                    userNickname: usernickname,
+                    userEmail: email
+                }),
+                contentType: "application/json",
+                success: function(response) {
+                    alert(response.msg);
+                    location.href = "/login";
+                },
+                error: function(error) {
+                    alert(error.msg);
+                }
+            });
+        }
+    });
 </script>
 </html>

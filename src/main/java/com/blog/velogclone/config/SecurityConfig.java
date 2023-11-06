@@ -39,14 +39,14 @@ public class SecurityConfig {
                         .anyRequest().permitAll()                      // 그 외의 요청은 모두에게 허용한다.
                 )
                 .formLogin(login -> login
-                        .loginPage("/")
+                        .loginPage("/login")
                         .loginProcessingUrl("/member/login")
                         .usernameParameter("userId")
                         .passwordParameter("pwd")
                         .defaultSuccessUrl("/dashboard")
                 )
                 .oauth2Login(login -> login
-                        .loginPage("/")
+                        .loginPage("/login")
                         .defaultSuccessUrl("/dashboard")
                         .userInfoEndpoint()
                         .userService(principalOauthUserService)             // oAuth 로그인 처리 서비스

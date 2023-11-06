@@ -1,0 +1,24 @@
+body {
+    min-height: 100vh;
+
+    background: -webkit-gradient(linear, left bottom, right top, from(#10DDC2), to(#FFFFFF));
+    background: -webkit-linear-gradient(bottom left, #10DDC2 0%, #FFFFFF 100%);
+    background: -moz-linear-gradient(bottom left, #10DDC2 0%, #FFFFFF 100%);
+    background: -o-linear-gradient(bottom left, #10DDC2 0%, #FFFFFF 100%);
+    background: linear-gradient(to top right, #10DDC2 0%, #FFFFFF 100%);
+}
+
+.input-form {
+    max-width: 400px;
+
+    margin-top: 80px;
+    padding: 32px;
+
+    background: #fff;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+}

@@ -3,6 +3,7 @@
 <head>
     <div th:replace="common/layout/dependencies :: fragment-dependencies"></div>
     <link rel="stylesheet" href="/css/loginForm.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha.js"></script>
 </head>
 <body class="text-center">
     <main class="form-signin">
@@ -24,8 +25,8 @@
                     <input type="checkbox" value="remember-me"> 아이디 저장
                 </label>
             </div>
-            <button class="w-100 mb-3 btn btn-lg btn-secondary" type="button">회원가입</button>
-            <button id="loginbtn" class="w-100 mb-3 btn btn-lg btn-primary" type="submit">로그인</button>
+            <button id="registUser" class="w-100 mb-3 btn btn-lg btn-secondary" type="button">회원가입</button>
+            <button id="loginbtn" class="w-100 mb-3 btn btn-lg btn-primary" type="button">로그인</button>
             <button id="kakao" class="w-100 btn btn-lg btn-warning text-light" type="button">카카오톡 시작하기</button>
             <p class="mt-5 mb-3 text-muted">&copy; hanqjun2660</p>
         </form>
@@ -34,17 +35,41 @@
 
 <script>
     var kakaobtn = document.querySelector('#kakao');
-
     var loginbtn = document.querySelector('#loginbtn');
+    var registUser = document.querySelector('#registUser');
 
     $(document).ready(function () {
        evt.kakaoLogin();
+       evt.registUser();
+       evt.loginUser();
     });
+
+    var fn = {
+        sha512 : function (password) {
+            var sha512 = new jsSHA('SHA-512', 'TEXT');
+            sha512.update(password);
+            return sha512.getHash('HEX');
+        }
+    }
 
     var evt = {
         kakaoLogin : function () {
             kakaobtn.addEventListener('click', function () {
                location.href = "/oauth2/authorization/kakao";
+            });
+        },
+
+        loginUser : function() {
+            loginbtn.addEventListener('click', function () {
+                var hash = fn.sha512(document.querySelector('#pwd').value);
+                document.querySelector('#pwd').value = hash;
+                document.querySelector('#loginForm').submit();
+            });
+        },
+
+        registUser : function () {
+            registUser.addEventListener('click', function () {
+                location.href = "/user/regist";
             });
         }
     }
