@@ -19,7 +19,7 @@ public class PostService {
     private final ModelMapper modelMapper;
 
     public List<PostDTO> findAll() {
-        List<Post> postList = postRepository.findAll();
+        List<Post> postList = postRepository.findAllPost();
         return postList.stream().map(post -> modelMapper.map(post, PostDTO.class)).collect(Collectors.toList());
     }
 }

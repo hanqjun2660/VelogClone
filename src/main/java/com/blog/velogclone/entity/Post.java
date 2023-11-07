@@ -50,6 +50,7 @@ public class Post {
     @Column(name="POST_VIEWS")
     private int postViews;
 
-    @Column(name="USER_NO")
-    private Long userNo;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="USER_NO")
+    private User user;
 }

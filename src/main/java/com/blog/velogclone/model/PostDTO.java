@@ -28,4 +28,6 @@ public class PostDTO {
     private int postViews;
 
     private Long userNo;
+
+    private UserDTO user;
 }

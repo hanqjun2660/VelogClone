@@ -1,8 +1,15 @@
 package com.blog.velogclone.repository;
 
 import com.blog.velogclone.entity.Post;
+import com.blog.velogclone.model.PostDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
+    @Query("select m from Post m join fetch m.user ")
+    List<Post> findAllPost();
 }

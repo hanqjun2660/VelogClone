@@ -48,7 +48,7 @@
             </div>
             <small class="text-body-secondary ps-3 mb-2" style="font-size: 13px;" th:text="${#dates.format(post.createDate, 'yyyy년 MM월 dd일')}"></small>
             <div class="card-footer d-flex justify-content-between">
-                <small class="text-body-secondary" th:text="'by ' + ${post.userNo}"></small>
+                <small class="text-body-secondary" th:text="'by ' + ${post.user.userNickname}"></small>
                 <small class="text-body-secondary text-end" th:text="'&hearts; ' + ${post.postLike}"></small>
             </div>
         </div>
