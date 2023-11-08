@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,5 +22,10 @@ public class PostService {
     public List<PostDTO> findAll() {
         List<Post> postList = postRepository.findAllPost();
         return postList.stream().map(post -> modelMapper.map(post, PostDTO.class)).collect(Collectors.toList());
+    }
+
+    public PostDTO findByPostNo(int postNo) {
+        Post postEntity = postRepository.findByPostNo(postNo);
+        return modelMapper.map(postEntity, PostDTO.class);
     }
 }

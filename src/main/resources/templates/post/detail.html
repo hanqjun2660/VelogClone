@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="common/layout/dependencies :: fragment-dependencies"></div>
+</head>
+<body>
+    <div th:replace="common/layout/nav :: fragment-nav"></div>
+    제목 : <span th:text="${postdetail.postTitle}"></span><br>
+    태그 : <span th:text="${postdetail.postTag}"></span><br>
+    작성자 : <span th:text="${postdetail.user.userNickname}"></span><br>
+    본문 : <span th:text="${postdetail.postBody}"></span><br>
+    <img class="rounded-circle" alt="" th:if="${postdetail.user.profileImg} != null" th:src="${postdetail.user.profileImg}" width="128" height="128"/>
+    <img class="rounded-circle" alt="" th:if="${postdetail.user.profileImg} == null" src="/images/clog_logo.png" width="128" height="128"/>
+    <span th:text="${postdetail.user.userNickname}"></span><span th:text="${postdetail.user.userIntroduce}"></span>
+</body>
+</html>
