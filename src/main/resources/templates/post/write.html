@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="common/layout/dependencies :: fragment-dependencies"></div>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <link rel="stylesheet" href="/css/postWrite.css"/>
+</head>
+<body>
+    <div class="inputblock">
+        <input id="postTitle" type="text" placeholder="제목을 입력하세요" onfocus="this.placeholder=''" onblur="this.placeholder='제목을 입력하세요'"/><br>
+        <input id="postTag" type="text" placeholder="태그를 입력하세요" onfocus="this.placeholder=''" onblur="this.placeholder='태그를 입력하세요'">
+    </div>
+    <div id="content">
+    </div>
+</body>
+<script>
+    const editor = new toastui.Editor({
+        el: document.querySelector('#content'), // 에디터를 적용할 요소 (컨테이너)
+        height: '690px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+        initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
+        initialValue: '내용을 입력해 주세요.',     // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
+        previewStyle: 'vertical'                // 마크다운 프리뷰 스타일 (tab || vertical)
+    });
+</script>
+</html>

@@ -33,4 +33,10 @@ public class PostController {
 
         return "/post/detail";
     }
+
+    @GetMapping("/post/write")
+    public String postWrite(Model model) {
+        model.addAttribute("title", "새 글 작성");
+        return "/post/write";
+    }
 }

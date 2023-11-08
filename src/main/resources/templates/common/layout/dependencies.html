@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="fragment-dependencies">
+<head>
+    <th:block th:fragment="fragment-dependencies">
     <meta charset="UTF-8">
     <th:block th:if="${title} != null">
         <title th:text="${title}"></title>
@@ -14,5 +15,6 @@
 
     <!--jQuery-->
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    </th:block>
 </head>
 </html>
