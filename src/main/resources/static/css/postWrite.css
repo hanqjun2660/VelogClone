@@ -28,3 +28,7 @@ body {
 .inputblock {
     padding: 30px 0px 30px 0px;
 }
+
+#submitbtn {
+    border-radius: 0 !important;
+}

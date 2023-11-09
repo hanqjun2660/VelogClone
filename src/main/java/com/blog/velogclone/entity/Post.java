@@ -1,6 +1,7 @@
 package com.blog.velogclone.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -53,4 +54,17 @@ public class Post {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="USER_NO")
     private User user;
+
+    @Builder
+    public Post(Long postNo, String postTitle, String postBody, String postTag, Date createDate, String postStatus, int postLike, int postViews, User user) {
+        this.postNo = postNo;
+        this.postTitle = postTitle;
+        this.postBody = postBody;
+        this.postTag = postTag;
+        this.createDate = createDate;
+        this.postStatus = postStatus;
+        this.postLike = postLike;
+        this.postViews = postViews;
+        this.user = user;
+    }
 }

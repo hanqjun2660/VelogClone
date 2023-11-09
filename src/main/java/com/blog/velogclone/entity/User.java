@@ -76,7 +76,8 @@ public class User {
     private Long roleNo;
 
     @Builder
-    public User(String userId, String userPw, String userEmail, String provider, String profileImg, String userNickname, String userIntroduce, String userBlogName, String userFacebook, String userGithub, String userTwitter, String userHomepage) {
+    public User(Long userNo, String userId, String userPw, String userEmail, String provider, String profileImg, String userNickname, String userIntroduce, String userBlogName, String userFacebook, String userGithub, String userTwitter, String userHomepage) {
+        this.userNo = userNo;
         this.userId = userId;
         this.userPw = userPw;
         this.userEmail = userEmail;
