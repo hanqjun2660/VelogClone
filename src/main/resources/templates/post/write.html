@@ -77,6 +77,10 @@
                 contentType: "application/json",
                 success: function(response) {
                     alert(response.msg);
+                    if(response.status == "fail") {
+                        console.log(response.status);
+                        return;
+                    }
                     location.href = "/";
                 },
                 error: function(error) {

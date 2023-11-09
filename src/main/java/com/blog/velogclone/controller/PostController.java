@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -50,7 +51,15 @@ public class PostController {
     @PostMapping("/post/write")
     @ResponseBody
     public Map<String, String> savePost(@RequestBody PostDTO postDTO) {
+
         Map<String, String> response = new HashMap<>();
+
+        if(postDTO.getPostTitle() == null || postDTO.getPostTitle().isEmpty() || postDTO.getPostBody() == null || postDTO.getPostBody().isEmpty()) {
+            log.info("제목 또는 본문이 없음");
+            response.put("msg", "제목과 본문을 모두 입력해주세요");
+            response.put("status", "fail");
+            return response;
+        }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userNo;
