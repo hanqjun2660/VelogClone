@@ -14,8 +14,8 @@
                 <div class="card-body" height="127px">
                     <h5 class="card-title fs-6" th:if="${#strings.length(post.postTitle)} gt 22"><strong th:text="${#strings.substring(post.postTitle, 0, 23)} + '...'"></strong></h5>
                     <h5 class="card-title fs-6" th:unless="${#strings.length(post.postTitle)} gt 22"><strong th:text="${post.postTitle}"></strong></h5>
-                    <p class="card-text" style="font-size: 15px;" th:if="${#strings.length(post.postBody)} gt 72" th:text="${#strings.substring(post.postBody, 0, 73)} + '...'"></p>
-                    <p class="card-text" style="font-size: 15px;" th:unless="${#strings.length(post.postBody)} gt 72" th:text="${post.postBody}"></p>
+                    <p class="card-text" style="font-size: 15px;" th:if="${#strings.length(post.postBody)} gt 72" th:text="${T(org.jsoup.Jsoup).parse(post.postBody).text()}"></p>
+                    <p class="card-text" style="font-size: 15px;" th:unless="${#strings.length(post.postBody)} gt 72" th:text="${T(org.jsoup.Jsoup).parse(post.postBody).text()}"></p>
                 </div>
                 <small class="text-body-secondary ps-3 mb-2" style="font-size: 13px;" th:text="${#dates.format(post.createDate, 'yyyy년 MM월 dd일')}"></small>
                 <div class="card-footer d-flex justify-content-between">
@@ -30,23 +30,5 @@
         </a>
     </div>
 </div>
-
-<!--<div sec:authorize="isAuthenticated()">
-    Only Authenticated user can see this Text
-</div>
-
-&lt;!&ndash;인증시 사용된 객체에 대한 정보&ndash;&gt;
-<b>PrincipalDetials:</b>
-<div sec:authentication="principal"></div>
-
-<b>User:</b>
-<div sec:authentication="principal.user"></div>
-
-<b>Attributes:</b>
-<div sec:authentication="principal.attributes"></div>
-
-&lt;!&ndash;인증시 사용된 객체의 Username (ID)&ndash;&gt;
-<b>Authenticated username:</b>
-<div sec:authentication="name"></div>-->
 </body>
 </html>
