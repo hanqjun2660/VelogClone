@@ -1,18 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <div th:replace="common/layout/dependencies :: fragment-dependencies"></div>
+    <link rel="stylesheet" href="/css/detail.css"/>
 </head>
 <body>
     <div th:replace="common/layout/nav :: fragment-nav"></div>
-    제목 : <span th:text="${postdetail.postTitle}"></span><br>
-    태그 : <span th:text="${postdetail.postTag}"></span><br>
-    작성자 : <span th:text="${postdetail.user.userNickname}"></span><br>
-    본문 : <span th:text="${postdetail.postBody}"></span><br>
-    <img class="rounded-circle" alt="" th:if="${postdetail.user.profileImg} != null" th:src="${postdetail.user.profileImg}" width="128" height="128"/>
-    <img class="rounded-circle" alt="" th:if="${postdetail.user.profileImg} == null" src="/images/clog_logo.png" width="128" height="128"/>
-    <span th:text="${postdetail.user.userNickname}"></span><span th:text="${postdetail.user.userIntroduce}"></span>
-    <!--<th:block th:utext="${postdetail.postBody}"></th:block>-->
+    <div class="container text-start">
+        <div class="text-start">
+            <h1 class="fw-bold" th:text="${postdetail.postTitle}"></h1>
+            <div class="d-flex justify-content-between">
+                <span>
+                    <span class="fw-bold" th:text="${postdetail.user.userNickname}"> </span>
+                    <span class="separator">·</span>
+                    <span class="text-secondary" th:text="${#dates.format(postdetail.createDate, 'yyyy년 MM월 dd일')}"></span>
+                </span>
+                <span id="postmodify">
+                    <th:block th:if="${isAuthorization} == true">
+                        <a class="text-secondary mx-1" href="#">통계</a>
+                        <a class="text-secondary mx-1" href="#">수정</a>
+                        <a class="text-secondary mx-1" href="#">삭제</a>
+                    </th:block>
+                </span>
+            </div>
+            <div id="tags">
+                <span class="rounded-pill text-light" th:text="${postdetail.postTag}"></span>
+            </div>
+        </div>
+        <div class="contents">
+            <th:block th:utext="${postdetail.postBody}"></th:block>
+        </div>
+    </div>
 </body>
 <script>
 </script>

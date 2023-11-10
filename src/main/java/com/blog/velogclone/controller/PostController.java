@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @Slf4j
@@ -34,7 +35,21 @@ public class PostController {
     @GetMapping("/post/{postNo}")
     public String postDetail(@PathVariable int postNo, Model model) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userNo;
+
         PostDTO postDTO = postService.findByPostNo(postNo);
+
+        if(authentication != null && authentication.getPrincipal() instanceof PrincipalDetails) {
+            userNo = ((PrincipalDetails) authentication.getPrincipal()).getUserNo();
+            log.info("userNo : {}", userNo);
+
+            if(userNo.compareTo(postDTO.getUser().getUserNo()) == 0) {
+                model.addAttribute("isAuthorization", true);
+            } else {
+                model.addAttribute("isAuthorization", false);
+            }
+        }
 
         model.addAttribute("postdetail", postDTO);
         model.addAttribute("title", postDTO.getPostTitle());
