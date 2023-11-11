@@ -30,6 +30,10 @@
         <div class="contents">
             <th:block th:utext="${postdetail.postBody}"></th:block>
         </div>
+        <img class="rounded-circle" width="128" height="128" alt="" th:if="${postdetail.user.profileImg} != null" th:src="${postdetail.user.profileImg}" style="object-fit: cover;"/>
+        <img class="rounded-circle" width="128" height="128" alt="" th:unless="${postdetail.user.profileImg} != null" src="/images/clog_logo.png" style="object-fit: cover;"/>
+        <span th:text="${postdetail.user.userNickname}"></span>
+        <span th:text="${postdetail.user.userIntroduce}"></span>
     </div>
 </body>
 <script>
