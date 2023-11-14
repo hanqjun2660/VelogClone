@@ -45,3 +45,21 @@ h1 {
 .toastui-editor-ww-code-block {
     background-color: #FBFCFD;
 }
+
+.userinfo {
+    margin-top: 150px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: solid lightgray 2px;
+}
+
+.username a {
+    font-size: 25px;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.userintro span {
+    font-size: 18px;
+}
