@@ -63,3 +63,17 @@ h1 {
 .userintro span {
     font-size: 18px;
 }
+
+.social {
+    margin-bottom: 80px;
+}
+
+.social a {
+    text-decoration: none;
+    margin: 5px;
+}
+
+.social a > img {
+    width: 32px;
+    height: 32px;
+}

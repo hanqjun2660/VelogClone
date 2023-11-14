@@ -39,6 +39,7 @@ public class PostController {
         Long userNo;
 
         PostDTO postDTO = postService.findByPostNo(postNo);
+        log.info(postDTO.toString());
 
         if(authentication != null && authentication.getPrincipal() instanceof PrincipalDetails) {
             userNo = ((PrincipalDetails) authentication.getPrincipal()).getUserNo();

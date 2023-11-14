@@ -50,6 +50,25 @@
                 </div>
             </div>
         </div>
+        <div class="social">
+            <a class="github" th:if="${postdetail.user.userGithub} != null" th:href="${postdetail.user.userGithub}" target="_blank">
+                <img src="/images/github-mark.png"/>
+            </a>
+            <a class="twitter" th:if="${postdetail.user.userTwitter} != null" th:href="${postdetail.user.userTwitter}" target="_blank">
+                <img src="/images/twitter-mark.png"/>
+            </a>
+            <a class="homepage" th:if="${postdetail.user.userHomepage} != null" th:href="${postdetail.user.userHomepage}" target="_blank">
+                <img src="/images/home-mark.png"/>
+            </a>
+            <a class="facebook" th:if="${postdetail.user.userFacebook} != null" th:href="${postdetail.user.userFacebook}" target="_blank">
+                <img src="/images/facebook-mark.png"/>
+            </a>
+        </div>
+        <div class="reply">
+            <p>개의 댓글</p>
+            <input type="text" placeholder="댓글을 작성하세요."/>
+            <button class="btn btn-success px-4" type="button" style="background-color: #12B886; border: none;">댓글 작성</button>
+        </div>
     </div>
 </body>
 <script>

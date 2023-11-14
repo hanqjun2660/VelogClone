@@ -17,4 +17,8 @@ public class UserDTO {
     private String userEmail;
     private String userBlogName;
     private String userIntroduce;
+    private String userGithub;
+    private String userFacebook;
+    private String userHomepage;
+    private String userTwitter;
 }
