@@ -2,7 +2,9 @@ package com.blog.velogclone.controller;
 
 import com.blog.velogclone.model.PostDTO;
 import com.blog.velogclone.model.PrincipalDetails;
+import com.blog.velogclone.model.ReplyDTO;
 import com.blog.velogclone.service.PostService;
+import com.blog.velogclone.service.ReplyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ import java.util.Objects;
 public class PostController {
 
     private final PostService postService;
+    private final ReplyService replyService;
 
     @GetMapping("/dashboard")
     public String dashbaord(Model model) {
@@ -39,7 +42,10 @@ public class PostController {
         Long userNo;
 
         PostDTO postDTO = postService.findByPostNo(postNo);
+        List<ReplyDTO> replyList = replyService.findByPostNo(postNo);
+
         log.info(postDTO.toString());
+        log.info(replyList.toString());
 
         if(authentication != null && authentication.getPrincipal() instanceof PrincipalDetails) {
             userNo = ((PrincipalDetails) authentication.getPrincipal()).getUserNo();
@@ -53,6 +59,7 @@ public class PostController {
         }
 
         model.addAttribute("postdetail", postDTO);
+        model.addAttribute("replyList", replyList);
         model.addAttribute("title", postDTO.getPostTitle());
 
         return "/post/detail";
