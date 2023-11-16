@@ -43,6 +43,7 @@ public class PostController {
 
         PostDTO postDTO = postService.findByPostNo(postNo);
         List<ReplyDTO> replyList = replyService.findByPostNo(postNo);
+        int count = replyList.size();
 
         log.info(postDTO.toString());
         log.info(replyList.toString());
@@ -60,6 +61,7 @@ public class PostController {
 
         model.addAttribute("postdetail", postDTO);
         model.addAttribute("replyList", replyList);
+        model.addAttribute("replycount", count);
         model.addAttribute("title", postDTO.getPostTitle());
 
         return "/post/detail";
