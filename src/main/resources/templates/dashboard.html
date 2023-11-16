@@ -10,7 +10,7 @@
     <div class="col" th:each="post : ${posts}">
         <a th:href="'/post/' + ${post.postNo}">
             <div class="card">
-                <img src="/images/clog_text_logo.png" class="card-img-top" alt="..." height="167">
+                <img th:src="${post.srcAttr}" class="card-img-top" alt="..." height="167">
                 <div class="card-body" height="127px">
                     <h5 class="card-title fs-6" th:if="${#strings.length(post.postTitle)} gt 22"><strong th:text="${#strings.substring(post.postTitle, 0, 23)} + '...'"></strong></h5>
                     <h5 class="card-title fs-6" th:unless="${#strings.length(post.postTitle)} gt 22"><strong th:text="${post.postTitle}"></strong></h5>

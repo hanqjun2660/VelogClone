@@ -16,3 +16,7 @@ a {
     text-overflow: ellipsis; /* 넘치는 텍스트를 생략 부호(...)로 표시 */
     line-height: 1em; /* 줄 높이를 현재 폰트 크기에 해당하는 1em으로 설정 */
 }
+
+.card-img-top {
+    object-fit: cover;
+}

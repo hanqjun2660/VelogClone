@@ -70,7 +70,7 @@
                 <input id="replyinput" class="replyinput" type="text" placeholder="댓글을 작성하세요."/>
             </div>
             <div class="d-flex justify-content-end submit">
-                <button class="btn btn-success px-4" type="button" style="background-color: #12B886; border: none;">댓글 작성</button>
+                <button id="replysubmit" class="btn btn-success px-4" type="button" style="background-color: #12B886; border: none;">댓글 작성</button>
             </div>
         </div>
         <div th:each="reply : ${replyList}">
@@ -99,5 +99,47 @@
     </div>
 </body>
 <script>
+    $(document).ready(function() {
+       evt.writeReply();
+    });
+
+    var Elbtn = document.querySelector('#replysubmit');
+    var currentUrl = window.location.href;
+    var lastSegment = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+    var postId = parseInt(lastSegment);
+
+    var evt = {
+        writeReply : function () {
+            Elbtn.addEventListener('click', function () {
+                var Elinput = document.querySelector('#replyinput').value;
+                if(Elinput.length <= 0) {
+                    alert("내용을 입력해주세요.");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/reply/write",
+                    data: JSON.stringify({
+                        replyBody: Elinput,
+                        postNo: postId
+                    }),
+                    contentType: "application/json",
+                    success: function(response) {
+                        if(response.status === "N") {
+                            alert(response.msg);
+                            location.href = "/login";
+                        } else {
+                            alert(response.msg);
+                            location.href = currentUrl;
+                        }
+                    },
+                    error: function(error) {
+                        alert(error.msg);
+                    }
+                });
+            });
+        }
+    }
 </script>
 </html>

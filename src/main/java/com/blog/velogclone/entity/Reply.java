@@ -1,6 +1,7 @@
 package com.blog.velogclone.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -41,4 +42,13 @@ public class Reply {
     @ManyToOne
     @JoinColumn(name="USER_NO")
     private User user;
+
+    @Builder
+    public Reply(Long replyNo, String replyBody, Long postNo, Date replyDate, User user) {
+        this.replyNo = replyNo;
+        this.replyBody = replyBody;
+        this.postNo = postNo;
+        this.replyDate = replyDate;
+        this.user = user;
+    }
 }

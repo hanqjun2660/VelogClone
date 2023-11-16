@@ -29,5 +29,7 @@ public class PostDTO {
 
     private Long userNo;
 
+    private String srcAttr;
+
     private UserDTO user;
 }

@@ -7,23 +7,27 @@ import com.blog.velogclone.service.PostService;
 import com.blog.velogclone.service.ReplyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Controller
 @Slf4j
 @AllArgsConstructor
 public class PostController {
+
+    final String DEFAULT_IMG = "/images/clog_text_logo.png";
 
     private final PostService postService;
     private final ReplyService replyService;
@@ -31,6 +35,25 @@ public class PostController {
     @GetMapping("/dashboard")
     public String dashbaord(Model model) {
         List<PostDTO> postList = postService.findAll();
+
+        try {
+            for (PostDTO post : postList) {
+                String postBody = post.getPostBody();
+                Document doc = Jsoup.parse(postBody);
+                Elements imgTags = doc.select("img");
+
+                if (!imgTags.isEmpty()) {
+                    Element firstImg = imgTags.first();
+                    String srcAttribute = firstImg.attr("src");
+                    post.setSrcAttr(srcAttribute); // PostDTO에 속성 추가
+                } else {
+                    post.setSrcAttr(DEFAULT_IMG); // 이미지가 없는 경우 기본 이미지로 설정
+                }
+            }
+        } catch (Exception e) {
+            log.info("parsing error");
+        }
+
         model.addAttribute("posts", postList);
         return "/dashboard";
     }

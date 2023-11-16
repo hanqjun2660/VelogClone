@@ -1,6 +1,7 @@
 package com.blog.velogclone.service;
 
 import com.blog.velogclone.entity.Reply;
+import com.blog.velogclone.entity.User;
 import com.blog.velogclone.model.ReplyDTO;
 import com.blog.velogclone.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,4 +31,15 @@ public class ReplyService {
         return replyList.stream().map(reply -> modelMapper.map(reply, ReplyDTO.class)).collect(Collectors.toList());
     }
 
+    public ReplyDTO saveReply(ReplyDTO replyDTO) {
+        Reply request = Reply.builder()
+                .replyBody(replyDTO.getReplyBody())
+                .postNo(replyDTO.getPostNo())
+                .user(User.builder().userNo(replyDTO.getUserNo()).build())
+                .build();
+
+        Reply response = replyRepository.save(request);
+
+        return modelMapper.map(response, ReplyDTO.class);
+    }
 }
