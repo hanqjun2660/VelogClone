@@ -132,7 +132,7 @@ public class PostController {
 
     @PostMapping("/post/delete")
     @ResponseBody
-    public Map<String, String> deletePost(@RequestBody PostDTO postDTO, Model modle) {
+    public Map<String, String> deletePost(@RequestBody PostDTO postDTO) {
         log.info(postDTO.toString());
 
         Map<String, String> response = new HashMap<>();

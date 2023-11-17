@@ -44,7 +44,8 @@
                     </div>
                     <div class="row">
                         <div class="col-4 col-sm-6 userintro">
-                            <span th:text="${postdetail.user.userIntroduce}"></span>
+                            <span th:if="${postdetail.user.userIntroduce} != null" th:text="${postdetail.user.userIntroduce}"></span>
+                            <span th:unless="${postdetail.user.userIntroduce} != null">소개글이 없습니다.</span>
                         </div>
                     </div>
                 </div>
