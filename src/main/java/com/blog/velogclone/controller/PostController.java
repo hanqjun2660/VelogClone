@@ -62,7 +62,7 @@ public class PostController {
     public String postDetail(@PathVariable int postNo, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long userNo;
+        Long userNo = null;
 
         PostDTO postDTO = postService.findByPostNo(postNo);
         List<ReplyDTO> replyList = replyService.findByPostNo(postNo);
@@ -79,6 +79,14 @@ public class PostController {
                 model.addAttribute("isAuthorization", true);
             } else {
                 model.addAttribute("isAuthorization", false);
+            }
+        }
+
+        for(ReplyDTO replyDTO : replyList) {
+            if(userNo != null && userNo.equals(replyDTO.getUser().getUserNo())) {
+                replyDTO.setCanEdit(true);
+            } else {
+                replyDTO.setCanEdit(false);
             }
         }
 

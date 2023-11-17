@@ -15,5 +15,6 @@ public class ReplyDTO {
     private Long postNo;
     private Long userNo;
     private Date replyDate;
+    private boolean canEdit;
     private UserDTO user;
 }

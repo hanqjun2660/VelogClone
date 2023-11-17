@@ -54,7 +54,7 @@ h1 {
 }
 
 .username a {
-    font-size: 18px;
+    font-size: 20px;
     color: black;
     font-weight: bold;
     text-decoration: none;
@@ -102,4 +102,15 @@ h1 {
 .replybody {
     padding: 20px;
     font-size: 20px;
+}
+
+#replymodify a {
+    text-decoration: none;
+    color: gray;
+}
+
+textarea {
+    outline: none;
+    border: none;
+    resize: none;
 }

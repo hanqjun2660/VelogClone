@@ -80,7 +80,7 @@
                     <img class="rounded-circle mx-auto d-block" width="54" height="54" alt="" th:if="${reply.user.profileImg} != null" th:src="${postdetail.user.profileImg}"/>
                     <img class="rounded-circle mx-auto d-block" width="54" height="54" alt="" th:unless="${reply.user.profileImg} != null" src="/images/clog_logo.png"/>
                 </div>
-                <div class="col-sm-9 align-self-center">
+                <div class="col-sm-6">
                     <div class="row">
                         <div class="col-4 col-sm-6 username">
                             <a th:href="${reply.user.userNo}" th:text="${reply.user.userNickname}"></a>
@@ -88,12 +88,22 @@
                     </div>
                     <div class="row">
                         <div class="col-4 col-sm-6 userintro">
-                            <span th:text="${#dates.format(reply.replyDate, 'yyyy년 MM월 dd일')}"></span>
+                            <span th:text="${#dates.format(reply.replyDate, 'yyyy년 MM월 dd일 HH:mm')}"></span>
                         </div>
                     </div>
                 </div>
+                <div class="col-sm-5">
+                    <th:block th:if="${reply.canEdit} == true">
+                        <div class="row justify-content-end">
+                            <div id="replymodify" class="col-1 col-sm-4">
+                                <a class="text-secondary mx-1" href="#">수정</a>
+                                <a class="text-secondary mx-1" href="#">삭제</a>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
                 <div class="row replybody">
-                    <div th:text="${reply.replyBody}"></div>
+                    <textarea th:text="${reply.replyBody}" readonly></textarea>
                 </div>
             </div>
         </div>
