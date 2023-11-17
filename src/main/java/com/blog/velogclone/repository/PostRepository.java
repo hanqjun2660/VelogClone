@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query("select m from Post m join fetch m.user ORDER BY m.createDate DESC")
+    @Query("select m from Post m join fetch m.user where m.postStatus = 'N' ORDER BY m.createDate DESC")
     List<Post> findAllPost();
 
     @Query("select m from Post m join fetch m.user where m.postNo = :postNo")

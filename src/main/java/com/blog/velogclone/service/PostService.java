@@ -48,4 +48,28 @@ public class PostService {
 
         return modelMapper.map(response, PostDTO.class);
     }
+
+    @Transactional
+    public PostDTO deletePost(PostDTO postDTO) {
+        Post postEntity = postRepository.findByPostNo(Math.toIntExact(postDTO.getPostNo()));
+
+        if(postEntity == null) {
+            throw new NullPointerException("게시물이 존재하지 않습니다. postNo: " + postEntity.getPostNo());
+        }
+
+        postEntity = Post.builder()
+                .postNo(postEntity.getPostNo())
+                .postTag(postEntity.getPostTag())
+                .postTitle(postEntity.getPostTitle())
+                .postBody(postEntity.getPostBody())
+                .postLike(postEntity.getPostViews())
+                .createDate(postEntity.getCreateDate())
+                .user(postEntity.getUser())
+                .postStatus("Y")
+                .build();
+
+        postRepository.save(postEntity);
+
+        return modelMapper.map(postEntity, PostDTO.class);
+    }
 }

@@ -130,4 +130,23 @@ public class PostController {
         return response;
     }
 
+    @PostMapping("/post/delete")
+    @ResponseBody
+    public Map<String, String> deletePost(@RequestBody PostDTO postDTO, Model modle) {
+        log.info(postDTO.toString());
+
+        Map<String, String> response = new HashMap<>();
+        PostDTO result = postService.deletePost(postDTO);
+
+        if(!ObjectUtils.isEmpty(result)) {
+            response.put("code", "200");
+            response.put("msg", "게시글이 삭제되었습니다.");
+        } else {
+            response.put("code", "400");
+            response.put("msg", "게시글 삭제에 실패하였습니다.");
+        }
+
+        return response;
+    }
+
 }
