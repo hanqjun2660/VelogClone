@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,5 +42,28 @@ public class ReplyService {
         Reply response = replyRepository.save(request);
 
         return modelMapper.map(response, ReplyDTO.class);
+    }
+
+    public ReplyDTO deleteReply(ReplyDTO replyDTO) {
+
+        Reply response = null;
+
+        Reply replyEntity = replyRepository.findByReplyNoAndReplyStatus(replyDTO.getReplyNo(), "N");
+
+        if(!ObjectUtils.isEmpty(replyEntity)) {
+            Reply request = Reply.builder()
+                    .replyNo(replyEntity.getReplyNo())
+                    .replyBody(replyEntity.getReplyBody())
+                    .replyDate(replyEntity.getReplyDate())
+                    .replyStatus("Y")
+                    .postNo(replyEntity.getPostNo())
+                    .user(replyEntity.getUser())
+                    .build();
+
+            response = replyRepository.save(request);
+            log.info(response.toString());
+        }
+
+        return response != null ? modelMapper.map(response, ReplyDTO.class) : new ReplyDTO();
     }
 }

@@ -54,4 +54,31 @@ public class ReplyController {
 
         return response;
     }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public Map<String, String> deleteReply(@RequestBody ReplyDTO replyDTO) {
+        log.info(replyDTO.toString());
+
+        Map<String, String> response = new HashMap<>();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && authentication.getPrincipal() instanceof PrincipalDetails) {
+            Long userNo = ((PrincipalDetails) authentication.getPrincipal()).getUserNo();
+            log.info("userNo : {}", userNo);
+
+            replyDTO.setUserNo(userNo);
+
+            ReplyDTO responseDTO = replyService.deleteReply(replyDTO);
+
+            if(!ObjectUtils.isEmpty(responseDTO)) {
+                response.put("msg", "댓글이 성공적으로 삭제되었습니다.");
+            } else {
+                response.put("msg", "댓글 삭제 실패");
+            }
+        }
+
+        return response;
+
+    }
 }

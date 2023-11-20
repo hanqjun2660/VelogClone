@@ -97,7 +97,7 @@
                         <div class="row justify-content-end">
                             <div id="replymodify" class="col-1 col-sm-4">
                                 <a class="text-secondary mx-1" href="#">수정</a>
-                                <a class="text-secondary mx-1" href="#">삭제</a>
+                                <a id="replydelete" class="text-secondary mx-1" href="" th:data-replyno="${reply.replyNo}">삭제</a>
                             </div>
                         </div>
                     </th:block>
@@ -113,6 +113,7 @@
     $(document).ready(function() {
        evt.writeReply();
        evt.deletePost();
+       evt.deleteReply();
     });
 
     var Elbtn = document.querySelector('#replysubmit');
@@ -169,6 +170,26 @@
                             alert(response.msg);
                             location.href = currentUrl;
                         }
+                    },
+                    error: function(error) {
+                        alert(error.msg);
+                    }
+                });
+            });
+        },
+        deleteReply: function () {
+            document.querySelector('#replydelete').addEventListener('click', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/reply/delete",
+                    data: JSON.stringify({
+                        replyNo: document.querySelector('#replydelete').getAttribute('data-replyno')
+                    }),
+                    contentType: "application/json",
+                    success: function(response) {
+                        alert(response.msg);
+                        location.href = currentUrl;
                     },
                     error: function(error) {
                         alert(error.msg);

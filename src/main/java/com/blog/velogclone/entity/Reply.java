@@ -39,16 +39,20 @@ public class Reply {
     @Column(name = "REPLY_DATE")
     private Date replyDate;
 
+    @Column(name = "REPLY_STATUS")
+    private String replyStatus;
+
     @ManyToOne
     @JoinColumn(name="USER_NO")
     private User user;
 
     @Builder
-    public Reply(Long replyNo, String replyBody, Long postNo, Date replyDate, User user) {
+    public Reply(Long replyNo, String replyBody, Long postNo, Date replyDate, String replyStatus, User user) {
         this.replyNo = replyNo;
         this.replyBody = replyBody;
         this.postNo = postNo;
         this.replyDate = replyDate;
+        this.replyStatus = replyStatus;
         this.user = user;
     }
 }
