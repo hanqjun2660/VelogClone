@@ -96,14 +96,15 @@
                     <th:block th:if="${reply.canEdit} == true">
                         <div class="row justify-content-end">
                             <div id="replymodify" class="col-1 col-sm-4">
-                                <a class="text-secondary mx-1" href="#">수정</a>
+                                <a id="modifyreply" class="text-secondary mx-1" href="" th:data-replyno="${reply.replyNo}">수정</a>
                                 <a id="replydelete" class="text-secondary mx-1" href="" th:data-replyno="${reply.replyNo}">삭제</a>
                             </div>
                         </div>
                     </th:block>
                 </div>
                 <div class="row replybody">
-                    <textarea th:text="${reply.replyBody}" readonly></textarea>
+                    <textarea th:text="${reply.replyBody}" th:data-replyno="${reply.replyNo}" readonly></textarea>
+                    <button type="button" class="btn btn-success px-4" style="display: none;">완료</button>
                 </div>
             </div>
         </div>
@@ -114,6 +115,7 @@
        evt.writeReply();
        evt.deletePost();
        evt.deleteReply();
+       evt.modifyReply();
     });
 
     var Elbtn = document.querySelector('#replysubmit');
@@ -195,6 +197,29 @@
                         alert(error.msg);
                     }
                 });
+            });
+        },
+        modifyReply: function () {
+            document.querySelector('#modifyreply').addEventListener('click', function (event) {
+               event.preventDefault();
+               var parentRow = event.target.closest('.row');
+               var grandParentRow = parentRow.closest('.col-sm-5')
+               var brotherRow = grandParentRow.nextElementSibling;
+               var textarea = brotherRow.querySelector('textarea');
+               var btn = textarea.nextElementSibling;
+
+               textarea.readOnly = !textarea.readOnly;
+
+               if (!textarea.readOnly) {
+                  // 편집 가능한 상태로 전환
+                  textarea.removeAttribute('readonly');
+                  textarea.focus();
+                  btn.style.display = 'inline-block';
+               } else {
+                  // 읽기 전용 상태로 전환
+                  textarea.setAttribute('readonly', 'readonly');
+                  btn.style.display = 'none';
+               }
             });
         }
     }
