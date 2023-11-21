@@ -191,75 +191,81 @@
             });
         },
         deleteReply: function () {
-            document.querySelector('#replydelete').addEventListener('click', function(event) {
-                event.preventDefault();
-                if(!confirm('정말 삭제하시겠습니까?')) {
-                    return;
-                }
-
-                $.ajax({
-                    type: "POST",
-                    url: "/reply/delete",
-                    data: JSON.stringify({
-                        replyNo: document.querySelector('#replydelete').getAttribute('data-replyno')
-                    }),
-                    contentType: "application/json",
-                    success: function(response) {
-                        alert(response.msg);
-                        location.href = currentUrl;
-                    },
-                    error: function(error) {
-                        alert(error.msg);
+            document.querySelectorAll('#replydelete').forEach(function (deleteBtn, index) {
+                deleteBtn.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    if(!confirm('정말 삭제하시겠습니까?')) {
+                        return;
                     }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/reply/delete",
+                        data: JSON.stringify({
+                            replyNo: deleteBtn.getAttribute('data-replyno')
+                        }),
+                        contentType: "application/json",
+                        success: function(response) {
+                            alert(response.msg);
+                            location.href = currentUrl;
+                        },
+                        error: function(error) {
+                            alert(error.msg);
+                        }
+                    });
                 });
             });
         },
         modifyReply: function () {
-            document.querySelector('#modifyreply').addEventListener('click', function (event) {
-               event.preventDefault();
-               var parentRow = event.target.closest('.row');
-               var grandParentRow = parentRow.closest('.col-sm-5')
-               var brotherRow = grandParentRow.nextElementSibling;
-               var textarea = brotherRow.querySelector('textarea');
-               var btn = textarea.nextElementSibling;
+            document.querySelectorAll('#modifyreply').forEach(function (modifyBtn, index) {
+                modifyBtn.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    var parentRow = event.target.closest('.row');
+                    var grandParentRow = parentRow.closest('.col-sm-5')
+                    var brotherRow = grandParentRow.nextElementSibling;
+                    var textarea = brotherRow.querySelector('textarea');
+                    var btn = textarea.nextElementSibling;
 
-               textarea.readOnly = !textarea.readOnly;
+                    textarea.readOnly = !textarea.readOnly;
 
-               if (!textarea.readOnly) {
-                  // 편집 가능한 상태로 전환
-                  textarea.removeAttribute('readonly');
-                  textarea.focus();
-                  btn.style.display = 'inline-block';
-               } else {
-                  // 읽기 전용 상태로 전환
-                  textarea.setAttribute('readonly', 'readonly');
-                  btn.style.display = 'none';
-               }
+                    if (!textarea.readOnly) {
+                        // 편집 가능한 상태로 전환
+                        textarea.removeAttribute('readonly');
+                        textarea.focus();
+                        btn.style.display = 'inline-block';
+                    } else {
+                        // 읽기 전용 상태로 전환
+                        textarea.setAttribute('readonly', 'readonly');
+                        btn.style.display = 'none';
+                    }
+                });
             });
         },
         replyModifySubmit: function () {
-            document.querySelector('#replymodifybtn').addEventListener('click', function () {
-                var brotherElement = document.querySelector('#replymodifybtn').previousElementSibling;
+            document.querySelectorAll('#replymodifybtn').forEach(function (modifyBtn, index) {
+                modifyBtn.addEventListener('click', function () {
+                    var brotherElement = document.querySelector('#replymodifybtn').previousElementSibling;
 
-                if(!confirm('이대로 수정하시겠습니까?')) {
-                    return;
-                }
-
-                $.ajax({
-                    type: "POST",
-                    url: "/reply/modify",
-                    data: JSON.stringify({
-                        replyNo: brotherElement.getAttribute('data-replyno'),
-                        replyBody: brotherElement.value
-                    }),
-                    contentType: "application/json",
-                    success: function(response) {
-                        alert(response.msg);
-                        location.href = currentUrl;
-                    },
-                    error: function(error) {
-                        alert(error.msg);
+                    if(!confirm('이대로 수정하시겠습니까?')) {
+                        return;
                     }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/reply/modify",
+                        data: JSON.stringify({
+                            replyNo: brotherElement.getAttribute('data-replyno'),
+                            replyBody: brotherElement.value
+                        }),
+                        contentType: "application/json",
+                        success: function(response) {
+                            alert(response.msg);
+                            location.href = currentUrl;
+                        },
+                        error: function(error) {
+                            alert(error.msg);
+                        }
+                    });
                 });
             });
         }
