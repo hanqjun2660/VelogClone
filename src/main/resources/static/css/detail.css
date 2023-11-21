@@ -101,7 +101,18 @@ h1 {
 
 .replybody {
     padding: 20px;
+    padding-bottom: 30px;
     font-size: 20px;
+}
+
+.replybody a {
+    font-size: 15px;
+    text-decoration: none;
+    color: #12B886;
+}
+
+.replybody a:hover {
+    color: #4cd4ac;
 }
 
 #replymodify a {

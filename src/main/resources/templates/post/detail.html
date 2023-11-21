@@ -105,6 +105,16 @@
                 <div class="row replybody">
                     <textarea th:text="${reply.replyBody}" th:data-replyno="${reply.replyNo}" readonly></textarea>
                     <button id="replymodifybtn" type="button" class="btn btn-success px-4" style="display: none;">완료</button>
+                    <div class="row d-flex justify-content-between">
+                        <a href="">
+                            <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
+                                <path fill="#12B886" d="M5.5 2.5h1v3h3v1h-3v3h-1v-3h-3v-1h3v-3z"></path>
+                                <path fill="#12B886" fill-rule="evenodd" d="M1 0a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm10 1H1v10h10V1z" clip-rule="evenodd">
+                                </path>
+                            </svg>
+                            <span>답글 달기</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
