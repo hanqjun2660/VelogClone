@@ -104,7 +104,7 @@
                 </div>
                 <div class="row replybody">
                     <textarea th:text="${reply.replyBody}" th:data-replyno="${reply.replyNo}" readonly></textarea>
-                    <button type="button" class="btn btn-success px-4" style="display: none;">완료</button>
+                    <button id="replymodifybtn" type="button" class="btn btn-success px-4" style="display: none;">완료</button>
                 </div>
             </div>
         </div>
@@ -116,6 +116,7 @@
        evt.deletePost();
        evt.deleteReply();
        evt.modifyReply();
+       evt.replyModifySubmit();
     });
 
     var Elbtn = document.querySelector('#replysubmit');
@@ -182,6 +183,10 @@
         deleteReply: function () {
             document.querySelector('#replydelete').addEventListener('click', function(event) {
                 event.preventDefault();
+                if(!confirm('정말 삭제하시겠습니까?')) {
+                    return;
+                }
+
                 $.ajax({
                     type: "POST",
                     url: "/reply/delete",
@@ -220,6 +225,32 @@
                   textarea.setAttribute('readonly', 'readonly');
                   btn.style.display = 'none';
                }
+            });
+        },
+        replyModifySubmit: function () {
+            document.querySelector('#replymodifybtn').addEventListener('click', function () {
+                var brotherElement = document.querySelector('#replymodifybtn').previousElementSibling;
+
+                if(!confirm('이대로 수정하시겠습니까?')) {
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/reply/modify",
+                    data: JSON.stringify({
+                        replyNo: brotherElement.getAttribute('data-replyno'),
+                        replyBody: brotherElement.value
+                    }),
+                    contentType: "application/json",
+                    success: function(response) {
+                        alert(response.msg);
+                        location.href = currentUrl;
+                    },
+                    error: function(error) {
+                        alert(error.msg);
+                    }
+                });
             });
         }
     }

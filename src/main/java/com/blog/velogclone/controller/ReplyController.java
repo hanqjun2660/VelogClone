@@ -81,4 +81,21 @@ public class ReplyController {
         return response;
 
     }
+
+    @PostMapping("/modify")
+    @ResponseBody
+    public Map<String, String> modifyReply(@RequestBody ReplyDTO replyDTO) {
+        log.info(replyDTO.toString());
+        Map<String, String> response = new HashMap<>();
+
+        ReplyDTO responseDTO = replyService.modifyReply(replyDTO);
+
+        if(!ObjectUtils.isEmpty(responseDTO)) {
+            response.put("msg", "댓글이 성공적으로 수정되었습니다.");
+        } else {
+            response.put("msg", "댓글 수정 실패");
+        }
+
+        return response;
+    }
 }

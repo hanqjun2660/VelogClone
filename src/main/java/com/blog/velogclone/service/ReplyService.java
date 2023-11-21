@@ -66,4 +66,27 @@ public class ReplyService {
 
         return response != null ? modelMapper.map(response, ReplyDTO.class) : new ReplyDTO();
     }
+
+    public ReplyDTO modifyReply(ReplyDTO replyDTO) {
+
+        Reply response = null;
+
+        Reply replyEntity = replyRepository.findByReplyNoAndReplyStatus(replyDTO.getReplyNo(), "N");
+
+        if(!ObjectUtils.isEmpty(replyEntity)) {
+            Reply request = Reply.builder()
+                    .replyNo(replyDTO.getReplyNo())
+                    .replyBody(replyDTO.getReplyBody())
+                    .replyDate(replyEntity.getReplyDate())
+                    .replyStatus(replyEntity.getReplyStatus())
+                    .postNo(replyEntity.getPostNo())
+                    .user(replyEntity.getUser())
+                    .build();
+
+            response = replyRepository.save(request);
+            log.info(response.toString());
+        }
+
+        return response != null ? modelMapper.map(response, ReplyDTO.class) : new ReplyDTO();
+    }
 }
