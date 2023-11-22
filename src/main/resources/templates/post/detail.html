@@ -107,7 +107,7 @@
                     <button id="replymodifybtn" type="button" class="btn btn-success px-4" style="display: none;">완료</button>
                     <div class="row d-flex justify-content-between">
                         <th:block th:if="${reply.reReplyCount} == 0">
-                            <a href="">
+                            <a class="registReply" href="">
                                 <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
                                     <path fill="#12B886" d="M5.5 2.5h1v3h3v1h-3v3h-1v-3h-3v-1h3v-3z"></path>
                                     <path fill="#12B886" fill-rule="evenodd" d="M1 0a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm10 1H1v10h10V1z" clip-rule="evenodd">
@@ -117,7 +117,7 @@
                             </a>
                         </th:block>
                         <th:block th:if="${reply.reReplyCount} != 0">
-                            <a href="">
+                            <a class="registReply" href="">
                                 <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
                                     <path fill="#12B886" d="M5.5 2.5h1v3h3v1h-3v3h-1v-3h-3v-1h3v-3z"></path>
                                     <path fill="#12B886" fill-rule="evenodd" d="M1 0a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm10 1H1v10h10V1z" clip-rule="evenodd">
@@ -125,6 +125,26 @@
                                 </svg>
                                 <span th:text="${reply.reReplyCount} + '개의 답글'"></span>
                             </a>
+                            <div class="row reReply px-1 py-3 my-2">
+                                <th:block th:each="reReply : ${reply.replyDTOList}">
+                                    <span class="col-sm-1">
+                                        <img class="rounded-circle mx-auto d-block" width="54" height="54" alt="" th:if="${reReply.user.profileImg} != null" th:src="${reReply.user.profileImg}"/>
+                                        <img class="rounded-circle mx-auto d-block" width="54" height="54" alt="" th:unless="${reReply.user.profileImg} != null" src="/images/clog_logo.png"/>
+                                    </span>
+                                    <span class="col">
+                                        <div class="row mx-auto username">
+                                            <a href="#" th:text="${reReply.user.userNickname}"></a>
+                                        </div>
+                                        <div class="row mx-auto userintro">
+                                            <span th:text="${#dates.format(reReply.reReplyDate, 'yyyy년 MM월 dd일 HH:mm')}"></span>
+                                        </div>
+                                    </span>
+                                    <div class="row replybody">
+                                        <textarea th:text="${reReply.reReplyBody}" readonly></textarea>
+                                    </div>
+                                    <button class="btn btn-success" type="button">답글 작성하기</button>
+                                </th:block>
+                            </div>
                         </th:block>
                     </div>
                 </div>

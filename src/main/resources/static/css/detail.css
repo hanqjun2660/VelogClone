@@ -103,15 +103,16 @@ h1 {
     padding: 20px;
     padding-bottom: 30px;
     font-size: 20px;
+    box-sizing: content-box;
 }
 
-.replybody a {
+.registReply {
     font-size: 15px;
     text-decoration: none;
     color: #12B886;
 }
 
-.replybody a:hover {
+.registReply:hover {
     color: #4cd4ac;
 }
 
@@ -124,4 +125,11 @@ textarea {
     outline: none;
     border: none;
     resize: none;
+    background: none;
+}
+
+.reReply {
+    width: 100%;
+    background-color: #FBFBFB;
+    box-sizing: content-box;
 }

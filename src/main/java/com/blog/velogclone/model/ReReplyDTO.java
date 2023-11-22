@@ -1,5 +1,6 @@
 package com.blog.velogclone.model;
 
+import com.blog.velogclone.entity.User;
 import lombok.*;
 
 import java.util.Date;
@@ -17,4 +18,5 @@ public class ReReplyDTO {
     private Long replyNo;
     private Date reReplyDate;
     private String reReplyStatus;
+    private User user;
 }
