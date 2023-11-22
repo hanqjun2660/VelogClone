@@ -36,9 +36,8 @@ public class ReReply {
     @JoinColumn(name = "USER_NO")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "REPLY_NO")
-    private Reply reply;
+    @Column(name = "REPLY_NO")
+    private Long replyNo;
 
     @Column(name = "RE_REPLY_DATE")
     private Date reReplyDate;
@@ -47,11 +46,11 @@ public class ReReply {
     private String reReplyStatus;
 
     @Builder
-    public ReReply(Long reReplyNo, String reReplyBody, User user, Reply reply, Date reReplyDate, String reReplyStatus) {
+    public ReReply(Long reReplyNo, String reReplyBody, User user, Long replyNo, Date reReplyDate, String reReplyStatus) {
         this.reReplyNo = reReplyNo;
         this.reReplyBody = reReplyBody;
         this.user = user;
-        this.reply = reply;
+        this.replyNo = replyNo;
         this.reReplyDate = reReplyDate;
         this.reReplyStatus = reReplyStatus;
     }

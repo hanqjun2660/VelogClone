@@ -2,8 +2,10 @@ package com.blog.velogclone.controller;
 
 import com.blog.velogclone.model.PostDTO;
 import com.blog.velogclone.model.PrincipalDetails;
+import com.blog.velogclone.model.ReReplyDTO;
 import com.blog.velogclone.model.ReplyDTO;
 import com.blog.velogclone.service.PostService;
+import com.blog.velogclone.service.ReReplyService;
 import com.blog.velogclone.service.ReplyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,6 +90,12 @@ public class PostController {
             } else {
                 replyDTO.setCanEdit(false);
             }
+        }
+
+        for(ReplyDTO replyDTO : replyList) {
+            List<ReReplyDTO> reReplyList = replyDTO.getReplyDTOList();
+            int reReplyCount = reReplyList.size();
+            replyDTO.setReReplyCount(reReplyCount);
         }
 
         model.addAttribute("postdetail", postDTO);

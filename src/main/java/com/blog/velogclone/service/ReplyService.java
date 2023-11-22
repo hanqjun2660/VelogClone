@@ -1,7 +1,9 @@
 package com.blog.velogclone.service;
 
+import com.blog.velogclone.entity.ReReply;
 import com.blog.velogclone.entity.Reply;
 import com.blog.velogclone.entity.User;
+import com.blog.velogclone.model.ReReplyDTO;
 import com.blog.velogclone.model.ReplyDTO;
 import com.blog.velogclone.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +12,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -21,15 +23,38 @@ public class ReplyService {
 
     private final ReplyRepository replyRepository;
 
+    private final ReReplyService reReplyService;
+
     private final ModelMapper modelMapper;
 
     public List<ReplyDTO> findByPostNo(int postNo) {
+
         List<Reply> replyList = replyRepository.findByPostNo(postNo);
+
         if(replyList.isEmpty()) {
             log.info("댓글이 존재하지 않습니다.");
             return Collections.emptyList();
         }
-        return replyList.stream().map(reply -> modelMapper.map(reply, ReplyDTO.class)).collect(Collectors.toList());
+
+        List<ReplyDTO> replyDTOList = new ArrayList<>();
+        replyList.forEach(reply -> {
+            ReplyDTO replyDTO = modelMapper.map(reply, ReplyDTO.class);
+            replyDTOList.add(replyDTO);
+        });
+
+        for(ReplyDTO reply : replyDTOList) {
+            List<ReReply> reReplyList = reReplyService.findByReplyNo(reply.getReplyNo());
+            List<ReReplyDTO> reReplyDTOList = new ArrayList<>();
+
+            reReplyList.forEach(reReply -> {
+                ReReplyDTO reReplyDTO = modelMapper.map(reReply, ReReplyDTO.class);
+                reReplyDTOList.add(reReplyDTO);
+            });
+
+            reply.setReplyDTOList(reReplyDTOList);
+        }
+
+        return replyDTOList;
     }
 
     public ReplyDTO saveReply(ReplyDTO replyDTO) {
