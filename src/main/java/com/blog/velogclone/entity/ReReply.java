@@ -26,6 +26,7 @@ import java.util.Date;
 public class ReReply {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RE_REPLY_SEQ")
     @Column(name = "RE_REPLY_NO")
     private Long reReplyNo;
 

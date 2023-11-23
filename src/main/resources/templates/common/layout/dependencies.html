@@ -4,7 +4,7 @@
     <th:block th:fragment="fragment-dependencies">
     <meta charset="UTF-8">
     <th:block th:if="${title} != null">
-        <title th:text="${title}"></title>
+        <title th:text="'Clog - ' + ${title}"></title>
     </th:block>
     <th:block th:if="${title == null}">
         <title>Clog</title>
