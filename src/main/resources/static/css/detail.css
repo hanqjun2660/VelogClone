@@ -138,3 +138,15 @@ textarea {
 .reReplyList {
     display: none;
 }
+
+.reversed.btn-success {
+    border-color: #57B886;
+    background-color: #FFFFFF;
+    color: #57B886;
+}
+
+.reversed.btn-success:hover {
+    border-color: #FFFFFF;
+    background-color: #57B886;
+    color: #FFFFFF;
+}

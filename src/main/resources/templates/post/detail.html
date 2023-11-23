@@ -113,14 +113,14 @@
                                     <path fill="#12B886" fill-rule="evenodd" d="M1 0a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm10 1H1v10h10V1z" clip-rule="evenodd">
                                     </path>
                                 </svg>
-                                <span th:id="'reReplyRegist' + ${reply.replyNo}" th:data-reply-id="${reply.replyNo}">답글 달기</span>
-                                <div th:id="'reReplyInputBox' + ${reply.replyNo}" class="row reReply px-1 py-3 my-2">
-                                    <div>
-                                        <input class="replyinput" type="text" placeholder="댓글을 작성하세요."/>
-                                    </div>
-                                    <div class="d-flex justify-content-end submit">
-                                        <button id="reReplyRegistBtn" class="btn btn-success px-4" type="button" style="background-color: #12B886; border: none;">댓글 작성</button>
-                                    </div>
+                                <span th:id="'reReplyRegist' + ${reply.replyNo}">답글 달기</span>
+                            </div>
+                            <div th:id="'reReplyInputBox' + ${reply.replyNo}" class="row reReply px-1 py-3 my-2">
+                                <div>
+                                    <input class="replyinput" type="text" placeholder="댓글을 작성하세요."/>
+                                </div>
+                                <div class="d-flex justify-content-end submit">
+                                    <button id="reReplyRegistBtn" class="btn btn-success px-4" type="button" style="background-color: #12B886; border: none;" th:data-reply-id="${reply.replyNo}">댓글 작성</button>
                                 </div>
                             </div>
                         </th:block>
@@ -151,7 +151,7 @@
                                         <textarea th:text="${reReply.reReplyBody}" readonly></textarea>
                                     </div>
                                 </th:block>
-                                <button class="btn btn-success" type="button">답글 작성하기</button>
+                                <button class="btn btn-success reversed" type="button">답글 작성하기</button>
                             </div>
                         </th:block>
                     </div>
@@ -207,12 +207,13 @@
                     if(response.status === "N") {
                         alert(response.msg);
                         location.href = "/login";
+                        return;
                     }
                     alert(response.msg);
                     location.href = currentUrl;
                 },
                 error: function(error) {
-                    alert(error.msg);
+                    console.log(error);
                 }
             });
         }
@@ -260,53 +261,63 @@
             });
         },
         deletePost : function () {
-            document.querySelector("#deletepost").addEventListener('click', function () {
-                $.ajax({
-                    type: "POST",
-                    url: "/post/delete",
-                    data: JSON.stringify({
-                        postNo: postId
-                    }),
-                    contentType: "application/json",
-                    success: function(response) {
-                        if(response.code === "200") {
-                            alert(response.msg);
-                            location.href = "/dashboard";
-                        } else {
-                            alert(response.msg);
-                            location.href = currentUrl;
-                        }
-                    },
-                    error: function(error) {
-                        alert(error.msg);
-                    }
-                });
+            document.addEventListener('DOMContentLoaded', function () {
+                var element = document.querySelector("#deletepost");
+                if(element){
+                    document.querySelector("#deletepost").addEventListener('click', function () {
+                        $.ajax({
+                            type: "POST",
+                            url: "/post/delete",
+                            data: JSON.stringify({
+                                postNo: postId
+                            }),
+                            contentType: "application/json",
+                            success: function(response) {
+                                if(response.code === "200") {
+                                    alert(response.msg);
+                                    location.href = "/dashboard";
+                                } else {
+                                    alert(response.msg);
+                                    location.href = currentUrl;
+                                }
+                            },
+                            error: function(error) {
+                                alert(error.msg);
+                            }
+                        });
+                    });
+                }
             });
         },
         deleteReply: function () {
-            document.querySelectorAll('#replydelete').forEach(function (deleteBtn, index) {
-                deleteBtn.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    if(!confirm('정말 삭제하시겠습니까?')) {
-                        return;
-                    }
+            document.addEventListener('DOMContentLoaded', function () {
+                var element = document.querySelectorAll('#replydelete');
+                if(element) {
+                    element.forEach(function (deleteBtn, index) {
+                        deleteBtn.addEventListener('click', function(event) {
+                            event.preventDefault();
+                            if(!confirm('정말 삭제하시겠습니까?')) {
+                                return;
+                            }
 
-                    $.ajax({
-                        type: "POST",
-                        url: "/reply/delete",
-                        data: JSON.stringify({
-                            replyNo: deleteBtn.getAttribute('data-replyno')
-                        }),
-                        contentType: "application/json",
-                        success: function(response) {
-                            alert(response.msg);
-                            location.href = currentUrl;
-                        },
-                        error: function(error) {
-                            alert(error.msg);
-                        }
+                            $.ajax({
+                                type: "POST",
+                                url: "/reply/delete",
+                                data: JSON.stringify({
+                                    replyNo: deleteBtn.getAttribute('data-replyno')
+                                }),
+                                contentType: "application/json",
+                                success: function(response) {
+                                    alert(response.msg);
+                                    location.href = currentUrl;
+                                },
+                                error: function(error) {
+                                    alert(error.msg);
+                                }
+                            });
+                        });
                     });
-                });
+                }
             });
         },
         modifyReply: function () {
@@ -373,9 +384,9 @@
         },
         registReReply : function () {
             document.querySelectorAll('#reReplyRegistBtn').forEach(function (registBtn) {
-                registBtn.addEventListener('click', function () {
-                    var replyId = this.parentElement.parentElement.previousElementSibling.getAttribute('data-reply-id');
-                   fn.registReReply(replyId);
+                registBtn.addEventListener('click', function (event) {
+                    var replyId = event.target.dataset.replyId;
+                    fn.registReReply(replyId);
                 });
             })
         }

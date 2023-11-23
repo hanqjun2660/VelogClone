@@ -33,7 +33,7 @@ public class ReReplyController {
 
         authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(authentication == null && authentication.getPrincipal() instanceof PrincipalDetails) {
+        if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof PrincipalDetails)) {
             response.put("msg", "로그인이 필요합니다.");
             response.put("status", "N");
             return response;
