@@ -107,14 +107,14 @@
                     <button id="replymodifybtn" type="button" class="btn btn-success px-4" style="display: none;">완료</button>
                     <div class="row d-flex justify-content-between">
                         <th:block th:if="${reply.reReplyCount} == 0">
-                            <div class="registReply">
+                            <span class="registReply">
                                 <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
                                     <path fill="#12B886" d="M5.5 2.5h1v3h3v1h-3v3h-1v-3h-3v-1h3v-3z"></path>
                                     <path fill="#12B886" fill-rule="evenodd" d="M1 0a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm10 1H1v10h10V1z" clip-rule="evenodd">
                                     </path>
                                 </svg>
-                                <span th:id="'reReplyRegist' + ${reply.replyNo}">답글 달기</span>
-                            </div>
+                                <span th:id="'reReplyRegistToggle' + ${reply.replyNo}">답글 달기</span>
+                            </span>
                             <div th:id="'reReplyInputBox' + ${reply.replyNo}" class="row reReply px-1 py-3 my-2">
                                 <div>
                                     <input class="replyinput" type="text" placeholder="댓글을 작성하세요."/>
@@ -125,14 +125,14 @@
                             </div>
                         </th:block>
                         <th:block th:if="${reply.reReplyCount} != 0">
-                            <div class="registReply">
+                            <span class="registReply">
                                 <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
                                     <path fill="#12B886" d="M5.5 2.5h1v3h3v1h-3v3h-1v-3h-3v-1h3v-3z"></path>
                                     <path fill="#12B886" fill-rule="evenodd" d="M1 0a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm10 1H1v10h10V1z" clip-rule="evenodd">
                                     </path>
                                 </svg>
                                 <span th:id="'replyCountSpan' + ${reply.replyNo}" class="replyCount" th:text="${reply.reReplyCount} + '개의 답글'" th:data-reply-id="${reply.replyNo}" th:data-reply-count="${reply.reReplyCount}"></span>
-                            </div>
+                            </span>
                             <div th:id="'reReplyList' + ${reply.replyNo}" class="reReplyList row reReply px-1 py-3 my-2">
                                 <th:block th:each="reReply : ${reply.replyDTOList}">
                                     <span class="col-sm-1">
@@ -187,6 +187,22 @@
                 replyCountSpan.innerText = replyConunt + '개의 답글';
             }
         },
+        toggleRegistReply : function (replyId){
+            console.log(replyId);
+            var reReplyInputArea = document.getElementById('reReplyInputBox' + replyId);
+            var reReplyRegistToggle = document.getElementById('reReplyRegistToggle' + replyId);
+            var svgIcon = reReplyRegistToggle.previousElementSibling.querySelectorAll('svg path');
+
+            if(reReplyInputArea.style.display === 'none' || reReplyInputArea.style.display === '') {
+                reReplyInputArea.style.display = 'block';
+                svgIcon[0].setAttribute('d', 'M9.5 6.5v-1h-7v1h7z');
+                reReplyRegistToggle.innerText = '접기'
+            } else {
+                reReplyInputArea.style.display = 'none';
+                svgIcon[0].setAttribute('d', 'M5.5 2.5h1v3h3v1h-3v3h-1v-3h-3v-1h3v-3z');
+                reReplyRegistToggle.innerText = '답글 달기'
+            }
+        },
         registReReply : function (replyId) {
 
             var firstElement = document.getElementById('reReplyInputBox' + replyId);
@@ -228,6 +244,7 @@
             this.replyModifySubmit();
             this.toggleReplies();
             this.registReReply();
+            this.toggleRegistReply();
         },
         writeReply : function () {
             Elbtn.addEventListener('click', function () {
@@ -389,6 +406,14 @@
                     fn.registReReply(replyId);
                 });
             })
+        },
+        toggleRegistReply : function (){
+            document.querySelectorAll('[id*=reReplyRegistToggle]').forEach(function (toggleBtn) {
+               toggleBtn.addEventListener('click', function () {
+                   var replyId = toggleBtn.getAttribute('id').match(/\d+/);
+                   fn.toggleRegistReply(replyId[0]);
+               });
+            });
         }
     }
 </script>

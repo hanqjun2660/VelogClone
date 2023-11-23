@@ -132,7 +132,7 @@ textarea {
 .reReply {
     width: 100%;
     background-color: #FBFBFB;
-    box-sizing: content-box;
+    display: none;
 }
 
 .reReplyList {
