@@ -117,15 +117,15 @@
                             </a>
                         </th:block>
                         <th:block th:if="${reply.reReplyCount} != 0">
-                            <a class="registReply" href="">
+                            <div class="registReply" href="#">
                                 <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
                                     <path fill="#12B886" d="M5.5 2.5h1v3h3v1h-3v3h-1v-3h-3v-1h3v-3z"></path>
                                     <path fill="#12B886" fill-rule="evenodd" d="M1 0a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm10 1H1v10h10V1z" clip-rule="evenodd">
                                     </path>
                                 </svg>
-                                <span th:text="${reply.reReplyCount} + '개의 답글'"></span>
-                            </a>
-                            <div class="row reReply px-1 py-3 my-2">
+                                <span th:id="'replyCountSpan' + ${reply.replyNo}" class="replyCount" th:text="${reply.reReplyCount} + '개의 답글'" th:data-reply-id="${reply.replyNo}" th:data-reply-count="${reply.reReplyCount}"></span>
+                            </div>
+                            <div th:id="'reReplyList' + ${reply.replyNo}" class="reReplyList row reReply px-1 py-3 my-2">
                                 <th:block th:each="reReply : ${reply.replyDTOList}">
                                     <span class="col-sm-1">
                                         <img class="rounded-circle mx-auto d-block" width="54" height="54" alt="" th:if="${reReply.user.profileImg} != null" th:src="${reReply.user.profileImg}"/>
@@ -162,6 +162,25 @@
     var lastSegment = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
     var postId = parseInt(lastSegment);
 
+    var fn = {
+        toggleReplies : function (replyId) {
+            var reReplyList = document.getElementById('reReplyList' + replyId);
+            var replyCountSpan = document.getElementById('replyCountSpan' + replyId);
+            var replyConunt = replyCountSpan.getAttribute('data-reply-count');
+            var svgIcon = replyCountSpan.previousElementSibling.querySelectorAll('svg path');
+
+            if (reReplyList.style.display === 'none' || reReplyList.style.display === '') {
+                reReplyList.style.display = 'flex';
+                svgIcon[0].setAttribute('d', 'M9.5 6.5v-1h-7v1h7z');
+                replyCountSpan.innerText = '숨기기';
+            } else {
+                reReplyList.style.display = 'none';
+                svgIcon[0].setAttribute('d', 'M5.5 2.5h1v3h3v1h-3v3h-1v-3h-3v-1h3v-3z');
+                replyCountSpan.innerText = replyConunt + '개의 답글';
+            }
+        }
+    };
+
     var evt = {
         init : function () {
             this.writeReply();
@@ -169,6 +188,7 @@
             this.deleteReply();
             this.modifyReply();
             this.replyModifySubmit();
+            this.toggleReplies();
         },
         writeReply : function () {
             Elbtn.addEventListener('click', function () {
@@ -301,6 +321,15 @@
                             alert(error.msg);
                         }
                     });
+                });
+            });
+        },
+        toggleReplies : function() {
+            document.querySelectorAll('.replyCount').forEach(function (toggleBtn, evt) {
+                toggleBtn.addEventListener('click', function (evt) {
+                    evt.preventDefault();
+                    var replyId = this.getAttribute('data-reply-id');
+                    fn.toggleReplies(replyId);
                 });
             });
         }
