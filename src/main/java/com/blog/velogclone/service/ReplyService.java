@@ -3,12 +3,15 @@ package com.blog.velogclone.service;
 import com.blog.velogclone.entity.ReReply;
 import com.blog.velogclone.entity.Reply;
 import com.blog.velogclone.entity.User;
+import com.blog.velogclone.model.PrincipalDetails;
 import com.blog.velogclone.model.ReReplyDTO;
 import com.blog.velogclone.model.ReplyDTO;
 import com.blog.velogclone.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -48,6 +51,20 @@ public class ReplyService {
 
             reReplyList.forEach(reReply -> {
                 ReReplyDTO reReplyDTO = modelMapper.map(reReply, ReReplyDTO.class);
+
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                Long userNo;
+
+                if(authentication != null && authentication.getPrincipal() instanceof PrincipalDetails) {
+                    userNo = ((PrincipalDetails) authentication.getPrincipal()).getUserNo();
+
+                    if(reReplyDTO.getUser().getUserNo().compareTo(userNo) == 0) {
+                        reReplyDTO.setCanEdit(true);
+                    } else {
+                        reReplyDTO.setCanEdit(false);
+                    }
+                }
+
                 reReplyDTOList.add(reReplyDTO);
             });
 

@@ -53,4 +53,23 @@ public class ReReplyController {
 
         return response;
     }
+
+    @PostMapping("/modify")
+    @ResponseBody
+    public Map<String, Object> modifiyReReply(@RequestBody ReReplyDTO reReplyDTO) {
+        log.info(reReplyDTO.toString());
+        Map<String, Object> response = new HashMap<>();
+
+        ReReplyDTO responseDTO = reReplyService.modifyReReply(reReplyDTO);
+
+        if(ObjectUtils.isEmpty(responseDTO)) {
+            response.put("msg", "수정에 실패하였습니다.");
+            response.put("status", "N");
+        }
+
+        response.put("msg", "수정에 성공하였습니다.");
+        response.put("status", "Y");
+
+        return response;
+    }
 }

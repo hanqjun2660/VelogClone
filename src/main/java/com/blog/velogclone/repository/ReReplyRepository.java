@@ -10,4 +10,6 @@ public interface ReReplyRepository extends JpaRepository<ReReply, Long> {
 
     @Query("select m from ReReply m join fetch m.user where m.replyNo = :replyNo and m.reReplyStatus = 'N' order by m.reReplyDate")
     List<ReReply> findByReplyNo(Long replyNo);
+
+    ReReply findByReReplyNo(Long reReplyNo);
 }

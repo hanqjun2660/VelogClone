@@ -147,8 +147,17 @@
                                             <span th:text="${#dates.format(reReply.reReplyDate, 'yyyy년 MM월 dd일 HH:mm')}"></span>
                                         </div>
                                     </span>
+                                    <th:block th:if="${reReply.canEdit} == true">
+                                        <div class="col-1 col-sm-4">
+                                            <div class="d-flex justify-content-end reReplyEdit">
+                                                <a class="text-secondary mx-1 reReplymodify" href="" th:data-reReplyno="${reReply.reReplyNo}">수정</a>
+                                                <a class="text-secondary mx-1 reReplydelete" href="" th:data-reReplyno="${reReply.reReplyNo}">삭제</a>
+                                            </div>
+                                        </div>
+                                    </th:block>
                                     <div class="row replybody">
-                                        <textarea th:text="${reReply.reReplyBody}" readonly></textarea>
+                                        <textarea th:id="reReplyTextArea + ${reReply.reReplyNo}" th:text="${reReply.reReplyBody}" readonly></textarea>
+                                        <button th:id="'reReplyModifySubmit' + ${reReply.reReplyNo}" class="btn btn-success px-4 registbtn" type="button" style="background-color: #12B886; border: none; display: none;" th:data-reReplyno="${reReply.reReplyNo}">완료</button>
                                     </div>
                                 </th:block>
                                 <div th:id="'reReplyInputBox' + ${reply.replyNo}" class="row reReply px-1 py-3 my-2">
@@ -253,6 +262,50 @@
                 inputBox.style.display = 'none';
                 toggleBtn.innerText = '답글 작성하기';
             }
+        },
+        modifyReReplyActive : function (reReplyId, modifyBtn) {
+            var textarea = document.getElementById('reReplyTextArea' + reReplyId);
+            var submitbtn = document.getElementById('reReplyModifySubmit' + reReplyId);
+
+            textarea.readOnly = !textarea.readOnly;
+
+            if (!textarea.readOnly) {
+                // 편집 가능한 상태로 전환
+                textarea.removeAttribute('readonly');
+                textarea.focus();
+                submitbtn.style.display = 'inline-block';
+                modifyBtn.innerText = '취소';
+            } else {
+                // 읽기 전용 상태로 전환
+                textarea.setAttribute('readonly', 'readonly');
+                submitbtn.style.display = 'none';
+                modifyBtn.innerText = '수정';
+            }
+        },
+        reReplyModifyRequest : function (reReplyId) {
+            var textarea = document.getElementById('reReplyTextArea' + reReplyId).value;
+
+            $.ajax({
+                type: "POST",
+                url: "/rereply/modify",
+                data: JSON.stringify({
+                    reReplyNo: reReplyId,
+                    reReplyBody: textarea
+                }),
+                contentType: "application/json",
+                success: function(response) {
+                    if(response.status === "N") {
+                        alert(response.msg);
+                        location.href = "/login";
+                        return;
+                    }
+                    alert(response.msg);
+                    location.href = currentUrl;
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         }
     };
 
@@ -267,6 +320,8 @@
             this.registReReply();
             this.toggleRegistReply();
             this.toggleActiveRereplyInput();
+            this.reReplyModifyActive();
+            this.reReplyModifyRequest();
         },
         writeReply : function () {
             Elbtn.addEventListener('click', function () {
@@ -443,6 +498,23 @@
                     var replyId = btn.getAttribute('id').match(/\d+/);
                     fn.toggleActiveRereplyInput(replyId[0]);
                 });
+            });
+        },
+        reReplyModifyActive : function () {
+            document.querySelectorAll('.reReplymodify').forEach(function (modifyBtn) {
+               modifyBtn.addEventListener('click', function (evt) {
+                   evt.preventDefault();
+                   var reReplyNo = modifyBtn.getAttribute('data-reReplyno');
+                   fn.modifyReReplyActive(reReplyNo, modifyBtn);
+               });
+            });
+        },
+        reReplyModifyRequest : function () {
+            document.querySelectorAll('[id*=reReplyModifySubmit]').forEach(function (btn) {
+               btn.addEventListener('click', function () {
+                   var reReplyId = btn.getAttribute('id').match(/\d+/);
+                   fn.reReplyModifyRequest(reReplyId[0]);
+               })
             });
         }
     }

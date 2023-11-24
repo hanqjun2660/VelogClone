@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +31,27 @@ public class ReReplyService {
                 .replyNo(reReplyDTO.getReplyNo())
                 .reReplyBody(reReplyDTO.getReReplyBody())
                 .user(User.builder().userNo(reReplyDTO.getUserNo()).build()).build();
+
+        ReReply responseEntity = reReplyRepository.save(request);
+
+        return modelMapper.map(responseEntity, ReReplyDTO.class);
+    }
+
+    public ReReplyDTO modifyReReply(ReReplyDTO reReplyDTO) {
+        ReReply selectEntity = reReplyRepository.findByReReplyNo(reReplyDTO.getReReplyNo());
+
+        if(ObjectUtils.isEmpty(selectEntity)) {
+            return new ReReplyDTO();
+        }
+
+        ReReply request = ReReply.builder()
+                .replyNo(selectEntity.getReplyNo())
+                .reReplyBody(reReplyDTO.getReReplyBody())
+                .user(User.builder().userNo(selectEntity.getUser().getUserNo()).build())
+                .reReplyNo(reReplyDTO.getReReplyNo())
+                .reReplyDate(selectEntity.getReReplyDate())
+                .reReplyStatus(selectEntity.getReReplyStatus())
+                .build();
 
         ReReply responseEntity = reReplyRepository.save(request);
 

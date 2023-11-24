@@ -19,4 +19,5 @@ public class ReReplyDTO {
     private Date reReplyDate;
     private String reReplyStatus;
     private User user;
+    private boolean canEdit;
 }
