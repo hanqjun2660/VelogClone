@@ -18,7 +18,7 @@
                 <span id="postmodify">
                     <th:block th:if="${isAuthorization} == true">
                         <a class="text-secondary mx-1" href="#">통계</a>
-                        <a class="text-secondary mx-1" href="#">수정</a>
+                        <a id="modifypost" class="text-secondary mx-1" href="#">수정</a>
                         <a id="deletepost" class="text-secondary mx-1" href="#">삭제</a>
                     </th:block>
                 </span>
@@ -328,6 +328,9 @@
                     console.log(error);
                 }
             });
+        },
+        postModify : function (postId) {
+            location.href = "/post/modify/" + postId;
         }
     };
 
@@ -345,6 +348,7 @@
             this.reReplyModifyActive();
             this.reReplyModifyRequest();
             this.reReplyDeleteRequest();
+            this.postModify();
         },
         writeReply : function () {
             Elbtn.addEventListener('click', function () {
@@ -548,6 +552,12 @@
                     fn.deleteReReplyRequest(reReplyNo);
                 })
             });
+        },
+        postModify : function () {
+            document.querySelector('#modifypost').addEventListener('click', function (evt) {
+                evt.preventDefault();
+                fn.postModify(postId);
+            })
         }
     }
 </script>

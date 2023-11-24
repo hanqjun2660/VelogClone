@@ -55,6 +55,7 @@
 
     $(document).ready(function () {
        evt.postSubmit();
+       evt.modifyPostData();
     });
 
     var fn = {
@@ -87,6 +88,27 @@
                     alert(error.msg);
                 }
             });
+        },
+        modifyPostData : function(postId) {
+            $.ajax({
+                type: "POST",
+                url: "/post/checkdata",
+                data: JSON.stringify({
+                    postId: postId
+                }),
+                contentType: "application/json",
+                success: function(response) {
+                    alert(response.msg);
+                    if(response.status == "fail") {
+                        console.log(response.status);
+                        return;
+                    }
+                    location.href = "/";
+                },
+                error: function(error) {
+                    alert(error.msg);
+                }
+            });
         }
     }
 
@@ -95,6 +117,18 @@
             document.querySelector('#submitbtn').addEventListener('click', function () {
                fn.savePost();
             });
+        },
+        modifyPostData : function () {
+            var currentUrl = window.location.href;
+            var lastSegment = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+            var postId;
+
+            if(!isNaN(lastSegment)) {
+                postId = parseInt(lastSegment);
+                fn.modifyPostData(postId);
+            } else {
+                console.log('not exist PostId');
+            }
         }
     }
 </script>

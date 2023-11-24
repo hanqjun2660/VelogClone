@@ -7,6 +7,8 @@ import com.blog.velogclone.model.ReplyDTO;
 import com.blog.velogclone.service.PostService;
 import com.blog.velogclone.service.ReReplyService;
 import com.blog.velogclone.service.ReplyService;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -163,6 +165,31 @@ public class PostController {
         }
 
         return response;
+    }
+
+    @GetMapping("/post/modify/{id}")
+    public String modifyPost(@PathVariable Long id, Model model) {
+        model.addAttribute("title", "게시글 수정");
+        return "/post/write";
+    }
+
+    @PostMapping("/post/checkdata")
+    @ResponseBody
+    public Map<String, Object> checkData(@RequestBody Map<String, Object> param) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return null;
+    }
+
+    /**
+     * HTML -> MD paser
+     * @param htmlData
+     * @return MDData
+     */
+    private String convertHtmlToMarkdown(String htmlData) {
+        Parser parser = Parser.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+
+        return renderer.render(parser.parse(htmlData));
     }
 
 }
