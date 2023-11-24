@@ -156,7 +156,7 @@
                                         </div>
                                     </th:block>
                                     <div class="row replybody">
-                                        <textarea th:id="reReplyTextArea + ${reReply.reReplyNo}" th:text="${reReply.reReplyBody}" readonly></textarea>
+                                        <textarea th:id="'reReplyTextArea' + ${reReply.reReplyNo}" th:text="${reReply.reReplyBody}" readonly></textarea>
                                         <button th:id="'reReplyModifySubmit' + ${reReply.reReplyNo}" class="btn btn-success px-4 registbtn" type="button" style="background-color: #12B886; border: none; display: none;" th:data-reReplyno="${reReply.reReplyNo}">완료</button>
                                     </div>
                                 </th:block>
@@ -306,6 +306,28 @@
                     console.log(error);
                 }
             });
+        },
+        deleteReReplyRequest : function (reReplyNo) {
+            $.ajax({
+                type: "POST",
+                url: "/rereply/delete",
+                data: JSON.stringify({
+                    reReplyNo: reReplyNo,
+                }),
+                contentType: "application/json",
+                success: function(response) {
+                    if(response.status === "N") {
+                        alert(response.msg);
+                        location.href = "/login";
+                        return;
+                    }
+                    alert(response.msg);
+                    location.href = currentUrl;
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         }
     };
 
@@ -322,6 +344,7 @@
             this.toggleActiveRereplyInput();
             this.reReplyModifyActive();
             this.reReplyModifyRequest();
+            this.reReplyDeleteRequest();
         },
         writeReply : function () {
             Elbtn.addEventListener('click', function () {
@@ -515,6 +538,15 @@
                    var reReplyId = btn.getAttribute('id').match(/\d+/);
                    fn.reReplyModifyRequest(reReplyId[0]);
                })
+            });
+        },
+        reReplyDeleteRequest : function () {
+            document.querySelectorAll('.reReplydelete').forEach(function (btn) {
+                btn.addEventListener('click', function (evt) {
+                    evt.preventDefault();
+                    var reReplyNo = btn.getAttribute('data-reReplyno');
+                    fn.deleteReReplyRequest(reReplyNo);
+                })
             });
         }
     }

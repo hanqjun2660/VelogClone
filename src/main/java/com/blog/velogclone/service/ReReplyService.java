@@ -57,4 +57,25 @@ public class ReReplyService {
 
         return modelMapper.map(responseEntity, ReReplyDTO.class);
     }
+
+    public ReReplyDTO deleteReReply(ReReplyDTO reReplyDTO) {
+        ReReply selectEntity = reReplyRepository.findByReReplyNo(reReplyDTO.getReReplyNo());
+
+        if(ObjectUtils.isEmpty(selectEntity)) {
+            return new ReReplyDTO();
+        }
+
+        ReReply request = ReReply.builder()
+                .replyNo(selectEntity.getReplyNo())
+                .reReplyBody(selectEntity.getReReplyBody())
+                .user(User.builder().userNo(selectEntity.getUser().getUserNo()).build())
+                .reReplyNo(reReplyDTO.getReReplyNo())
+                .reReplyDate(selectEntity.getReReplyDate())
+                .reReplyStatus("Y")
+                .build();
+
+        ReReply responseEntity = reReplyRepository.save(request);
+
+        return modelMapper.map(responseEntity, ReReplyDTO.class);
+    }
 }

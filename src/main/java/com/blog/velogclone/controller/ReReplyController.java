@@ -72,4 +72,23 @@ public class ReReplyController {
 
         return response;
     }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public Map<String, Object> deleteReReply(@RequestBody ReReplyDTO reReplyDTO) {
+        log.info(reReplyDTO.toString());
+        Map<String, Object> response = new HashMap<>();
+
+        ReReplyDTO responseDTO = reReplyService.deleteReReply(reReplyDTO);
+
+        if(ObjectUtils.isEmpty(responseDTO)) {
+            response.put("msg", "삭제에 실패하였습니다.");
+            response.put("status", "N");
+        }
+
+        response.put("msg", "삭제에 성공하였습니다.");
+        response.put("status", "Y");
+
+        return response;
+    }
 }
