@@ -407,35 +407,33 @@
             });
         },
         deleteReply: function () {
-            document.addEventListener('DOMContentLoaded', function () {
-                var element = document.querySelectorAll('#replydelete');
-                if(element) {
-                    element.forEach(function (deleteBtn, index) {
-                        deleteBtn.addEventListener('click', function(event) {
-                            event.preventDefault();
-                            if(!confirm('정말 삭제하시겠습니까?')) {
-                                return;
-                            }
+            var element = document.querySelectorAll('#replydelete');
+            if(element) {
+                element.forEach(function (deleteBtn, index) {
+                    deleteBtn.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        if(!confirm('정말 삭제하시겠습니까?')) {
+                            return;
+                        }
 
-                            $.ajax({
-                                type: "POST",
-                                url: "/reply/delete",
-                                data: JSON.stringify({
-                                    replyNo: deleteBtn.getAttribute('data-replyno')
-                                }),
-                                contentType: "application/json",
-                                success: function(response) {
-                                    alert(response.msg);
-                                    location.href = currentUrl;
-                                },
-                                error: function(error) {
-                                    alert(error.msg);
-                                }
-                            });
+                        $.ajax({
+                            type: "POST",
+                            url: "/reply/delete",
+                            data: JSON.stringify({
+                                replyNo: deleteBtn.getAttribute('data-replyno')
+                            }),
+                            contentType: "application/json",
+                            success: function(response) {
+                                alert(response.msg);
+                                location.href = currentUrl;
+                            },
+                            error: function(error) {
+                                alert(error.msg);
+                            }
                         });
                     });
-                }
-            });
+                });
+            }
         },
         modifyReply: function () {
             document.querySelectorAll('#modifyreply').forEach(function (modifyBtn, index) {
@@ -453,10 +451,12 @@
                         // 편집 가능한 상태로 전환
                         textarea.removeAttribute('readonly');
                         textarea.focus();
+                        modifyBtn.innerText = '취소';
                         btn.style.display = 'inline-block';
                     } else {
                         // 읽기 전용 상태로 전환
                         textarea.setAttribute('readonly', 'readonly');
+                        modifyBtn.innerText = '수정';
                         btn.style.display = 'none';
                     }
                 });
