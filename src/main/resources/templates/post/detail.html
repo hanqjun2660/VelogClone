@@ -120,7 +120,7 @@
                                     <input class="replyinput" type="text" placeholder="댓글을 작성하세요."/>
                                 </div>
                                 <div class="d-flex justify-content-end submit">
-                                    <button id="reReplyRegistBtn" class="btn btn-success px-4" type="button" style="background-color: #12B886; border: none;" th:data-reply-id="${reply.replyNo}">댓글 작성</button>
+                                    <button id="reReplyRegistBtn" class="btn btn-success px-4 registbtn" type="button" style="background-color: #12B886; border: none;" th:data-reply-id="${reply.replyNo}">댓글 작성</button>
                                 </div>
                             </div>
                         </th:block>
@@ -151,7 +151,15 @@
                                         <textarea th:text="${reReply.reReplyBody}" readonly></textarea>
                                     </div>
                                 </th:block>
-                                <button class="btn btn-success reversed" type="button">답글 작성하기</button>
+                                <div th:id="'reReplyInputBox' + ${reply.replyNo}" class="row reReply px-1 py-3 my-2">
+                                    <div>
+                                        <input class="replyinput" type="text" placeholder="댓글을 작성하세요."/>
+                                    </div>
+                                    <div class="d-flex justify-content-end submit">
+                                        <button id="reReplyRegistBtn2" class="btn btn-success px-4 registbtn" type="button" style="background-color: #12B886; border: none;" th:data-reply-id="${reply.replyNo}">댓글 작성</button>
+                                    </div>
+                                </div>
+                                <button th:id="'reReplyInputActiveBtn' + ${reply.replyNo}" class="btn btn-success reversed" type="button" th:data-reply-id="${reply.replyNo}">답글 작성하기</button>
                             </div>
                         </th:block>
                     </div>
@@ -232,6 +240,19 @@
                     console.log(error);
                 }
             });
+        },
+        toggleActiveRereplyInput : function (replyId) {
+            console.log(replyId);
+            var inputBox = document.getElementById('reReplyInputBox' + replyId);
+            var toggleBtn = document.getElementById('reReplyInputActiveBtn' + replyId);
+
+            if(inputBox.style.display === 'none' || inputBox.style.display === '') {
+                inputBox.style.display = 'flex';
+                toggleBtn.innerText = '취소';
+            } else {
+                inputBox.style.display = 'none';
+                toggleBtn.innerText = '답글 작성하기';
+            }
         }
     };
 
@@ -245,6 +266,7 @@
             this.toggleReplies();
             this.registReReply();
             this.toggleRegistReply();
+            this.toggleActiveRereplyInput();
         },
         writeReply : function () {
             Elbtn.addEventListener('click', function () {
@@ -400,7 +422,7 @@
             });
         },
         registReReply : function () {
-            document.querySelectorAll('#reReplyRegistBtn').forEach(function (registBtn) {
+            document.querySelectorAll('.registbtn').forEach(function (registBtn) {
                 registBtn.addEventListener('click', function (event) {
                     var replyId = event.target.dataset.replyId;
                     fn.registReReply(replyId);
@@ -413,6 +435,14 @@
                    var replyId = toggleBtn.getAttribute('id').match(/\d+/);
                    fn.toggleRegistReply(replyId[0]);
                });
+            });
+        },
+        toggleActiveRereplyInput : function () {
+            document.querySelectorAll('[id*=reReplyInputActiveBtn]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var replyId = btn.getAttribute('id').match(/\d+/);
+                    fn.toggleActiveRereplyInput(replyId[0]);
+                });
             });
         }
     }
