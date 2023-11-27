@@ -67,7 +67,7 @@
             const url = '/post/write';
             const params = {
                 postTitle : document.querySelector('#postTitle').value,
-                postTag : document.querySelector('#postTitle').value,
+                postTag : document.querySelector('#postTag').value,
                 postBody : editor.getHTML()
             };
 
@@ -98,15 +98,10 @@
                 }),
                 contentType: "application/json",
                 success: function(response) {
-                    alert(response.msg);
-                    if(response.status == "fail") {
-                        console.log(response.status);
-                        return;
-                    }
-                    location.href = "/";
+                    editor.setMarkdown = response;
                 },
                 error: function(error) {
-                    alert(error.msg);
+                    alert(error);
                 }
             });
         }

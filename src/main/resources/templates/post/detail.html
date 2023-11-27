@@ -382,33 +382,31 @@
             });
         },
         deletePost : function () {
-            document.addEventListener('DOMContentLoaded', function () {
-                var element = document.querySelector("#deletepost");
-                if(element){
-                    document.querySelector("#deletepost").addEventListener('click', function () {
-                        $.ajax({
-                            type: "POST",
-                            url: "/post/delete",
-                            data: JSON.stringify({
-                                postNo: postId
-                            }),
-                            contentType: "application/json",
-                            success: function(response) {
-                                if(response.code === "200") {
-                                    alert(response.msg);
-                                    location.href = "/dashboard";
-                                } else {
-                                    alert(response.msg);
-                                    location.href = currentUrl;
-                                }
-                            },
-                            error: function(error) {
-                                alert(error.msg);
+            var element = document.querySelector("#deletepost");
+            if(element){
+                document.querySelector("#deletepost").addEventListener('click', function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "/post/delete",
+                        data: JSON.stringify({
+                            postNo: postId
+                        }),
+                        contentType: "application/json",
+                        success: function(response) {
+                            if(response.code === "200") {
+                                alert(response.msg);
+                                location.href = "/dashboard";
+                            } else {
+                                alert(response.msg);
+                                location.href = currentUrl;
                             }
-                        });
+                        },
+                        error: function(error) {
+                            alert(error.msg);
+                        }
                     });
-                }
-            });
+                });
+            }
         },
         deleteReply: function () {
             var element = document.querySelectorAll('#replydelete');
