@@ -190,6 +190,9 @@ public class PostController {
         System.out.println(markdownData);
 
         response.put("checkData", parsingContents);
+        response.put("postTitle", postDTO.getPostTitle());
+        response.put("postTag", postDTO.getPostTag());
+        response.put("postNo", postDTO.getPostNo());
 
         return response;
     }
