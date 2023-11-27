@@ -184,11 +184,6 @@ public class PostController {
         String parsingContents = convertHtmlToMarkdown(postDTO.getPostBody());
         log.info(parsingContents);
 
-        String htmlData = "<p>테스트 게시글 내용을 작성해보자</p><div data-language=\"text\" class=\"toastui-editor-ww-code-block\"><pre><code>코드블럭도 작성해보자</code></pre></div><p>이미지도 넣어보자</p><p><img src=\"/tui-editor/image-print?filename=da16832a09cd4c598faa5c414fe39bad.png\" alt=\"image alt attribute\" contenteditable=\"false\"><br></p>";
-
-        String markdownData = convertHtmlToMarkdown(htmlData);
-        System.out.println(markdownData);
-
         response.put("checkData", parsingContents);
         response.put("postTitle", postDTO.getPostTitle());
         response.put("postTag", postDTO.getPostTag());
@@ -203,8 +198,7 @@ public class PostController {
      * @return MDData
      */
     private String convertHtmlToMarkdown(String htmlData) {
-        String markdown = FlexmarkHtmlConverter.builder().build().convert(htmlData);
-        return markdown;
+        return FlexmarkHtmlConverter.builder().build().convert(htmlData);
     }
 
 }

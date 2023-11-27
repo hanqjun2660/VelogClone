@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,12 +38,29 @@ public class PostService {
                 .userNo(postDTO.getUserNo())
                 .build();
 
-        Post request = Post.builder()
-                        .postTitle(postDTO.getPostTitle())
-                        .postTag(postDTO.getPostTag())
-                        .postBody(postDTO.getPostBody())
-                        .user(requestUser)
-                        .build();
+        Post request;
+
+        if(!ObjectUtils.isEmpty(postDTO.getPostNo())) {
+            Post selectPost = postRepository.findByPostNo(Math.toIntExact(postDTO.getPostNo()));
+
+            request = Post.builder()
+                    .postNo(postDTO.getPostNo())
+                    .postTitle(postDTO.getPostTitle())
+                    .postTag(postDTO.getPostTag())
+                    .postBody(postDTO.getPostBody())
+                    .postStatus(selectPost.getPostStatus())
+                    .postLike(selectPost.getPostLike())
+                    .createDate(selectPost.getCreateDate())
+                    .user(requestUser)
+                    .build();
+        } else {
+            request = Post.builder()
+                    .postTitle(postDTO.getPostTitle())
+                    .postTag(postDTO.getPostTag())
+                    .postBody(postDTO.getPostBody())
+                    .user(requestUser)
+                    .build();
+        }
 
         Post response =  postRepository.save(request);
 
