@@ -98,7 +98,7 @@
                 }),
                 contentType: "application/json",
                 success: function(response) {
-                    editor.setMarkdown = response;
+                    editor.setMarkdown(response.checkData);
                 },
                 error: function(error) {
                     alert(error);
