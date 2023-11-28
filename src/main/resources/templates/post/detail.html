@@ -66,19 +66,21 @@
                     <img src="/images/facebook-mark.png"/>
                 </a>
             </span>
-            <span>
-                <a id="likeadd" data-bs-toggle="tooltip" data-bs-title="읽기목록 추가">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
-                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                    </svg>
-                </a>
-                <a id="likecancle" data-bs-toggle="tooltip" data-bs-title="읽기목록 삭제" style="display: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#12B886" class="bi bi-bookmark-heart-fill" viewBox="0 0 16 16">
-                    <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
-                    </svg>
-                </a>
-            </span>
+            <th:block sec:authorize="isAuthenticated()">
+                <span>
+                    <a id="likeadd" data-bs-toggle="tooltip" data-bs-title="읽기목록 추가" style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                        </svg>
+                    </a>
+                    <a id="likecancle" data-bs-toggle="tooltip" data-bs-title="읽기목록 삭제" style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#12B886" class="bi bi-bookmark-heart-fill" viewBox="0 0 16 16">
+                        <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                        </svg>
+                    </a>
+                </span>
+            </th:block>
         </div>
         <div class="reply">
             <strong><h5 th:text="${replycount} + '개의 댓글'"></h5></strong>
@@ -195,6 +197,8 @@
 <script>
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    var addParent = document.querySelector('#likeadd');
+    var cancleParent = document.querySelector('#likecancle');
 
     $(document).ready(function() {
        evt.init();
@@ -351,12 +355,6 @@
             location.href = "/post/modify/" + postId;
         },
         likeAdd : function (postId) {
-            var addParent = document.querySelector('#likeadd');
-            var cancleParent = document.querySelector('#likecancle');
-
-            addParent.style.display = 'none';
-            cancleParent.style.display = 'inline';
-
             $.ajax({
                 type: "POST",
                 url: "/like/add",
@@ -366,6 +364,49 @@
                 contentType: "application/json",
                 success: function (response) {
                     console.log(response);
+                    addParent.style.display = 'none';
+                    cancleParent.style.display = 'inline';
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        },
+        likeCancle : function (postId) {
+            $.ajax({
+                type: "POST",
+                url: "/like/cancle",
+                data: JSON.stringify({
+                    postNo: postId
+                }),
+                contentType: "application/json",
+                success: function (response) {
+                    console.log(response);
+                    addParent.style.display = 'inline';
+                    cancleParent.style.display = 'none';
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        },
+        checkLike : function (postId) {
+            $.ajax({
+                type: "POST",
+                url: "/like/checklike",
+                data: JSON.stringify({
+                    postNo: postId
+                }),
+                contentType: "application/json",
+                success: function (response) {
+                    console.log(response);
+                    if(response.status) {
+                        addParent.style.display = 'none';
+                        cancleParent.style.display = 'inline';
+                    } else {
+                        addParent.style.display = 'inline';
+                        cancleParent.style.display = 'none';
+                    }
                 },
                 error: function (error) {
                     console.log(error);
@@ -390,6 +431,8 @@
             this.reReplyDeleteRequest();
             this.postModify();
             this.likeAdd();
+            this.likeCancle();
+            this.checkLike();
         },
         writeReply : function () {
             Elbtn.addEventListener('click', function () {
@@ -603,6 +646,15 @@
                 evt.preventDefault();
                 fn.likeAdd(postId);
             })
+        },
+        likeCancle : function() {
+            document.querySelector('#likecancle').addEventListener('click', function (evt) {
+                evt.preventDefault();
+                fn.likeCancle(postId);
+            })
+        },
+        checkLike : function () {
+            fn.checkLike(postId);
         }
     }
 </script>

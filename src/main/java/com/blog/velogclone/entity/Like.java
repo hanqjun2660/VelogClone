@@ -3,6 +3,7 @@ package com.blog.velogclone.entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -13,6 +14,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 @Getter
+@NoArgsConstructor
 @ToString
 @SequenceGenerator(
         name = "LIKE_SEQ_GENERATOR"
@@ -33,4 +35,11 @@ public class Like {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="USER_NO")
     private User user;
+
+    @Builder
+    public Like(Long readNo, Post post, User user) {
+        this.readNo = readNo;
+        this.post = post;
+        this.user = user;
+    }
 }

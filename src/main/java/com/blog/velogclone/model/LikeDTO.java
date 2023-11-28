@@ -11,9 +11,17 @@ import lombok.*;
 @ToString
 public class LikeDTO {
 
-    private Long likeNo;
+    private Long readNo;
     private Long postNo;
     private Long userNo;
     private Post post;
     private User user;
+
+    public boolean isNull() {
+        return readNo == null
+                && postNo == null
+                && userNo == null
+                && post == null
+                && user == null;
+    }
 }

@@ -4,6 +4,7 @@ import com.blog.velogclone.model.PostDTO;
 import com.blog.velogclone.model.PrincipalDetails;
 import com.blog.velogclone.model.ReReplyDTO;
 import com.blog.velogclone.model.ReplyDTO;
+import com.blog.velogclone.service.LikeService;
 import com.blog.velogclone.service.PostService;
 import com.blog.velogclone.service.ReplyService;
 import com.vladsch.flexmark.html.HtmlRenderer;
