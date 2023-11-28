@@ -18,10 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -107,5 +104,25 @@ public class LikeService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<PostDTO> findLikeList() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long UserNo = ((PrincipalDetails)authentication.getPrincipal()).getUserNo();
+
+        List<Like> likeEntityList = likeRepository.findByUserNo(UserNo);
+
+        List<Post> postEntityList = new ArrayList<>();
+        List<PostDTO> postList = new ArrayList<>();
+
+        for(Like list : likeEntityList) {
+            postEntityList.add(list.getPost());
+        }
+
+        for(Post list : postEntityList) {
+            postList.add(modelMapper.map(list, PostDTO.class));
+        }
+
+        return postList;
     }
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="common/layout/dependencies :: fragment-dependencies"></div>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+<div th:replace="common/layout/nav :: fragment-nav"></div>
+<div id="contents" class="row row-cols-1 row-cols-md-4 g-4 px-4">
+    <div class="col" th:each="post : ${posts}">
+        <a th:href="'/post/' + ${post.postNo}">
+            <div class="card">
+                <img th:src="${post.srcAttr}" class="card-img-top" alt="..." height="167">
+                <div class="card-body" height="127px">
+                    <h5 class="card-title fs-6" th:if="${#strings.length(post.postTitle)} gt 22"><strong th:text="${#strings.substring(post.postTitle, 0, 23)} + '...'"></strong></h5>
+                    <h5 class="card-title fs-6" th:unless="${#strings.length(post.postTitle)} gt 22"><strong th:text="${post.postTitle}"></strong></h5>
+                    <p class="card-text" style="font-size: 15px;" th:if="${#strings.length(post.postBody)} gt 72" th:text="${T(org.jsoup.Jsoup).parse(post.postBody).text()}"></p>
+                    <p class="card-text" style="font-size: 15px;" th:unless="${#strings.length(post.postBody)} gt 72" th:text="${T(org.jsoup.Jsoup).parse(post.postBody).text()}"></p>
+                </div>
+                <small class="text-body-secondary ps-3 mb-2" style="font-size: 13px;" th:text="${#dates.format(post.createDate, 'yyyy년 MM월 dd일')}"></small>
+                <div class="card-footer d-flex justify-content-between">
+                    <span>
+                        <img class="rounded-circle" alt="" th:if="${post.user.profileImg} != null" th:src="${post.user.profileImg}" width="20" height="20"/>
+                        <img class="rounded-circle" alt="" th:if="${post.user.profileImg} == null" src="/images/clog_logo.png" width="20" height="20"/>
+                        <small class="text-body-secondary" th:text="'by ' + ${post.user.userNickname}"></small>
+                    </span>
+                    <small class="text-body-secondary text-end" th:text="'&hearts; ' + ${post.postLike}"></small>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+</body>
+</html>

@@ -5,13 +5,16 @@ import com.blog.velogclone.model.PostDTO;
 import com.blog.velogclone.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -19,6 +22,8 @@ import java.util.Map;
 @Slf4j
 @RequestMapping("/like")
 public class LikeController {
+
+    final String DEFAULT_IMG = "/images/clog_text_logo.png";
 
     private final LikeService likeService;
 
@@ -67,5 +72,31 @@ public class LikeController {
         Map<String, Object> response = new HashMap<>();
         response.put("status", likeService.checkLike(likeDTO));
         return response;
+    }
+
+    @GetMapping("/list")
+    public String findLikeList(Model model) {
+        List<PostDTO> likePostList = likeService.findLikeList();
+
+        try {
+            for (PostDTO post : likePostList) {
+                String postBody = post.getPostBody();
+                Document doc = Jsoup.parse(postBody);
+                Elements imgTags = doc.select("img");
+
+                if (!imgTags.isEmpty()) {
+                    Element firstImg = imgTags.first();
+                    String srcAttribute = firstImg.attr("src");
+                    post.setSrcAttr(srcAttribute); // PostDTO에 속성 추가
+                } else {
+                    post.setSrcAttr(DEFAULT_IMG); // 이미지가 없는 경우 기본 이미지로 설정
+                }
+            }
+        } catch (Exception e) {
+            log.info("parsing error");
+        }
+
+        model.addAttribute("posts", likePostList);
+        return "/my/redinglist";
     }
 }
