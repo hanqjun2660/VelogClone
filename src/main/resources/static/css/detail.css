@@ -156,3 +156,13 @@ textarea {
     color: gray;
     font-size: 16px;
 }
+
+#likeadd svg:hover {
+    fill: #12B886;
+    cursor: pointer;
+}
+
+#likecancle svg:hover {
+    fill: #12B886;
+    cursor: pointer;
+}

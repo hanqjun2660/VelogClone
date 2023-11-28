@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="contents">
-            <th:block th:utext="${postdetail.postBody}"></th:block>
+            <div th:utext="${postdetail.postBody}"></div>
         </div>
         <div class="userinfo">
             <div class="row">
@@ -51,19 +51,34 @@
                 </div>
             </div>
         </div>
-        <div class="social">
-            <a class="github" th:if="${postdetail.user.userGithub} != null" th:href="${postdetail.user.userGithub}" target="_blank">
-                <img src="/images/github-mark.png"/>
-            </a>
-            <a class="twitter" th:if="${postdetail.user.userTwitter} != null" th:href="${postdetail.user.userTwitter}" target="_blank">
-                <img src="/images/twitter-mark.png"/>
-            </a>
-            <a class="homepage" th:if="${postdetail.user.userHomepage} != null" th:href="${postdetail.user.userHomepage}" target="_blank">
-                <img src="/images/home-mark.png"/>
-            </a>
-            <a class="facebook" th:if="${postdetail.user.userFacebook} != null" th:href="${postdetail.user.userFacebook}" target="_blank">
-                <img src="/images/facebook-mark.png"/>
-            </a>
+        <div class="social d-flex justify-content-between">
+            <span>
+                <a class="github" th:if="${postdetail.user.userGithub} != null" th:href="${postdetail.user.userGithub}" target="_blank">
+                    <img src="/images/github-mark.png"/>
+                </a>
+                <a class="twitter" th:if="${postdetail.user.userTwitter} != null" th:href="${postdetail.user.userTwitter}" target="_blank">
+                    <img src="/images/twitter-mark.png"/>
+                </a>
+                <a class="homepage" th:if="${postdetail.user.userHomepage} != null" th:href="${postdetail.user.userHomepage}" target="_blank">
+                    <img src="/images/home-mark.png"/>
+                </a>
+                <a class="facebook" th:if="${postdetail.user.userFacebook} != null" th:href="${postdetail.user.userFacebook}" target="_blank">
+                    <img src="/images/facebook-mark.png"/>
+                </a>
+            </span>
+            <span>
+                <a id="likeadd" data-bs-toggle="tooltip" data-bs-title="읽기목록 추가">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                    </svg>
+                </a>
+                <a id="likecancle" data-bs-toggle="tooltip" data-bs-title="읽기목록 삭제" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#12B886" class="bi bi-bookmark-heart-fill" viewBox="0 0 16 16">
+                    <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                    </svg>
+                </a>
+            </span>
         </div>
         <div class="reply">
             <strong><h5 th:text="${replycount} + '개의 댓글'"></h5></strong>
@@ -178,6 +193,9 @@
     </div>
 </body>
 <script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
     $(document).ready(function() {
        evt.init();
     });
@@ -331,6 +349,28 @@
         },
         postModify : function (postId) {
             location.href = "/post/modify/" + postId;
+        },
+        likeAdd : function (postId) {
+            var addParent = document.querySelector('#likeadd');
+            var cancleParent = document.querySelector('#likecancle');
+
+            addParent.style.display = 'none';
+            cancleParent.style.display = 'inline';
+
+            $.ajax({
+                type: "POST",
+                url: "/like/add",
+                data: JSON.stringify({
+                    postNo: postId
+                }),
+                contentType: "application/json",
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
         }
     };
 
@@ -349,6 +389,7 @@
             this.reReplyModifyRequest();
             this.reReplyDeleteRequest();
             this.postModify();
+            this.likeAdd();
         },
         writeReply : function () {
             Elbtn.addEventListener('click', function () {
@@ -555,6 +596,12 @@
             document.querySelector('#modifypost').addEventListener('click', function (evt) {
                 evt.preventDefault();
                 fn.postModify(postId);
+            })
+        },
+        likeAdd : function () {
+            document.querySelector('#likeadd').addEventListener('click', function (evt) {
+                evt.preventDefault();
+                fn.likeAdd(postId);
             })
         }
     }
