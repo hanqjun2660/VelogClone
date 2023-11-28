@@ -8,6 +8,8 @@ import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.Date;
+
 @Table(name = "TBL_LIKE")
 @Entity
 @Builder
@@ -36,10 +38,14 @@ public class Like {
     @JoinColumn(name="USER_NO")
     private User user;
 
+    @Column(name = "CREATE_DATE")
+    private Date createDate;
+
     @Builder
-    public Like(Long readNo, Post post, User user) {
+    public Like(Long readNo, Post post, User user, Date createDate) {
         this.readNo = readNo;
         this.post = post;
         this.user = user;
+        this.createDate = createDate;
     }
 }
