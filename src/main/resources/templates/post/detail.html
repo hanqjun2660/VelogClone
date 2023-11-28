@@ -636,22 +636,34 @@
             });
         },
         postModify : function () {
-            document.querySelector('#modifypost').addEventListener('click', function (evt) {
-                evt.preventDefault();
-                fn.postModify(postId);
-            })
+            var element = document.querySelector('#modifypost');
+
+            if(element) {
+                element.addEventListener('click', function (evt) {
+                    evt.preventDefault();
+                    fn.postModify(postId);
+                });
+            }
         },
         likeAdd : function () {
-            document.querySelector('#likeadd').addEventListener('click', function (evt) {
-                evt.preventDefault();
-                fn.likeAdd(postId);
-            })
+            var element = document.querySelector('#likeadd');
+
+            if(element) {
+                element.addEventListener('click', function (evt) {
+                    evt.preventDefault();
+                    fn.likeAdd(postId);
+                });
+            }
         },
         likeCancle : function() {
-            document.querySelector('#likecancle').addEventListener('click', function (evt) {
-                evt.preventDefault();
-                fn.likeCancle(postId);
-            })
+            var element = document.querySelector('#likecancle');
+
+            if(element) {
+                element.addEventListener('click', function (evt) {
+                    evt.preventDefault();
+                    fn.likeCancle(postId);
+                });
+            }
         },
         checkLike : function () {
             fn.checkLike(postId);

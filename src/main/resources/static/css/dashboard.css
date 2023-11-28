@@ -25,7 +25,7 @@ a {
     max-height: 1em; /* 텍스트의 최대 높이를 3줄에 해당하는 높이(1em은 현재 폰트 크기에 해당)로 설정 */
     overflow: hidden; /* 넘치는 내용을 숨김 처리 */
     text-overflow: ellipsis; /* 넘치는 텍스트를 생략 부호(...)로 표시 */
-    line-height: 1em; /* 줄 높이를 현재 폰트 크기에 해당하는 1em으로 설정 */
+    line-height: 1.2em; /* 줄 높이를 현재 폰트 크기에 해당하는 1em으로 설정 */
 }
 
 .card-img-top {
