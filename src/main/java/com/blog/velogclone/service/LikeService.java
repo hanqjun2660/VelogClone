@@ -84,18 +84,19 @@ public class LikeService {
     public boolean checkLike(LikeDTO likeDTO) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Long userNo = ((PrincipalDetails)authentication.getPrincipal()).getUserNo();
+            if (authentication != null && authentication.getPrincipal() instanceof PrincipalDetails) {
+                Long userNo = ((PrincipalDetails)authentication.getPrincipal()).getUserNo();
 
-            List<Like> findLike = likeRepository.findAllByUser_UserNo(userNo);
-            Post post = postRepository.findById(likeDTO.getPostNo()).orElse(null);
+                List<Like> findLike = likeRepository.findAllByUser_UserNo(userNo);
+                Post post = postRepository.findById(likeDTO.getPostNo()).orElse(null);
 
-            for(Like likeList : findLike) {
-                if(likeList.getPost().getPostNo().compareTo(post.getPostNo()) == 0) {
-                    log.info("LikeService : {}", "읽기 목록에 존재함");
-                    return true;
+                for(Like likeList : findLike) {
+                    if(likeList.getPost().getPostNo().compareTo(post.getPostNo()) == 0) {
+                        log.info("LikeService : {}", "읽기 목록에 존재함");
+                        return true;
+                    }
                 }
             }
-            return false;
         } catch (AuthenticationException e) {
             log.info("로그인 상태 아님");
         } catch (EmptyResultDataAccessException e) {

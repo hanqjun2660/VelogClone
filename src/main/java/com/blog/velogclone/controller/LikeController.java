@@ -97,6 +97,7 @@ public class LikeController {
         }
 
         model.addAttribute("posts", likePostList);
+        model.addAttribute("title", "읽기 목록");
         return "/my/redinglist";
     }
 }
