@@ -6,34 +6,23 @@
 </head>
 <body>
 <div th:replace="common/layout/nav :: fragment-nav"></div>
-<div class="d-flex justify-content-center mt-3">
-    <div class="row">
-        <div class="col img-area pe-5">
-            <div class="row">
-                <div class="col d-flex justify-content-center mb-2">
-                    <img class="rounded-circle mx-auto d-block" width="128" height="128" alt="" th:if="${#authentication.principal.user.profileImg} != null" th:src="${#authentication.principal.user.profileImg}"/>
-                </div>
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-row">
+        <div class="d-flex flex-column text-center px-5 img-area">
+            <img class="rounded-circle mx-auto d-block" width="128" height="128" alt="" th:if="${#authentication.principal.user.profileImg} != null" th:src="${#authentication.principal.user.profileImg}"/>
+            <img class="rounded-circle mx-auto d-block" width="128" height="128" alt="" th:unless="${#authentication.principal.user.profileImg} != null" src="/images/clog_logo.png"/>
+            <div class="pt-2">
+                <button class="btn btn-success">이미지 업로드</button>
             </div>
-            <div class="row my-1">
-                <div class="col d-flex justify-content-center">
-                    <button class="btn btn-success w-100">이미지 업로드</button>
-                </div>
-            </div>
-            <div class="row my-1">
-                <div class="col d-flex justify-content-center">
-                    <button class="btn btn-success btn-reverse w-100">이미지 제거</button>
-                </div>
+            <div class="pt-2">
+                <button class="btn btn-success btn-reverse">이미지 추가</button>
             </div>
         </div>
-        <div class="col ps-5">
-            <div class="row my-2">
-                <h1 th:text="${#authentication.principal.user.userNickname}"></h1>
-            </div>
-            <div class="row my-2">
-                <p>소개글</p>
-            </div>
-            <div class="row my-2">
-                <p>버튼</p>
+        <div class="d-flex flex-column text-start align-self-center ps-5">
+            <h1 th:text="${#authentication.principal.user.userNickname}"></h1>
+            <p th:text="${#authentication.principal.user.userIntroduce}"></p>
+            <div>
+                <a href="#">수정</a>
             </div>
         </div>
     </div>
