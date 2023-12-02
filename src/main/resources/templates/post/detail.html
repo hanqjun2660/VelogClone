@@ -53,16 +53,16 @@
         </div>
         <div class="social d-flex justify-content-between">
             <span>
-                <a class="github" th:if="${postdetail.user.userGithub} != null" th:href="${postdetail.user.userGithub}" target="_blank">
+                <a class="github" data-bs-toggle="tooltip" data-bs-title="Github" th:if="${postdetail.user.userGithub} != null" th:href="${postdetail.user.userGithub}" target="_blank">
                     <img src="/images/github-mark.png"/>
                 </a>
-                <a class="twitter" th:if="${postdetail.user.userTwitter} != null" th:href="${postdetail.user.userTwitter}" target="_blank">
+                <a class="twitter" data-bs-toggle="tooltip" data-bs-title="Twitter" th:if="${postdetail.user.userTwitter} != null" th:href="${postdetail.user.userTwitter}" target="_blank">
                     <img src="/images/twitter-mark.png"/>
                 </a>
-                <a class="homepage" th:if="${postdetail.user.userHomepage} != null" th:href="${postdetail.user.userHomepage}" target="_blank">
+                <a class="homepage" data-bs-toggle="tooltip" data-bs-title="Homepage" th:if="${postdetail.user.userHomepage} != null" th:href="${postdetail.user.userHomepage}" target="_blank">
                     <img src="/images/home-mark.png"/>
                 </a>
-                <a class="facebook" th:if="${postdetail.user.userFacebook} != null" th:href="${postdetail.user.userFacebook}" target="_blank">
+                <a class="facebook" data-bs-toggle="tooltip" data-bs-title="Facebook" th:if="${postdetail.user.userFacebook} != null" th:href="${postdetail.user.userFacebook}" target="_blank">
                     <img src="/images/facebook-mark.png"/>
                 </a>
             </span>

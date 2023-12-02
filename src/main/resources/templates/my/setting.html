@@ -12,7 +12,8 @@
             <img class="rounded-circle mx-auto d-block" width="128" height="128" alt="" th:if="${#authentication.principal.user.profileImg} != null" th:src="${#authentication.principal.user.profileImg}"/>
             <img class="rounded-circle mx-auto d-block" width="128" height="128" alt="" th:unless="${#authentication.principal.user.profileImg} != null" src="/images/clog_logo.png"/>
             <div class="pt-2">
-                <button class="btn btn-success">이미지 업로드</button>
+                <input id="imgInput" type="file" style="display: none;" accept="image/jpeg, image/png">
+                <button id="uploadImgBtn" class="btn btn-success">이미지 업로드</button>
             </div>
             <div class="pt-2">
                 <button class="btn btn-success btn-reverse">이미지 제거</button>
@@ -54,7 +55,7 @@
                             <img src="/images/mail-icon.png" width="16" height="16"/>
                         </div>
                         <div class="col px-0">
-                            <input type="text" th:if="${#authentication.principal.user.userEmail} != null" th:value="${#authentication.principal.user.userEmail}" readonly>
+                            <input type="text" th:value="${#authentication.principal.user.userEmail}" placeholder="이메일을 입력하세요." readonly>
                         </div>
                     </div>
                     <div class="row d-flex flex-row">
@@ -62,7 +63,7 @@
                             <img src="/images/github-mark.png" width="16" height="16"/>
                         </div>
                         <div class="col px-0">
-                            <input type="text" th:if="${#authentication.principal.user.userGithub} != null" th:value="${#authentication.principal.user.userGithub}" readonly>
+                            <input type="text" th:value="${#authentication.principal.user.userGithub}" placeholder="Github 주소를 입력하세요." readonly>
                         </div>
                     </div>
                     <div class="row d-flex flex-row">
@@ -70,7 +71,23 @@
                             <img src="/images/facebook-icon.png" width="16" height="16"/>
                         </div>
                         <div class="col px-0">
-                            <input type="text" th:if="${#authentication.principal.user.userFacebook} != null" th:value="${#authentication.principal.user.userFacebook}" readonly>
+                            <input type="text" th:value="${#authentication.principal.user.userFacebook}" placeholder="Facebook 주소를 입력하세요." readonly>
+                        </div>
+                    </div>
+                    <div class="row d-flex flex-row">
+                        <div class="col-1">
+                            <img src="/images/twitter-icon.png" width="16" height="16"/>
+                        </div>
+                        <div class="col px-0">
+                            <input type="text" th:value="${#authentication.principal.user.userTwitter}" placeholder="Twitter 주소를 입력하세요." readonly>
+                        </div>
+                    </div>
+                    <div class="row d-flex flex-row">
+                        <div class="col-1">
+                            <img src="/images/home-mark.png" width="16" height="16"/>
+                        </div>
+                        <div class="col px-0">
+                            <input type="text" th:value="${#authentication.principal.user.userHomepage}" placeholder="홈페이지 주소를 입력하세요." readonly>
                         </div>
                     </div>
                 </div>
@@ -113,5 +130,52 @@
         </div>
     </div>
 </div>
+<script>
+    var fn = {
+        updateImg : function (obj) {
+            var formData = new FormData();
+            formData.append('profileImage', obj.files[0]);
+
+            $.ajax({
+                method : 'post',
+                url : '/user/updateimage',
+                processData: false,
+                contentType: false,
+                data: formData,
+                success : function (response) {
+                    alert(response);
+                },
+                error : function (error) {
+                    alert(error);
+                }
+            });
+        }
+    }
+
+    var evt = {
+        init : function () {
+            this.triggerImgInput();
+            this.updateImg();
+        },
+        triggerImgInput : function () {
+            document.querySelector('#uploadImgBtn').addEventListener('click', function () {
+               var imgInput = document.querySelector('#imgInput');
+               imgInput.click();
+            });
+        },
+        updateImg : function () {
+            var imgInput = document.querySelector('#imgInput');
+
+            // 이미지 파일이 선택되었을 때 updateImg 함수 호출
+            imgInput.addEventListener('change', function () {
+                fn.updateImg(this);  // 'this'는 현재 이벤트가 발생한 엘리먼트, 즉 imgInput을 가리킵니다.
+            });
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        evt.init();
+    });
+</script>
 </body>
 </html>
