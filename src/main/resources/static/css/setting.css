@@ -19,9 +19,43 @@
 }
 
 .img-area {
-    border-right: 1px solid lightgray;
+    border-right: 1px solid #F1F3F5;
+}
+
+h1 {
+    font-weight: bolder;
+}
+
+.intoroduce {
+    color: #868E96;
 }
 
 a {
     color: #12B886;
+}
+
+h3 {
+    font-size: 1.125rem;
+}
+
+input {
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+.description {
+    color: #868E96;
+}
+
+.setting-area {
+    width: 768px;
+}
+
+.info-area {
+    width: 768px;
+}
+
+.description {
+    padding-top: 12px;
 }

@@ -6,23 +6,109 @@
 </head>
 <body>
 <div th:replace="common/layout/nav :: fragment-nav"></div>
-<div class="d-flex justify-content-center">
-    <div class="d-flex flex-row">
-        <div class="d-flex flex-column text-center px-5 img-area">
+<div class="d-flex flex-column align-items-center py-5">
+    <div class="d-flex flex-row info-area">
+        <div class="d-flex flex-column text-center img-area col-3">
             <img class="rounded-circle mx-auto d-block" width="128" height="128" alt="" th:if="${#authentication.principal.user.profileImg} != null" th:src="${#authentication.principal.user.profileImg}"/>
             <img class="rounded-circle mx-auto d-block" width="128" height="128" alt="" th:unless="${#authentication.principal.user.profileImg} != null" src="/images/clog_logo.png"/>
             <div class="pt-2">
                 <button class="btn btn-success">이미지 업로드</button>
             </div>
             <div class="pt-2">
-                <button class="btn btn-success btn-reverse">이미지 추가</button>
+                <button class="btn btn-success btn-reverse">이미지 제거</button>
             </div>
         </div>
-        <div class="d-flex flex-column text-start align-self-center ps-5">
+        <div class="d-flex flex-column text-start align-self-center ps-5 col-9">
             <h1 th:text="${#authentication.principal.user.userNickname}"></h1>
-            <p th:text="${#authentication.principal.user.userIntroduce}"></p>
+            <p class="intoroduce" th:text="${#authentication.principal.user.userIntroduce}"></p>
             <div>
                 <a href="#">수정</a>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column setting-area pt-5">
+        <div class="row pt-2">
+            <div class="d-flex flex-row text-start">
+                <div class="col-3 pe-5">
+                    <h3><strong>클로그 제목</strong></h3>
+                </div>
+                <div class="col-7">
+                    <input type="text" th:value="${#authentication.principal.user.userBlogName}" readonly>
+                </div>
+                <div class="col-2 text-end">
+                    <a href="#">수정</a>
+                </div>
+            </div>
+            <div class="row">
+                <p class="description">개인 페이지의 좌측 상단에 나타나는 페이지 제목입니다.</p>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="d-flex flex-row text-start">
+                <div class="col-3 pe-5">
+                    <h3><strong>소셜 정보</strong></h3>
+                </div>
+                <div class="col-7 d-flex flex-column">
+                    <div class="row d-flex flex-row">
+                        <div class="col-1">
+                            <img src="/images/mail-icon.png" width="16" height="16"/>
+                        </div>
+                        <div class="col px-0">
+                            <input type="text" th:if="${#authentication.principal.user.userEmail} != null" th:value="${#authentication.principal.user.userEmail}" readonly>
+                        </div>
+                    </div>
+                    <div class="row d-flex flex-row">
+                        <div class="col-1">
+                            <img src="/images/github-mark.png" width="16" height="16"/>
+                        </div>
+                        <div class="col px-0">
+                            <input type="text" th:if="${#authentication.principal.user.userGithub} != null" th:value="${#authentication.principal.user.userGithub}" readonly>
+                        </div>
+                    </div>
+                    <div class="row d-flex flex-row">
+                        <div class="col-1">
+                            <img src="/images/facebook-icon.png" width="16" height="16"/>
+                        </div>
+                        <div class="col px-0">
+                            <input type="text" th:if="${#authentication.principal.user.userFacebook} != null" th:value="${#authentication.principal.user.userFacebook}" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 text-end">
+                    <a href="#">수정</a>
+                </div>
+            </div>
+            <div class="row">
+                <p class="description">포스트 및 블로그에서 보여지는 프로필에 공개되는 소셜 정보입니다.</p>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="d-flex flex-row text-start">
+                <div class="col-3 pe-5">
+                    <h3><strong>이메일 주소</strong></h3>
+                </div>
+                <div class="col-7">
+                    <input type="text" th:value="${#authentication.principal.user.userEmail}" readonly>
+                </div>
+                <div class="col-2 text-end">
+                    <a href="#">수정</a>
+                </div>
+            </div>
+            <div class="row">
+                <p class="description">회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.</p>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="d-flex flex-row text-start">
+                <div class="col-3 pe-5">
+                    <h3><strong>회원 탈퇴</strong></h3>
+                </div>
+                <div class="col-9">
+                    <button class="btn btn-danger">회원 탈퇴</button>
+                </div>
+            </div>
+            <div class="row">
+                <p class="description">탈퇴 시 작성하신 포스트 및 댓글이 모두 삭제되며 복구되지 않습니다.</p>
             </div>
         </div>
     </div>
