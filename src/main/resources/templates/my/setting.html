@@ -16,7 +16,7 @@
                 <button id="uploadImgBtn" class="btn btn-success">이미지 업로드</button>
             </div>
             <div class="pt-2">
-                <button class="btn btn-success btn-reverse">이미지 제거</button>
+                <button id="deleteImgBtn" class="btn btn-success btn-reverse">이미지 제거</button>
             </div>
         </div>
         <div class="d-flex flex-column text-start align-self-center ps-5 col-9">
@@ -143,7 +143,22 @@
                 contentType: false,
                 data: formData,
                 success : function (response) {
-                    alert(response);
+                    console.log(response.msg);
+                    location.reload();
+                },
+                error : function (error) {
+                    alert(error);
+                }
+            });
+        },
+        deleteImg : function () {
+            $.ajax({
+                method : 'post',
+                url : '/user/deleteimage',
+                datatype: 'application/json',
+                success : function (response) {
+                    console.log(response.msg);
+                    location.reload();
                 },
                 error : function (error) {
                     alert(error);
@@ -156,6 +171,7 @@
         init : function () {
             this.triggerImgInput();
             this.updateImg();
+            this.deleteImg();
         },
         triggerImgInput : function () {
             document.querySelector('#uploadImgBtn').addEventListener('click', function () {
@@ -169,6 +185,11 @@
             // 이미지 파일이 선택되었을 때 updateImg 함수 호출
             imgInput.addEventListener('change', function () {
                 fn.updateImg(this);  // 'this'는 현재 이벤트가 발생한 엘리먼트, 즉 imgInput을 가리킵니다.
+            });
+        },
+        deleteImg : function () {
+            document.querySelector('#deleteImgBtn').addEventListener('click', function () {
+               fn.deleteImg();
             });
         }
     }

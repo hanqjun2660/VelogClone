@@ -1,11 +1,13 @@
 package com.blog.velogclone.controller;
 
+import com.blog.velogclone.entity.User;
 import com.blog.velogclone.model.PrincipalDetails;
 import com.blog.velogclone.model.UserDTO;
 import com.blog.velogclone.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -100,6 +102,21 @@ public class MemberController {
             responseMap.put("msg", "update fail - file upload failed");
             return responseMap;
         }
+    }
+
+    @PostMapping("/deleteimage")
+    @ResponseBody
+    public Map<String, Object> deleteProfileImage(Authentication authentication) {
+        Long userNo = ((PrincipalDetails)authentication.getPrincipal()).getUserNo();
+        Map<String, Object> responseMap = new HashMap<>();
+        int result = memberService.deleteProfileImage(userNo);
+        if (result > 0) {
+            responseMap.put("msg", "delete profile Image success");
+        } else {
+            responseMap.put("msg", "delete profile Image fail");
+        }
+
+        return responseMap;
     }
 
     public static String convertToWebPath(String localPath) {

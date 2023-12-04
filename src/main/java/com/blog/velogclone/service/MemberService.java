@@ -80,4 +80,22 @@ public class MemberService {
 
         return 0;
     }
+
+    @Transactional
+    public int deleteProfileImage(Long userNo) {
+        int result = userRepository.deleteProfileImage(userNo);
+
+        if (result > 0) {
+            // 삭제 성공한 경우에만 동작
+            userRepository.findById(userNo)
+                    .ifPresent(user -> {
+                        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                        userDetails.getUser().updateProfileImagePath(user.getProfileImg());
+                    });
+        } else {
+            log.warn("프로필 이미지 삭제 실패 - 해당 유저가 존재하지 않음");
+        }
+
+        return result;
+    }
 }
