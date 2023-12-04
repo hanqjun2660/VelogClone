@@ -76,11 +76,13 @@ public class User {
     private Long roleNo;
 
     @Builder
-    public User(Long userNo, String userId, String userPw, String userEmail, String provider, String profileImg, String userNickname, String userIntroduce, String userBlogName, String userFacebook, String userGithub, String userTwitter, String userHomepage) {
+    public User(Long userNo, String userId, String userPw, String userEmail, String userStatus, Date userRegistDate, String provider, String profileImg, String userNickname, String userIntroduce, String userBlogName, String userFacebook, String userGithub, String userTwitter, String userHomepage, Long roleNo) {
         this.userNo = userNo;
         this.userId = userId;
         this.userPw = userPw;
         this.userEmail = userEmail;
+        this.userStatus = userStatus;
+        this.userRegistDate = userRegistDate;
         this.provider = provider;
         this.profileImg = profileImg;
         this.userNickname = userNickname;
@@ -90,5 +92,10 @@ public class User {
         this.userGithub = userGithub;
         this.userTwitter = userTwitter;
         this.userHomepage = userHomepage;
+        this.roleNo = roleNo;
+    }
+
+    public void updateProfileImagePath(String newPath) {
+        this.profileImg = newPath;
     }
 }
