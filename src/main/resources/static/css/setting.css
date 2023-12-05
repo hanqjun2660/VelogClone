@@ -26,7 +26,7 @@ h1 {
     font-weight: bolder;
 }
 
-.intoroduce {
+.introduce {
     color: #868E96;
 }
 
@@ -58,4 +58,18 @@ input {
 
 .description {
     padding-top: 12px;
+}
+
+.nickname {
+    font-weight: bolder;
+    font-size: 2.25rem;
+}
+
+.active {
+    outline: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+.saveProfile {
+    display: none;
 }

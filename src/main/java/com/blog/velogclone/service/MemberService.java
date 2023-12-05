@@ -98,4 +98,47 @@ public class MemberService {
 
         return result;
     }
+
+    @Transactional
+    public int updateProfile(UserDTO userDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userNo = ((PrincipalDetails)authentication.getPrincipal()).getUserNo();
+
+        Optional<User> findUser = userRepository.findById(userNo);
+        User user;
+
+        user = User.builder()
+                .userId(findUser.get().getUserId())
+                .userNo(userNo)
+                .profileImg(findUser.get().getProfileImg())
+                .userEmail(findUser.get().getUserEmail())
+                .userNickname(userDTO.getUserNickname())
+                .userGithub(findUser.get().getUserGithub())
+                .userHomepage(findUser.get().getUserHomepage())
+                .userIntroduce(userDTO.getUserIntroduce())
+                .userTwitter(findUser.get().getUserTwitter())
+                .userBlogName(findUser.get().getUserBlogName())
+                .roleNo(findUser.get().getRoleNo())
+                .userRegistDate(findUser.get().getUserRegistDate())
+                .userStatus(findUser.get().getUserStatus())
+                .build();
+
+        try {
+            User responseUser = userRepository.save(user);
+
+            if(!ObjectUtils.isEmpty(responseUser)) {
+                userRepository.findById(userNo)
+                        .ifPresent(finduser -> {
+                            PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                            userDetails.getUser().updateNickname(finduser.getUserNickname());
+                            userDetails.getUser().updateIntroduce(finduser.getUserIntroduce());
+                        });
+                return 1;
+            }
+        } catch (DataIntegrityViolationException e) {
+            log.info(String.valueOf(e));
+        }
+
+        return 0;
+    }
 }

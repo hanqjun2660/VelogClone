@@ -98,4 +98,12 @@ public class User {
     public void updateProfileImagePath(String newPath) {
         this.profileImg = newPath;
     }
+
+    public void updateNickname(String nickName) {
+        this.userNickname = nickName;
+    }
+
+    public void updateIntroduce(String introduce) {
+        this.userIntroduce = introduce;
+    }
 }

@@ -19,11 +19,12 @@
                 <button id="deleteImgBtn" class="btn btn-success btn-reverse">이미지 제거</button>
             </div>
         </div>
-        <div class="d-flex flex-column text-start align-self-center ps-5 col-9">
-            <h1 th:text="${#authentication.principal.user.userNickname}"></h1>
-            <p class="intoroduce" th:text="${#authentication.principal.user.userIntroduce}"></p>
-            <div>
-                <a href="#">수정</a>
+        <div class="d-flex flex-column text-start ps-4 col-9">
+            <input type="text" id="nickname" class="nickname mb-2 ps-1" th:value="${#authentication.principal.user.userNickname}" readonly>
+            <input type="text" id="introduce" class="introduce mb-2 ps-1 pe-2 py-2" th:value="${#authentication.principal.user.userIntroduce}" readonly>
+            <div class="d-flex justify-content-between">
+                <a id="profileModifyBtn" class="ps-1" href="#">수정</a>
+                <button type="button" id="saveProfileBtn" class="btn btn-success saveProfile">저장</button>
             </div>
         </div>
     </div>
@@ -164,6 +165,20 @@
                     alert(error);
                 }
             });
+        },
+        saveProfile : function (nickname, introduce) {
+            paramMap = {
+                dataParam : {
+                    userNickname : nickname,
+                    userIntroduce : introduce
+                },
+                url : '/user/updateProfile'
+            }
+
+            Utils.request(paramMap, function (response) {
+                console.log(response.msg);
+                location.reload();
+            });
         }
     }
 
@@ -172,6 +187,8 @@
             this.triggerImgInput();
             this.updateImg();
             this.deleteImg();
+            this.modifyProfile();
+            this.saveProfile();
         },
         triggerImgInput : function () {
             document.querySelector('#uploadImgBtn').addEventListener('click', function () {
@@ -190,6 +207,29 @@
         deleteImg : function () {
             document.querySelector('#deleteImgBtn').addEventListener('click', function () {
                fn.deleteImg();
+            });
+        },
+        modifyProfile : function () {
+            document.querySelector('#profileModifyBtn').addEventListener('click', function (evt) {
+                evt.preventDefault();
+                this.style.visibility = 'hidden';
+
+                var saveProfileBtn = document.querySelector('#saveProfileBtn');
+                var nickname = document.querySelector('#nickname');
+                var introduce = document.querySelector('#introduce');
+
+                nickname.classList.toggle('active');
+                introduce.classList.toggle('active');
+                nickname.removeAttribute('readonly');
+                introduce.removeAttribute('readonly');
+                saveProfileBtn.style.display = 'inline';
+            });
+        },
+        saveProfile : function () {
+            document.querySelector('#saveProfileBtn').addEventListener('click', function () {
+                var nickname = document.querySelector('#nickname').value;
+                var introduce = document.querySelector('#introduce').value;
+                fn.saveProfile(nickname,introduce);
             });
         }
     }

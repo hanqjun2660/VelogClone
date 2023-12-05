@@ -1,12 +1,10 @@
 package com.blog.velogclone.controller;
 
-import com.blog.velogclone.entity.User;
 import com.blog.velogclone.model.PrincipalDetails;
 import com.blog.velogclone.model.UserDTO;
 import com.blog.velogclone.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,9 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -117,6 +113,22 @@ public class MemberController {
         }
 
         return responseMap;
+    }
+
+    @PostMapping("/updateProfile")
+    @ResponseBody
+    public Map<String, Object> updateProfile(@RequestBody UserDTO userDTO) {
+        log.info(userDTO.toString());
+        int result = memberService.updateProfile(userDTO);
+
+        Map<String, Object> response = new HashMap<>();
+
+        if(result > 0) {
+            response.put("msg", "profileUpdate Success");
+        } else {
+            response.put("msg", "profileUpdate fali");
+        }
+        return response;
     }
 
     public static String convertToWebPath(String localPath) {
