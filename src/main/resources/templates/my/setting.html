@@ -24,7 +24,7 @@
             <input type="text" id="introduce" class="introduce mb-2 ps-1 pe-2 py-2" th:value="${#authentication.principal.user.userIntroduce}" readonly>
             <div class="d-flex justify-content-between">
                 <a id="profileModifyBtn" class="ps-1" href="#">수정</a>
-                <button type="button" id="saveProfileBtn" class="btn btn-success saveProfile">저장</button>
+                <button type="button" id="saveProfileBtn" class="btn btn-success save">저장</button>
             </div>
         </div>
     </div>
@@ -35,10 +35,11 @@
                     <h3><strong>클로그 제목</strong></h3>
                 </div>
                 <div class="col-7">
-                    <input type="text" th:value="${#authentication.principal.user.userBlogName}" readonly>
+                    <input id="blogname" class="ps-1" type="text" th:value="${#authentication.principal.user.userBlogName}" readonly>
                 </div>
                 <div class="col-2 text-end">
-                    <a href="#">수정</a>
+                    <a id="blogNameModifyBtn" href="#">수정</a>
+                    <button type="button" id="blogNameSaveBtn" class="btn btn-success save">저장</button>
                 </div>
             </div>
             <div class="row">
@@ -179,6 +180,19 @@
                 console.log(response.msg);
                 location.reload();
             });
+        },
+        saveBlogName : function (blogname) {
+            paramMap = {
+                dataParam : {
+                    userBlogName : blogname
+                },
+                url : '/user/updateBlogName'
+            }
+
+            Utils.request(paramMap, function (response) {
+                console.log(response.msg);
+                location.reload();
+            })
         }
     }
 
@@ -189,6 +203,8 @@
             this.deleteImg();
             this.modifyProfile();
             this.saveProfile();
+            this.modifyBlogName();
+            this.saveBlogName();
         },
         triggerImgInput : function () {
             document.querySelector('#uploadImgBtn').addEventListener('click', function () {
@@ -230,6 +246,24 @@
                 var nickname = document.querySelector('#nickname').value;
                 var introduce = document.querySelector('#introduce').value;
                 fn.saveProfile(nickname,introduce);
+            });
+        },
+        modifyBlogName : function () {
+            document.querySelector('#blogNameModifyBtn').addEventListener('click', function (evt) {
+                evt.preventDefault();
+                var blogname = document.querySelector('#blogname');
+                var blognamesavebtn = document.querySelector('#blogNameSaveBtn');
+
+                this.style.display = 'none';
+                blogname.classList.toggle('active');
+                blogname.removeAttribute('readonly');
+                blognamesavebtn.style.display = 'inline';
+            })
+        },
+        saveBlogName : function () {
+            document.querySelector('#blogNameSaveBtn').addEventListener('click', function () {
+                var blogname = document.querySelector('#blogname').value;
+                fn.saveBlogName(blogname);
             });
         }
     }

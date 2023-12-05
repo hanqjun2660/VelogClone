@@ -1,5 +1,6 @@
 package com.blog.velogclone.controller;
 
+import com.blog.velogclone.entity.User;
 import com.blog.velogclone.model.PrincipalDetails;
 import com.blog.velogclone.model.UserDTO;
 import com.blog.velogclone.service.MemberService;
@@ -128,6 +129,23 @@ public class MemberController {
         } else {
             response.put("msg", "profileUpdate fali");
         }
+        return response;
+    }
+
+    @PostMapping("/updateBlogName")
+    @ResponseBody
+    public Map<String, Object> updateBlogName(@RequestBody UserDTO userDTO) {
+        log.info(userDTO.toString());
+        int result = memberService.updateBlogName(userDTO);
+
+        Map<String, Object> response = new HashMap<>();
+
+        if(result > 0) {
+            response.put("msg", "updateBlogName Success");
+        } else {
+            response.put("msg", "updateBlogName fali");
+        }
+
         return response;
     }
 

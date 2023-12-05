@@ -141,4 +141,33 @@ public class MemberService {
 
         return 0;
     }
+
+    @Transactional
+    public int updateBlogName(UserDTO userDTO) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Long userNo = ((PrincipalDetails)authentication.getPrincipal()).getUserNo();
+
+            Optional<User> optionalUser = userRepository.findById(userNo);
+
+            optionalUser.ifPresent(user -> {
+                user.setUserBlogName(userDTO.getUserBlogName());
+                userRepository.save(user);
+            });
+
+            Optional<User> updatedUser = userRepository.findById(userNo);
+
+            updatedUser.ifPresent(updateduser -> {
+                PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
+                userDetails.getUser().setUserBlogName(updateduser.getUserBlogName());
+            });
+
+            return 1;
+
+        } catch (Exception e) {
+            log.error("updateBlogName Service : { }", e);
+        }
+
+        return 0;
+    }
 }

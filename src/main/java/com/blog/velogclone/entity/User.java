@@ -1,10 +1,7 @@
 package com.blog.velogclone.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -15,6 +12,7 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
+@Setter
 @Getter
 @ToString
 @SequenceGenerator(
