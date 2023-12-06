@@ -170,4 +170,41 @@ public class MemberService {
 
         return 0;
     }
+
+    @Transactional
+    public int updateSocialInfo(UserDTO userDTO) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Long userNo = ((PrincipalDetails)authentication.getPrincipal()).getUserNo();
+
+            Optional<User> optionalUser = userRepository.findById(userNo);
+
+            optionalUser.ifPresent(findUser -> {
+                findUser.setUserEmail(userDTO.getUserEmail());
+                findUser.setUserGithub(userDTO.getUserGithub());
+                findUser.setUserFacebook(userDTO.getUserFacebook());
+                findUser.setUserTwitter(userDTO.getUserTwitter());
+                findUser.setUserHomepage(userDTO.getUserHomepage());
+                userRepository.save(findUser);
+            });
+
+            Optional<User> updatedUser = userRepository.findById(userNo);
+
+            updatedUser.ifPresent(updateduser -> {
+                PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
+                userDetails.getUser().setUserEmail(updateduser.getUserEmail());
+                userDetails.getUser().setUserGithub(updateduser.getUserGithub());
+                userDetails.getUser().setUserFacebook(updateduser.getUserFacebook());
+                userDetails.getUser().setUserTwitter(updateduser.getUserTwitter());
+                userDetails.getUser().setUserHomepage(updateduser.getUserHomepage());
+            });
+
+            return 1;
+
+        } catch (Exception e) {
+            log.error("updateSocialInfo Service : { }", e);
+        }
+
+        return 0;
+    }
 }

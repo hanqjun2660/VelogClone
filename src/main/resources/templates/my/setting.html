@@ -52,49 +52,50 @@
                     <h3><strong>소셜 정보</strong></h3>
                 </div>
                 <div class="col-7 d-flex flex-column">
-                    <div class="row d-flex flex-row">
+                    <div class="row d-flex flex-row pb-1">
                         <div class="col-1">
                             <img src="/images/mail-icon.png" width="16" height="16"/>
                         </div>
                         <div class="col px-0">
-                            <input type="text" th:value="${#authentication.principal.user.userEmail}" placeholder="이메일을 입력하세요." readonly>
+                            <input id="email" type="text" th:value="${#authentication.principal.user.userEmail}" placeholder="이메일을 입력하세요." readonly>
                         </div>
                     </div>
-                    <div class="row d-flex flex-row">
+                    <div class="row d-flex flex-row pb-1">
                         <div class="col-1">
                             <img src="/images/github-mark.png" width="16" height="16"/>
                         </div>
                         <div class="col px-0">
-                            <input type="text" th:value="${#authentication.principal.user.userGithub}" placeholder="Github 주소를 입력하세요." readonly>
+                            <input id="github" type="text" th:value="${#authentication.principal.user.userGithub}" placeholder="Github 주소를 입력하세요." readonly>
                         </div>
                     </div>
-                    <div class="row d-flex flex-row">
+                    <div class="row d-flex flex-row pb-1">
                         <div class="col-1">
                             <img src="/images/facebook-icon.png" width="16" height="16"/>
                         </div>
                         <div class="col px-0">
-                            <input type="text" th:value="${#authentication.principal.user.userFacebook}" placeholder="Facebook 주소를 입력하세요." readonly>
+                            <input id="facebook" type="text" th:value="${#authentication.principal.user.userFacebook}" placeholder="Facebook 주소를 입력하세요." readonly>
                         </div>
                     </div>
-                    <div class="row d-flex flex-row">
+                    <div class="row d-flex flex-row pb-1">
                         <div class="col-1">
                             <img src="/images/twitter-icon.png" width="16" height="16"/>
                         </div>
                         <div class="col px-0">
-                            <input type="text" th:value="${#authentication.principal.user.userTwitter}" placeholder="Twitter 주소를 입력하세요." readonly>
+                            <input id="twitter" type="text" th:value="${#authentication.principal.user.userTwitter}" placeholder="Twitter 주소를 입력하세요." readonly>
                         </div>
                     </div>
-                    <div class="row d-flex flex-row">
+                    <div class="row d-flex flex-row pb-1">
                         <div class="col-1">
                             <img src="/images/home-mark.png" width="16" height="16"/>
                         </div>
                         <div class="col px-0">
-                            <input type="text" th:value="${#authentication.principal.user.userHomepage}" placeholder="홈페이지 주소를 입력하세요." readonly>
+                            <input id="homepage" type="text" th:value="${#authentication.principal.user.userHomepage}" placeholder="홈페이지 주소를 입력하세요." readonly>
                         </div>
                     </div>
                 </div>
                 <div class="col-2 text-end">
-                    <a href="#">수정</a>
+                    <a id="socialModifyBtn" href="#">수정</a>
+                    <button type="button" id="socialSaveBtn" class="btn btn-success save">저장</button>
                 </div>
             </div>
             <div class="row">
@@ -192,7 +193,24 @@
             Utils.request(paramMap, function (response) {
                 console.log(response.msg);
                 location.reload();
-            })
+            });
+        },
+        saveSocialInfo : function (socialInfo) {
+            paramMap = {
+                dataParam : {
+                    userEmail : socialInfo.email,
+                    userGithub : socialInfo.github,
+                    userFacebook : socialInfo.facebook,
+                    userTwitter : socialInfo.twitter,
+                    userHomepage : socialInfo.homepage
+                },
+                url : '/user/updateSocialInfo'
+            }
+
+            Utils.request(paramMap, function (response) {
+                console.log(response.msg);
+                location.reload();
+            });
         }
     }
 
@@ -205,6 +223,8 @@
             this.saveProfile();
             this.modifyBlogName();
             this.saveBlogName();
+            this.modifySocialInfo();
+            this.saveSocialInfo();
         },
         triggerImgInput : function () {
             document.querySelector('#uploadImgBtn').addEventListener('click', function () {
@@ -264,6 +284,42 @@
             document.querySelector('#blogNameSaveBtn').addEventListener('click', function () {
                 var blogname = document.querySelector('#blogname').value;
                 fn.saveBlogName(blogname);
+            });
+        },
+        modifySocialInfo : function () {
+            document.querySelector('#socialModifyBtn').addEventListener('click', function (evt) {
+                evt.preventDefault();
+
+                var email = document.querySelector('#email');
+                var github = document.querySelector('#github');
+                var facebook = document.querySelector('#facebook');
+                var twitter = document.querySelector('#twitter');
+                var homepage = document.querySelector('#homepage');
+                var socialSaveBtn = document.querySelector('#socialSaveBtn');
+
+                this.style.display = 'none';
+                email.classList.toggle('active');
+                email.removeAttribute('readonly');
+                github.classList.toggle('active');
+                github.removeAttribute('readonly');
+                facebook.classList.toggle('active');
+                facebook.removeAttribute('readonly');
+                twitter.classList.toggle('active');
+                twitter.removeAttribute('readonly');
+                homepage.classList.toggle('active');
+                homepage.removeAttribute('readonly');
+                socialSaveBtn.style.display = 'inline';
+            });
+        },
+        saveSocialInfo : function () {
+            document.querySelector('#socialSaveBtn').addEventListener('click', function () {
+                fn.saveSocialInfo({
+                    email: document.querySelector('#email').value,
+                    github: document.querySelector('#github').value,
+                    facebook: document.querySelector('#facebook').value,
+                    twitter: document.querySelector('#twitter').value,
+                    homepage: document.querySelector('#homepage').value
+                });
             });
         }
     }
