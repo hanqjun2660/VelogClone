@@ -6,6 +6,8 @@ import com.blog.velogclone.model.PostDTO;
 import com.blog.velogclone.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -22,8 +24,8 @@ public class PostService {
 
     private final ModelMapper modelMapper;
 
-    public List<PostDTO> findAll() {
-        List<Post> postList = postRepository.findAllPost();
+    public List<PostDTO> findAll(int page, int pageSize) {
+        Page<Post> postList = postRepository.findAll(PageRequest.of(page, pageSize));
         return postList.stream().map(post -> modelMapper.map(post, PostDTO.class)).collect(Collectors.toList());
     }
 

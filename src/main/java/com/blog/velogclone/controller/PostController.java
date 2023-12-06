@@ -41,7 +41,14 @@ public class PostController {
 
     @GetMapping("/dashboard")
     public String dashbaord(Model model) {
-        List<PostDTO> postList = postService.findAll();
+        return "/dashboard";
+    }
+
+    @GetMapping("/post/list")
+    @ResponseBody
+    public List<PostDTO> postList(@RequestParam(defaultValue = "0") int page) {
+        int pageSize = 8;
+        List<PostDTO> postList = postService.findAll(page, pageSize);
 
         try {
             for (PostDTO post : postList) {
@@ -57,13 +64,14 @@ public class PostController {
                     post.setSrcAttr(DEFAULT_IMG); // 이미지가 없는 경우 기본 이미지로 설정
                 }
             }
+
         } catch (Exception e) {
             log.info("parsing error");
         }
 
-        model.addAttribute("posts", postList);
-        return "/dashboard";
+        return postList;
     }
+
 
     @GetMapping("/post/{postNo}")
     public String postDetail(@PathVariable int postNo, Model model) {
