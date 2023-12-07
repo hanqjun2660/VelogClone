@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="common/layout/dependencies :: fragment-dependencies"></div>
+    <link rel="stylesheet" href="/css/myblog.css">
+</head>
+<body>
+<div th:replace="common/layout/mynav :: fragment-mynav"></div>
+<div class="d-flex flex-column align-items-center py-5">
+    <div class="d-flex align-items-start col-6 userinfo">
+        <div class="d-flex flex-row info-area">
+            <div class="d-flex text-center img-area col-3">
+                <img class="rounded-circle mx-auto d-block" width="128" height="128" alt="" th:if="${#authentication.principal.user.profileImg} != null" th:src="${#authentication.principal.user.profileImg}"/>
+                <img class="rounded-circle mx-auto d-block" width="128" height="128" alt="" th:unless="${#authentication.principal.user.profileImg} != null" src="/images/clog_logo.png"/>
+            </div>
+            <div class="d-flex flex-column text-start justify-content-center ps-5 col-9">
+                <a class="d-inline-block mb-1 ps-1" href="#"><span class="nickname" th:text="${#authentication.principal.user.userNickname}"></span></a>
+                <p class="description mb-1 ps-1 pe-2 py-2" th:text="${#authentication.principal.user.userIntroduce}"></p>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex align-items-start col-6 socialInfo">
+        <div class="d-flex flex-row">
+            <a th:href="${#authentication.principal.user.userGithub}" th:if="${#authentication.principal.user.userGithub} != null">
+                <img src="/images/github-mark.png" width="32" height="32"/>
+            </a>
+            <a th:href="${#authentication.principal.user.userFacebook}" th:if="${#authentication.principal.user.userFacebook} != null">
+                <img src="/images/facebook-mark.png" width="32" height="32"/>
+            </a>
+            <a th:href="${#authentication.principal.user.userTwitter}" th:if="${#authentication.principal.user.userTwitter} != null">
+                <img src="/images/twitter-mark.png" width="32" height="32"/>
+            </a>
+            <a th:href="${#authentication.principal.user.userHomepage}" th:if="${#authentication.principal.user.userHomepage} != null">
+                <img src="/images/home-mark.png" width="32" height="32"/>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

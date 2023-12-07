@@ -1,0 +1,41 @@
+a {
+    text-decoration: none;
+    max-width: fit-content;
+}
+
+.nickname {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
+}
+
+.nickname:hover {
+    text-decoration: underline;
+}
+
+.description {
+    font-size: 1.125rem;
+}
+
+.userinfo {
+    border-bottom: lightgray 1px solid;
+    padding-bottom: 30px;
+}
+
+.socialInfo {
+    padding-top: 15px;
+}
+
+.socialInfo > div > a {
+    padding: 3px;
+}
+
+.socialInfo > div > a > img {
+    opacity: 0.5;
+}
+
+.socialInfo > div > a > img:hover {
+    opacity: 1;
+}
