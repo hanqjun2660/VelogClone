@@ -39,7 +39,7 @@
                 <div class="col-sm-9 align-self-center">
                     <div class="row">
                         <div class="col-4 col-sm-6 username">
-                            <a th:href="${postdetail.user.userNo}" th:text="${postdetail.user.userNickname}"></a>
+                            <a th:href="'/blog/'+${postdetail.user.userBlogName}" th:text="${postdetail.user.userNickname}"></a>
                         </div>
                     </div>
                     <div class="row">
@@ -100,7 +100,7 @@
                 <div class="col-sm-6">
                     <div class="row">
                         <div class="col-4 col-sm-6 username">
-                            <a th:href="${reply.user.userNo}" th:text="${reply.user.userNickname}"></a>
+                            <a th:href="'/blog/' + ${reply.user.userBlogName}" th:text="${reply.user.userNickname}"></a>
                         </div>
                     </div>
                     <div class="row">
@@ -158,7 +158,7 @@
                                     </span>
                                     <span class="col">
                                         <div class="row mx-auto username">
-                                            <a href="#" th:text="${reReply.user.userNickname}"></a>
+                                            <a th:href="'/blog/' + ${reReply.user.userBlogName}" th:text="${reReply.user.userNickname}"></a>
                                         </div>
                                         <div class="row mx-auto userintro">
                                             <span th:text="${#dates.format(reReply.reReplyDate, 'yyyy년 MM월 dd일 HH:mm')}"></span>

@@ -4,6 +4,7 @@ import com.blog.velogclone.entity.User;
 import com.blog.velogclone.model.PrincipalDetails;
 import com.blog.velogclone.model.UserDTO;
 import com.blog.velogclone.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -206,5 +207,27 @@ public class MemberService {
         }
 
         return 0;
+    }
+
+    @Transactional
+    public UserDTO selectUser(String blogname) {
+        Optional<User> findUser = userRepository.findByUserBlogNameAndUserStatus(blogname, "N");
+
+        if (findUser.isPresent()) {
+            return modelMapper.map(findUser, UserDTO.class);
+        } else {
+            throw new EntityNotFoundException("User not found with blogname: " + blogname);
+        }
+    }
+
+    public Long findUserNo(String blogName) {
+        Optional<User> optionalUser = userRepository.findByUserBlogNameAndUserStatus(blogName, "N");
+
+        if(optionalUser.isPresent()) {
+            UserDTO userDTO = modelMapper.map(optionalUser.get(), UserDTO.class);
+            return userDTO.getUserNo();
+        } else {
+            return 0L;
+        }
     }
 }

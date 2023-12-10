@@ -23,7 +23,7 @@
                     </a>
                 </th:block>
                 <ul class="dropdown-menu mt-2">
-                    <li><a class="dropdown-item" th:href="${#authentication.principal.user.userBlogName}" >내 클로그</a></li>
+                    <li><a class="dropdown-item" th:href="'/blog/' + ${#authentication.principal.user.userBlogName}" >내 클로그</a></li>
                     <li><a class="dropdown-item" href="/like/list">읽기 목록</a></li>
                     <li><a class="dropdown-item" href="/setting">설정</a></li>
                     <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
