@@ -29,7 +29,7 @@
 }
 
 .socialInfo > div > a {
-    padding: 3px;
+    padding: 4px;
 }
 
 .socialInfo > div > a > img {
@@ -81,4 +81,13 @@
 
 .nav-menu:hover {
     text-decoration: #212529 underline;
+}
+
+.active {
+    color: #20c997;
+    font-weight: bolder;
+}
+
+.active:hover {
+    text-decoration: #20c997 underline;
 }
