@@ -15,4 +15,6 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     @Query("select m from Like m join fetch m.user join fetch m.post where m.post.postStatus = 'N' and m.user.userNo = :userNo ORDER BY m.createDate DESC")
     List<Like> findByUserNo(Long userNo);
+
+    String countByPostPostNo(Long postNo);
 }

@@ -126,4 +126,8 @@ public class LikeService {
 
         return postList;
     }
+
+    public int countLike(Long postNo) {
+        return Integer.parseInt(likeRepository.countByPostPostNo(postNo));
+    }
 }

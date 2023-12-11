@@ -1,5 +1,6 @@
 package com.blog.velogclone.service;
 
+import com.blog.velogclone.entity.Like;
 import com.blog.velogclone.entity.Post;
 import com.blog.velogclone.entity.User;
 import com.blog.velogclone.model.PostDTO;
@@ -14,7 +15,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

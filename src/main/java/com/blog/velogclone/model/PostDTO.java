@@ -32,4 +32,8 @@ public class PostDTO {
     private String srcAttr;
 
     private UserDTO user;
+
+    private int replyCount;
+
+    private int likeCount;
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="common/layout/dependencies :: fragment-dependencies"></div>
-    <link rel="stylesheet" href="/css/myblog.css">
+    <link rel="stylesheet" href="/css/blog.css">
 </head>
 <body>
 <div th:replace="common/layout/mynav :: fragment-mynav"></div>
@@ -37,20 +37,20 @@
     </div>
 </div>
 <div id="postlist" class="d-flex flex-row row px-0 mx-0">
-    <div class="d-flex row justify-content-center px-0 mx-0">
+    <!--<div class="d-flex row justify-content-center px-0 mx-0">
         <div class="d-flex flex-column col-6 text-start px-0 mx-0">
-            <h3 class="post-title">제목</h3>
+            <h3 class="post-title"><a href="#">제목</a></h3>
             <p class="post-body">개인 프로젝트를 진행하던중 DB에 저장된 게시물 본문 데이터를 수정시마크다운 포맷으로 화면에 뿌려야하는 경우가 생겼다.DB에는 게시물 본문 데이터가 태그가 포함된 HTML 형태로 저장이 되어 있는데, 이것을 서버에서 변환하여 화면으로 전달해주는 형태로 하고 싶었다.분명</p>
             <div class="d-inline-block">
-                <span class="post-tag ">태그</span>
+                <span class="post-tag">태그</span>
             </div>
-            <div class="d-flex flex-row text-start pt-2">
+            <div class="d-flex flex-row text-start pt-2 sub-text">
                 <span class="pe-2">2023년 12월 10일 ·</span>
                 <span class="pe-2"> 0개의 댓글 ·</span>
                 <span class="pe-2"> &hearts; 0</span>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 <script>
     var userNo = [[${userData.userNo}]];
@@ -59,14 +59,14 @@
         selectUserPost : function (primaryNo) {
             console.log(primaryNo);
 
-            var postlist = document.querySelector('#postlist');
+            var container = $('#postlist');
             var currentPath = window.location.pathname;
 
             paramMap ={
                 dataParam : {
                     blogName : currentPath.split('/blog/')[1]
                 },
-                url : '/blog/selectuserpost'
+                url : '/post/selectuserpost'
             };
 
             Utils.request(paramMap, function (response) {
@@ -74,7 +74,7 @@
 
                 // 게시글이 존재하지 않을 때
                 if(response.length <= 0) {
-                    appendHtml = `<h3 class="">게시글이 없습니다.</h3>`;
+                    appendHtml = `<h3>게시글이 없습니다.</h3>`;
                     postlist.append(appendHtml);
                     return;
                 }
@@ -82,14 +82,74 @@
                 // 게시글이 존재할때 동적으로 랜더링
                 response.forEach(function (post) {
                     appendHtml = `
-
+                        <div class="d-flex row justify-content-center px-0 mx-0 py-5">
+                            <div class="d-flex flex-column col-6 text-start px-0 mx-0">
+                                <h3 class="post-title"><a href="/post/${post.postNo}"></a></h3>
+                                <p class="post-body"></p>
+                                <div class="d-inline-block">
+                                    <span class="post-tag"></span>
+                                </div>
+                                <div class="d-flex flex-row text-start pt-2 sub-text">
+                                    <span class="pe-2"></span>
+                                    <span class="pe-2"></span>
+                                    <span class="pe-2"></span>
+                                </div>
+                            </div>
+                        </div>
                     `;
 
+                    container.append(appendHtml);
+
                     // 제목 설정
+                    var titleElement = container.find('.post-title:last');
+                    var anchorElement = titleElement.find('a');
+                    if (post.postTitle.length > 22) {
+                        anchorElement.html(post.postTitle.substring(0, 23));
+                    } else {
+                        anchorElement.html(post.postTitle);
+                    }
 
+                    // 본문 설정
+                    var bodyElement = container.find('.post-body:last');
+                    var parsedPostBody = document.createElement('div');
+                    parsedPostBody.innerHTML = post.postBody;
+
+                    // 텍스트 추출
+                    var plainText = parsedPostBody.textContent || parsedPostBody.innerText;
+
+                    // 텍스트 설정
+                    if(plainText.length > 150) {
+                        bodyElement.html(plainText.substring(0, 150));
+                    } else {
+                        bodyElement.html(plainText);
+                    }
+
+                    // 태그 설정
+                    var tagElement = container.find('.post-tag:last');
+                    tagElement.html(post.postTag);
+
+                    // 날짜 설정
+                    var dateElement = container.find('.sub-text:last');
+                    var createDate = new Date(post.createDate);
+                    var formattedDate = createDate.getFullYear() + '년 ' + (createDate.getMonth() + 1) + '월 ' + createDate.getDate() + '일';
+                    dateElement.children('.pe-2').first().text(formattedDate + ' ·');
+
+                    // 댓글 설정
+                    var replyElement = container.find('.sub-text:last');
+                    if (post.replyCount === undefined || post.replyCount <= 0) {
+                        replyElement.children('.pe-2:eq(1)').text(' 0개의 댓글  ·');
+                    } else {
+                        replyElement.children('.pe-2:eq(1)').text(post.replyCount + '개의 댓글  ·');
+                    }
+
+                    // 좋아요 설정
+                    var likeElement = container.find('.sub-text:last');
+                    if (post.likeCount === undefined || post.likeCount <= 0) {
+                        likeElement.children('.pe-2').last().html(' &hearts; 0');
+                    } else {
+                        likeElement.children('.pe-2').last().html(' &hearts; ' + post.likeCount);
+                    }
                 });
-
-                postlist.append(appendHtml);
             });
         }
     }

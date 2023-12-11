@@ -5,13 +5,10 @@ import com.blog.velogclone.model.PrincipalDetails;
 import com.blog.velogclone.model.ReReplyDTO;
 import com.blog.velogclone.model.ReplyDTO;
 import com.blog.velogclone.service.LikeService;
+import com.blog.velogclone.service.MemberService;
 import com.blog.velogclone.service.PostService;
 import com.blog.velogclone.service.ReplyService;
-import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.html2md.converter.FlexmarkHtmlConverter;
-import com.vladsch.flexmark.parser.Parser;
-import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.util.data.MutableDataSet;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -25,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +36,11 @@ public class PostController {
 
     private final PostService postService;
     private final ReplyService replyService;
+    private final MemberService memberService;
+    private final LikeService likeService;
 
     @GetMapping("/dashboard")
-    public String dashbaord(Model model) {
+    public String dashbaord() {
         return "/dashboard";
     }
 
@@ -199,6 +199,46 @@ public class PostController {
         response.put("postNo", postDTO.getPostNo());
 
         return response;
+    }
+
+    @PostMapping("/post/selectuserpost")
+    @ResponseBody
+    public List<PostDTO> selectUserPost(@RequestBody Map<String, String> requestMap) {
+        log.info("BlogController: {}", requestMap.get("blogName"));
+
+        Long userNo = memberService.findUserNo(requestMap.get("blogName"));
+
+        if(!(userNo > 0)) {
+            log.info("userNo is Empty");
+        }
+
+        log.info("userNo is Not Empty");
+        List<PostDTO> findPost = postService.selectUserPost(userNo);
+
+        if(findPost.isEmpty()) {
+            log.info("findPost is Empty");
+            return Collections.emptyList();
+        }
+
+        for(PostDTO post : findPost) {
+            int replyCount = countReply(post.getPostNo());
+            log.info("reply count: {}", replyCount);
+            post.setReplyCount(replyCount);
+
+            int likeCount = countLike(post.getPostNo());
+            log.info("like count: {}", likeCount);
+            post.setLikeCount(likeCount);
+        }
+
+        return findPost;
+    }
+
+    public int countReply(Long postNo) {
+        return replyService.countReply(postNo);
+    }
+
+    public int countLike(Long postNo) {
+        return likeService.countLike(postNo);
     }
 
     /**

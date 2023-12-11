@@ -55,3 +55,16 @@
     border-radius: 10px;
     padding: 4px 16px 4px 16px;
 }
+
+#postlist a {
+    text-decoration: none;
+    color: black;
+}
+
+#postlist a:hover {
+    text-decoration: underline;
+}
+
+.sub-text {
+    color: #868e96;
+}

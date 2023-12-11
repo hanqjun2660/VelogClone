@@ -131,4 +131,8 @@ public class ReplyService {
 
         return response != null ? modelMapper.map(response, ReplyDTO.class) : new ReplyDTO();
     }
+
+    public int countReply(Long postNo) {
+        return Integer.parseInt(replyRepository.countByPostNo(postNo));
+    }
 }
