@@ -33,7 +33,7 @@ var Utils = {
             data : dataParam,
             async : true,
             success : function (response) {
-                if(!Utils.isNull(response) && !Utils.isNull(successCallBackFunc) && typeof(successCallBackFunc) == 'function') {
+                if(!Utils.isNull(successCallBackFunc) && typeof(successCallBackFunc) == 'function') {
                     successCallBackFunc(response);
                 } else if(Utils.isNull(successCallBackFunc)) {
                     console.error('Callback function이 없습니다.');
@@ -52,9 +52,15 @@ var Utils = {
      * @returns {boolean}
      */
     isNull : function (data) {
-        if(data === undefined ||  data === 'undefined'
-            || data === null || data === 'null' || (typeof(data) == 'string' && data.replace(/(^\s*)|(\s*$)/gi, '') === '')
-            || (data != null && typeof(data) == 'object' && !Object.keys(data).length) ){
+        if (
+            data === undefined ||
+            data === 'undefined' ||
+            data === null ||
+            data === 'null' ||
+            (Array.isArray(data) && data.length === 0) ||
+            (typeof data === 'string' && data.trim() === '') ||
+            (data != null && typeof data === 'object' && (Array.isArray(data) ? !data.length : !Object.keys(data).length))
+        ) {
             return true;
         } else {
             return false;

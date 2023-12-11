@@ -68,3 +68,17 @@
 .sub-text {
     color: #868e96;
 }
+
+.tag-title {
+    color: #495057;
+    font-weight: bolder;
+}
+
+.nav-menu {
+    text-decoration: none;
+    color: #212529;
+}
+
+.nav-menu:hover {
+    text-decoration: #212529 underline;
+}
