@@ -25,6 +25,7 @@ public class PostService {
 
     private final ModelMapper modelMapper;
 
+    @Transactional
     public List<PostDTO> findAll(int page, int pageSize) {
         Page<Post> postList = postRepository.findAll(PageRequest.of(page, pageSize));
         return postList.stream().map(post -> modelMapper.map(post, PostDTO.class)).collect(Collectors.toList());

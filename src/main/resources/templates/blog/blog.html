@@ -144,7 +144,7 @@
 
                     // 좋아요 설정
                     var likeElement = container.find('.sub-text:last');
-                    if (post.likeCount === undefined || post.likeCount <= 0) {
+                    if (post.likeCount == undefined || post.likeCount <= 0) {
                         likeElement.children('.pe-2').last().html(' &hearts; 0');
                     } else {
                         likeElement.children('.pe-2').last().html(' &hearts; ' + post.likeCount);

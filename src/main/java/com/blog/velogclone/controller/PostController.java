@@ -63,6 +63,10 @@ public class PostController {
                 } else {
                     post.setSrcAttr(DEFAULT_IMG); // 이미지가 없는 경우 기본 이미지로 설정
                 }
+
+                int likeCount = countLike(post.getPostNo());
+                log.info("like count: {}", likeCount);
+                post.setLikeCount(likeCount);
             }
 
         } catch (Exception e) {

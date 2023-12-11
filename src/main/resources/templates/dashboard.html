@@ -103,7 +103,11 @@
 
                     // 좋아요 설정
                     var likeElement = container.find('.text-body-secondary.text-end:last');
-                    likeElement.html('&hearts; ' + post.postLike);
+                    if(post.likeCount == undefined || post.likeCount <= 0) {
+                        likeElement.html('&hearts; 0');
+                    } else {
+                        likeElement.html('&hearts; ' + post.likeCount);
+                    }
                 });
 
                 page++; // 다음 페이지 로드를 위해 페이지 번호 증가

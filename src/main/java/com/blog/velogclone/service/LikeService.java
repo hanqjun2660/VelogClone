@@ -127,7 +127,12 @@ public class LikeService {
         return postList;
     }
 
+    @Transactional
     public int countLike(Long postNo) {
-        return Integer.parseInt(likeRepository.countByPostPostNo(postNo));
+        try {
+            return Integer.parseInt(likeRepository.countByPostPostNo(postNo));
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }
