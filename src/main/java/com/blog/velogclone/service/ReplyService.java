@@ -133,6 +133,6 @@ public class ReplyService {
     }
 
     public int countReply(Long postNo) {
-        return Integer.parseInt(replyRepository.countByPostNo(postNo));
+        return Integer.parseInt(replyRepository.countByPostNoAndReplyStatus(postNo, "N"));
     }
 }
