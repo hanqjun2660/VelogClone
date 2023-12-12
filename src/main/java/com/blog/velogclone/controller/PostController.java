@@ -259,6 +259,13 @@ public class PostController {
         return response;
     }
 
+    @PostMapping("/post/blog/list")
+    @ResponseBody
+    public Map<String, Object> selectUserPostAndTag(@RequestBody Map<String, Object> request) {
+        log.info("request data : {}", request.get("postTag"));
+        return null;
+    }
+
     public int countReply(Long postNo) {
         return replyService.countReply(postNo);
     }
