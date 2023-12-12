@@ -261,8 +261,16 @@ public class PostController {
 
     @PostMapping("/post/blog/list")
     @ResponseBody
-    public Map<String, Object> selectUserPostAndTag(@RequestBody Map<String, Object> request) {
-        log.info("request data : {}", request.get("postTag"));
+    public Map<String, Object> selectUserPostAndTag(@RequestBody Map<String, String> request) {
+        log.info("postTag data : {}", request.get("postTag"));
+        log.info("userNo data : {}", request.get("userNo"));
+
+        List<PostDTO> findPostList = postService.findByUserUserNoAndPostTag(Long.parseLong(request.get("userNo")), request.get("postTag"));
+
+        for(PostDTO post : findPostList) {
+            System.out.println(post);
+        }
+
         return null;
     }
 

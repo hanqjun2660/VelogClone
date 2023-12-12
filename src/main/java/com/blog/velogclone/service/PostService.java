@@ -1,6 +1,5 @@
 package com.blog.velogclone.service;
 
-import com.blog.velogclone.entity.Like;
 import com.blog.velogclone.entity.Post;
 import com.blog.velogclone.entity.User;
 import com.blog.velogclone.model.PostDTO;
@@ -14,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -100,6 +101,34 @@ public class PostService {
 
         if(!findPost.isEmpty()) {
             return findPost.stream().map(list -> modelMapper.map(list, PostDTO.class)).collect(Collectors.toList());
+        }
+
+        return Collections.emptyList();
+    }
+
+    @Transactional
+    public List<PostDTO> findByUserUserNoAndPostTag(Long userNo, String postTag) {
+
+        List<Object[]> findPostList = postRepository.findByUserUserNoAndPostTagAndPostStatus(userNo, postTag, "N");
+
+        if(!findPostList.isEmpty()) {
+            // 결과를 가공하여 Map에 저장
+            Map<String, Integer> tagCountMap = new HashMap<>();
+            for (Object[] row : findPostList) {
+                String currentPostTag = (String) row[1]; // postTag
+                int count = ((Number) row[2]).intValue(); // count(m.postTag)
+                tagCountMap.put(currentPostTag, count);
+            }
+
+            // 중복된 postTag의 카운트를 설정하여 반환
+            return findPostList.stream()
+                    .map(row -> {
+                        PostDTO postDTO = modelMapper.map(row[0], PostDTO.class); // 게시글 정보
+                        // 중복된 postTag의 카운트를 설정
+                        postDTO.setPostTagCount(tagCountMap.getOrDefault(postDTO.getPostTag(), 0));
+                        return postDTO;
+                    })
+                    .collect(Collectors.toList());
         }
 
         return Collections.emptyList();

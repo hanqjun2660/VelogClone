@@ -19,4 +19,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Post findByPostNo(@Param("postNo") int postNo);
 
     List<Post> findByUserUserNoAndPostStatus(Long userNo, String postStatus);
+
+    @Query("select m, m.postTag, count(m.postTag) from Post m left join m.user u where u.userNo = :userNo and m.postTag = :postTag and m.postStatus = :postStatus group by m.postTag")
+    List<Object[]> findByUserUserNoAndPostTagAndPostStatus(@Param("userNo") Long userNo, @Param("postTag") String postTag, @Param("postStatus")String n);
 }

@@ -36,4 +36,6 @@ public class PostDTO {
     private int replyCount;
 
     private int likeCount;
+
+    private int postTagCount;
 }
