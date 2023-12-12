@@ -45,12 +45,8 @@
         <div class="d-flex flex-column align-items-center col-3">
             <div class="d-flex flex-column text-start col-6 ps-3">
                 <div class="d-flex tag-title border-bottom border-secondary border-1 pb-2 mb-2">태그 목록</div>
-                <ul class="d-flex flex-column text-start list-unstyled">
+                <ul id="tagNav" class="d-flex flex-column text-start list-unstyled">
                     <li class="pb-1"><a class="nav-menu active" href="#">전체보기</a></li>
-                    <li class="pb-1"><a class="nav-menu" href="#">태그명1</a></li>
-                    <li class="pb-1"><a class="nav-menu" href="#">태그명2</a></li>
-                    <li class="pb-1"><a class="nav-menu" href="#">태그명3</a></li>
-                    <li class="pb-1"><a class="nav-menu" href="#">태그명4</a></li>
                 </ul>
             </div>
         </div>
@@ -70,6 +66,8 @@
             console.log(primaryNo);
 
             var container = $('#postlist');
+            var nav = $('#tagNav');
+
             var currentPath = window.location.pathname;
 
             paramMap ={
@@ -83,7 +81,7 @@
                 var appendHtml;
 
                 // 게시글이 존재하지 않을 때
-                if(response.length <= 0) {
+                if(response.list.length <= 0) {
                     appendHtml = `
                         <div class="d-flex row justify-content-center px-0 mx-0 py-5">
                             <div class="d-flex flex-column col-8 text-start px-0 mx-0">
@@ -96,7 +94,7 @@
                 }
 
                 // 게시글이 존재할때 동적으로 랜더링
-                response.forEach(function (post) {
+                response.list.forEach(function (post) {
                     appendHtml = `
                         <div class="d-flex row justify-content-start px-0 mx-0 py-5">
                             <div class="d-flex flex-column col-8 text-start px-0 mx-0">
@@ -166,6 +164,24 @@
                         likeElement.children('.pe-2').last().html(' &hearts; ' + post.likeCount);
                     }
                 });
+                // Nav Settings
+                var navAppendHtml;
+                var sumCountTags = 0;
+
+                Object.keys(response.tagCount).forEach(function(key) {
+                    var value = response.tagCount[key];
+                    sumCountTags += value;
+
+                    navAppendHtml = `
+                        <li class="pb-1"><a class="nav-menu" href="/post/blog/list/${key}">${key} (${value})</a></li>
+                    `;
+
+                    nav.append(navAppendHtml);
+                });
+
+                // 전체보기
+                var allViewElement = nav.find('.nav-menu:first');
+                allViewElement.text('전체보기' + '(' + sumCountTags + ')');
             });
         }
     }

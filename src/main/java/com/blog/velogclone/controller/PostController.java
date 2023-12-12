@@ -22,10 +22,9 @@ import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -207,7 +206,7 @@ public class PostController {
 
     @PostMapping("/post/selectuserpost")
     @ResponseBody
-    public List<PostDTO> selectUserPost(@RequestBody Map<String, String> requestMap) {
+    public Map<String, Object> selectUserPost(@RequestBody Map<String, String> requestMap) {
         log.info("BlogController: {}", requestMap.get("blogName"));
 
         Long userNo = memberService.findUserNo(requestMap.get("blogName"));
@@ -218,23 +217,46 @@ public class PostController {
 
         log.info("userNo is Not Empty");
         List<PostDTO> findPost = postService.selectUserPost(userNo);
+        List<String> postTagList = new ArrayList<>();
+        Map<String, Object> response = new HashMap<>();
+        Map<String, Long> tagCountMap = new HashMap<>();
 
         if(findPost.isEmpty()) {
             log.info("findPost is Empty");
-            return Collections.emptyList();
+            response.put("list", Collections.emptyList());
+        } else {
+            for(PostDTO post : findPost) {
+                List<String> tags = new ArrayList<>();
+                tags.add(post.getPostTag());
+
+                for(String tag : tags) {
+                    postTagList.add(tag);
+                    tagCountMap.merge(tag, 1L, Long::sum);
+                }
+
+                int replyCount = countReply(post.getPostNo());
+                log.info("reply count: {}", replyCount);
+                post.setReplyCount(replyCount);
+
+                int likeCount = countLike(post.getPostNo());
+                log.info("like count: {}", likeCount);
+                post.setLikeCount(likeCount);
+            }
+
+            Map<String, Long> sortedMap = tagCountMap.entrySet().stream()
+                            .sorted(Map.Entry.comparingByKey())
+                            .collect(Collectors.toMap(
+                                    Map.Entry::getKey,
+                                    Map.Entry::getValue,
+                                    (a, b) -> { throw new AssertionError(); },
+                                    LinkedHashMap::new
+                            ));
+
+            response.put("list", findPost);
+            response.put("tagCount", sortedMap);
         }
 
-        for(PostDTO post : findPost) {
-            int replyCount = countReply(post.getPostNo());
-            log.info("reply count: {}", replyCount);
-            post.setReplyCount(replyCount);
-
-            int likeCount = countLike(post.getPostNo());
-            log.info("like count: {}", likeCount);
-            post.setLikeCount(likeCount);
-        }
-
-        return findPost;
+        return response;
     }
 
     public int countReply(Long postNo) {
