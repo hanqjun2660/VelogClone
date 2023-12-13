@@ -65,59 +65,66 @@
     var nav = $('#tagNav');
 
     var fn = {
-        selectUserPost : function (primaryNo) {
+        selectUserPost: function (primaryNo) {
             console.log(primaryNo);
 
             var currentPath = window.location.pathname;
 
-            paramMap ={
-                dataParam : {
-                    blogName : currentPath.split('/blog/')[1]
+            paramMap = {
+                dataParam: {
+                    blogName: currentPath.split('/blog/')[1]
                 },
-                url : '/post/selectuserpost'
+                url: '/post/selectuserpost'
             };
 
             Utils.request(paramMap, function (response) {
                 createPost(response);
+                evt.selectPostAndTag();
             });
         }
     }
 
     var evt = {
-        init : function() {
+        init: function () {
             this.selectUserPost();
         },
-        selectUserPost : function() {
+        selectUserPost: function () {
             fn.selectUserPost(userNo);
         },
-        selectPostAndTag : function () {
+        selectPostAndTag: function () {
             var navElements = document.querySelectorAll('.nav-menu');
 
             navElements.forEach(function (navEl) {
-               navEl.addEventListener('click', function (evt) {
-                   evt.preventDefault();
-
-                   var paramMap = {
-                       dataParam: {
-                           postTag: this.dataset.key,
-                           userNo: userNo
-                       },
-                       url : '/post/blog/list'
-                   }
-
-                   Utils.request(paramMap, function (response) {
-                        createPost(response);
-                   });
-               });
+                navEl.removeEventListener('click', clickHandler);
+                navEl.addEventListener('click', clickHandler);
             });
+
+            function clickHandler(evt) {
+                evt.preventDefault();
+
+                var paramMap = {
+                    dataParam: {
+                        postTag: this.dataset.key,
+                        userNo: userNo
+                    },
+                    url: '/post/blog/list'
+                }
+
+                Utils.request(paramMap, function (response) {
+                    if (container.children().length > 0) {
+                        container.empty();
+                    }
+                    createPost(response);
+                });
+            }
         }
     }
 
-    function createPost (response) {
+    function createPost(response) {
         var appendHtml;
 
         // 게시글이 존재하지 않을 때
-        if(response.list.length <= 0) {
+        if (response.list.length <= 0) {
             appendHtml = `
                         <div class="d-flex row justify-content-center px-0 mx-0 py-5">
                             <div class="d-flex flex-column col-8 text-start px-0 mx-0">
@@ -168,7 +175,7 @@
             var plainText = parsedPostBody.textContent || parsedPostBody.innerText;
 
             // 텍스트 설정
-            if(plainText.length > 150) {
+            if (plainText.length > 150) {
                 bodyElement.html(plainText.substring(0, 150));
             } else {
                 bodyElement.html(plainText);
@@ -186,10 +193,10 @@
 
             // 댓글 설정
             var replyElement = container.find('.sub-text:last');
-            if (post.replyCount === undefined || post.replyCount <= 0) {
+            if (post.replies === undefined || post.replies.length <= 0) {
                 replyElement.children('.pe-2:eq(1)').text(' 0개의 댓글  ·');
             } else {
-                replyElement.children('.pe-2:eq(1)').text(post.replyCount + '개의 댓글  ·');
+                replyElement.children('.pe-2:eq(1)').text(post.replies.length + '개의 댓글  ·');
             }
 
             // 좋아요 설정
@@ -205,22 +212,22 @@
         var navAppendHtml;
         var sumCountTags = 0;
 
-        Object.keys(response.tagCount).forEach(function(key) {
-            var value = response.tagCount[key];
-            sumCountTags += value;
+        if (response.tagCount && Object.keys(response.tagCount).length > 0) {
+            Object.keys(response.tagCount).forEach(function (key) {
+                var value = response.tagCount[key];
+                sumCountTags += value;
 
-            navAppendHtml = `
+                navAppendHtml = `
                         <li class="pb-1"><a class="nav-menu" href="#" data-key="${key}">${key} (${value})</a></li>
                     `;
 
-            nav.append(navAppendHtml);
-        });
+                nav.append(navAppendHtml);
+            });
 
-        // 전체보기
-        var allViewElement = nav.find('.nav-menu:first');
-        allViewElement.text('전체보기' + ' (' + sumCountTags + ')');
-
-        evt.selectPostAndTag();
+            // 전체보기
+            var allViewElement = nav.find('.nav-menu:first');
+            allViewElement.text('전체보기' + ' (' + sumCountTags + ')');
+        }
     }
 
     document.addEventListener('DOMContentLoaded', function () {

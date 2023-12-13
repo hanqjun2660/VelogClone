@@ -1,8 +1,10 @@
 package com.blog.velogclone.model;
 
+import com.blog.velogclone.entity.Reply;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,5 +39,8 @@ public class PostDTO {
 
     private int likeCount;
 
-    private int postTagCount;
+    private Long postTagCount;
+
+    private List<ReplyDTO> replies;
+
 }

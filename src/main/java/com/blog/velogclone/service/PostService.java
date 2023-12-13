@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -107,30 +104,20 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostDTO> findByUserUserNoAndPostTag(Long userNo, String postTag) {
+    public Map<String, Object> findByUserUserNoAndPostTag(Long userNo, String postTag) {
 
-        List<Object[]> findPostList = postRepository.findByUserUserNoAndPostTagAndPostStatus(userNo, postTag, "N");
+        List<Post> findPostList = postRepository.findByUserUserNoAndPostTagAndPostStatus(userNo, postTag, "N");
+
+        Map<String, Long> tagCountMap = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
 
         if(!findPostList.isEmpty()) {
-            // 결과를 가공하여 Map에 저장
-            Map<String, Integer> tagCountMap = new HashMap<>();
-            for (Object[] row : findPostList) {
-                String currentPostTag = (String) row[1]; // postTag
-                int count = ((Number) row[2]).intValue(); // count(m.postTag)
-                tagCountMap.put(currentPostTag, count);
-            }
+            List<PostDTO> postList =
+                findPostList.stream().map(list -> modelMapper.map(list, PostDTO.class)).collect(Collectors.toList());
 
-            // 중복된 postTag의 카운트를 설정하여 반환
-            return findPostList.stream()
-                    .map(row -> {
-                        PostDTO postDTO = modelMapper.map(row[0], PostDTO.class); // 게시글 정보
-                        // 중복된 postTag의 카운트를 설정
-                        postDTO.setPostTagCount(tagCountMap.getOrDefault(postDTO.getPostTag(), 0));
-                        return postDTO;
-                    })
-                    .collect(Collectors.toList());
+            response.put("list", postList);
         }
 
-        return Collections.emptyList();
+        return response;
     }
 }

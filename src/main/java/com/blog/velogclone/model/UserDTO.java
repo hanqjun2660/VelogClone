@@ -1,6 +1,9 @@
 package com.blog.velogclone.model;
 
+import com.blog.velogclone.entity.Reply;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter

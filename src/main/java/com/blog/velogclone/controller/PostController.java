@@ -265,13 +265,10 @@ public class PostController {
         log.info("postTag data : {}", request.get("postTag"));
         log.info("userNo data : {}", request.get("userNo"));
 
-        List<PostDTO> findPostList = postService.findByUserUserNoAndPostTag(Long.parseLong(request.get("userNo")), request.get("postTag"));
+        Map<String, Object> findPostMap = postService.findByUserUserNoAndPostTag(Long.parseLong(request.get("userNo")), request.get("postTag"));
 
-        for(PostDTO post : findPostList) {
-            System.out.println(post);
-        }
 
-        return null;
+        return findPostMap;
     }
 
     public int countReply(Long postNo) {

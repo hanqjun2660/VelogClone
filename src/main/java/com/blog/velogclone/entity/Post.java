@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "TBL_POST")
@@ -54,6 +55,9 @@ public class Post {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="USER_NO")
     private User user;
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    private List<Reply> replies;
 
     @Builder
     public Post(Long postNo, String postTitle, String postBody, String postTag, Date createDate, String postStatus, int postLike, int postViews, User user) {

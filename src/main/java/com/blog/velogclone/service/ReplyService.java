@@ -1,5 +1,6 @@
 package com.blog.velogclone.service;
 
+import com.blog.velogclone.entity.Post;
 import com.blog.velogclone.entity.ReReply;
 import com.blog.velogclone.entity.Reply;
 import com.blog.velogclone.entity.User;
@@ -77,7 +78,7 @@ public class ReplyService {
     public ReplyDTO saveReply(ReplyDTO replyDTO) {
         Reply request = Reply.builder()
                 .replyBody(replyDTO.getReplyBody())
-                .postNo(replyDTO.getPostNo())
+                .post(Post.builder().postNo(replyDTO.getPostNo()).build())
                 .user(User.builder().userNo(replyDTO.getUserNo()).build())
                 .build();
 
@@ -98,7 +99,7 @@ public class ReplyService {
                     .replyBody(replyEntity.getReplyBody())
                     .replyDate(replyEntity.getReplyDate())
                     .replyStatus("Y")
-                    .postNo(replyEntity.getPostNo())
+                    .post(replyEntity.getPost())
                     .user(replyEntity.getUser())
                     .build();
 
@@ -121,7 +122,7 @@ public class ReplyService {
                     .replyBody(replyDTO.getReplyBody())
                     .replyDate(replyEntity.getReplyDate())
                     .replyStatus(replyEntity.getReplyStatus())
-                    .postNo(replyEntity.getPostNo())
+                    .post(replyEntity.getPost())
                     .user(replyEntity.getUser())
                     .build();
 
@@ -133,6 +134,6 @@ public class ReplyService {
     }
 
     public int countReply(Long postNo) {
-        return Integer.parseInt(replyRepository.countByPostNoAndReplyStatus(postNo, "N"));
+        return Integer.parseInt(replyRepository.countByPostPostNoAndReplyStatus(postNo, "N"));
     }
 }

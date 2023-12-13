@@ -1,5 +1,6 @@
 package com.blog.velogclone.model;
 
+import com.blog.velogclone.entity.Post;
 import com.blog.velogclone.entity.User;
 import lombok.*;
 
@@ -19,5 +20,6 @@ public class ReReplyDTO {
     private Date reReplyDate;
     private String reReplyStatus;
     private User user;
+    private Post post;
     private boolean canEdit;
 }
