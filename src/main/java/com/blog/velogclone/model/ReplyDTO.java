@@ -16,6 +16,7 @@ public class ReplyDTO {
     private Long postNo;
     private Long userNo;
     private Date replyDate;
+    private String replyStatus;
     private boolean canEdit;
     private UserDTO user;
     private List<ReReplyDTO> replyDTOList;

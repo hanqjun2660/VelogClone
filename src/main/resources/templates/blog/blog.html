@@ -102,6 +102,12 @@
             function clickHandler(evt) {
                 evt.preventDefault();
 
+                navElements.forEach(function (el) {
+                    el.classList.remove('active');
+                });
+
+                this.classList.add('active');
+
                 var paramMap = {
                     dataParam: {
                         postTag: this.dataset.key,
@@ -193,10 +199,10 @@
 
             // 댓글 설정
             var replyElement = container.find('.sub-text:last');
-            if (post.replies === undefined || post.replies.length <= 0) {
+            if (post.replyCount === undefined || post.replyCount <= 0) {
                 replyElement.children('.pe-2:eq(1)').text(' 0개의 댓글  ·');
             } else {
-                replyElement.children('.pe-2:eq(1)').text(post.replies.length + '개의 댓글  ·');
+                replyElement.children('.pe-2:eq(1)').text(post.replyCount + '개의 댓글  ·');
             }
 
             // 좋아요 설정

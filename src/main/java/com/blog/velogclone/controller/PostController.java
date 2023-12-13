@@ -217,7 +217,7 @@ public class PostController {
 
         log.info("userNo is Not Empty");
         List<PostDTO> findPost = postService.selectUserPost(userNo);
-        List<String> postTagList = new ArrayList<>();
+
         Map<String, Object> response = new HashMap<>();
         Map<String, Long> tagCountMap = new HashMap<>();
 
@@ -230,7 +230,6 @@ public class PostController {
                 tags.add(post.getPostTag());
 
                 for(String tag : tags) {
-                    postTagList.add(tag);
                     tagCountMap.merge(tag, 1L, Long::sum);
                 }
 
@@ -266,7 +265,6 @@ public class PostController {
         log.info("userNo data : {}", request.get("userNo"));
 
         Map<String, Object> findPostMap = postService.findByUserUserNoAndPostTag(Long.parseLong(request.get("userNo")), request.get("postTag"));
-
 
         return findPostMap;
     }

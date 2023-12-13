@@ -3,6 +3,7 @@ package com.blog.velogclone.service;
 import com.blog.velogclone.entity.Post;
 import com.blog.velogclone.entity.User;
 import com.blog.velogclone.model.PostDTO;
+import com.blog.velogclone.model.ReplyDTO;
 import com.blog.velogclone.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -93,6 +94,7 @@ public class PostService {
         return modelMapper.map(postEntity, PostDTO.class);
     }
 
+    @Transactional
     public List<PostDTO> selectUserPost(Long userNo) {
         List<Post> findPost = postRepository.findByUserUserNoAndPostStatus(userNo, "N");
 
@@ -106,14 +108,31 @@ public class PostService {
     @Transactional
     public Map<String, Object> findByUserUserNoAndPostTag(Long userNo, String postTag) {
 
-        List<Post> findPostList = postRepository.findByUserUserNoAndPostTagAndPostStatus(userNo, postTag, "N");
+        List<Post> findPostList;
 
-        Map<String, Long> tagCountMap = new HashMap<>();
+        if (!postTag.equals("all")) {
+            findPostList = postRepository.findByUserUserNoAndPostTagAndPostStatusAndRepliesReplyStatus(userNo, postTag, "N", "N");
+        } else {
+            findPostList = postRepository.findByUserUserNoAndPostStatus(userNo, "N");
+        }
+
         Map<String, Object> response = new HashMap<>();
 
-        if(!findPostList.isEmpty()) {
-            List<PostDTO> postList =
-                findPostList.stream().map(list -> modelMapper.map(list, PostDTO.class)).collect(Collectors.toList());
+        if (!findPostList.isEmpty()) {
+            List<PostDTO> postList = findPostList.stream()
+                    .map(post -> {
+                        List<ReplyDTO> filteredReplies = post.getReplies().stream()
+                                .filter(reply -> "N".equals(reply.getReplyStatus()))
+                                .map(reply -> modelMapper.map(reply, ReplyDTO.class))
+                                .collect(Collectors.toList());
+
+                        PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+                        postDTO.setReplies(filteredReplies);
+                        postDTO.setReplyCount(filteredReplies.size());
+
+                        return postDTO;
+                    })
+                    .collect(Collectors.toList());
 
             response.put("list", postList);
         }

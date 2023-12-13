@@ -42,5 +42,4 @@ public class PostDTO {
     private Long postTagCount;
 
     private List<ReplyDTO> replies;
-
 }
