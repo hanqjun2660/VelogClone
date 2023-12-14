@@ -42,10 +42,16 @@ public class MemberController {
         int result = memberService.registUser(userDTO);
 
         if(result >= 1) {
-            response.put("msg", "회원가입에 성공하였습니다.");
-        } else {
+            response.put("status", "200");
+            response.put("msg", "회원가입에 성공하였습니다. 로그인 해주세요.");
+            return response;
+        } else if(result == 0) {
             response.put("msg", "회원가입에 실패하였습니다.");
+        } else {
+            response.put("msg", "중복된 아이디 입니다.");
         }
+
+        response.put("status", "500");
 
         return response;
     }
@@ -141,6 +147,9 @@ public class MemberController {
 
         if(result > 0) {
             response.put("msg", "updateBlogName Success");
+        } else if(result == -1) {
+            response.put("status", "400");
+            response.put("msg", "중복된 클로그명이 존재합니다.");
         } else {
             response.put("msg", "updateBlogName fali");
         }

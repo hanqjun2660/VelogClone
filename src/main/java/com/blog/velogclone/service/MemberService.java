@@ -30,6 +30,12 @@ public class MemberService {
     private final ModelMapper modelMapper;
     public int registUser(UserDTO userDTO) {
 
+        Optional<User> findId = userRepository.findByUserId(userDTO.getUserId());
+
+        if(findId.isPresent()) {
+            return -1;
+        }
+
         userDTO.setUserPw(passwordEncoder.encode(userDTO.getUserPw()));
 
         User user;
@@ -39,6 +45,7 @@ public class MemberService {
                 .userPw(userDTO.getUserPw())
                 .userNickname(userDTO.getUserNickname())
                 .userEmail(userDTO.getUserEmail())
+                .userBlogName(userDTO.getUserId())
                 .build();
 
         userRepository.save(user);
@@ -152,6 +159,11 @@ public class MemberService {
 
             Optional<User> optionalUser = userRepository.findById(userNo);
 
+            Optional<User> findBlogName = userRepository.findByUserBlogNameAndUserStatus(userDTO.getUserBlogName(), "N");
+            if(findBlogName.isPresent()) {
+                return -1;
+            }
+
             optionalUser.ifPresent(user -> {
                 user.setUserBlogName(userDTO.getUserBlogName());
                 userRepository.save(user);
@@ -232,6 +244,7 @@ public class MemberService {
         }
     }
 
+    @Transactional
     public String withDrawal(Long userNo) {
 
         Optional<User> optionalUser = userRepository.findByUserNo(userNo);
@@ -243,7 +256,6 @@ public class MemberService {
                 return "Y";
             } catch(IllegalArgumentException e) {
                 log.error("withDrawal IllegalArgumentException : { }", e);
-                return "N";
             }
         }
 

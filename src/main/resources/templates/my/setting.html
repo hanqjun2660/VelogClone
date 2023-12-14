@@ -176,6 +176,10 @@
 
             Utils.request(paramMap, function (response) {
                 console.log(response.msg);
+                if(response.status === '400') {
+                    alert(response.msg);
+                    return;
+                }
                 location.reload();
             });
         },

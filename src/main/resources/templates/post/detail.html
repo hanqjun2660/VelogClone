@@ -94,7 +94,7 @@
         <div th:each="reply : ${replyList}">
             <div class="row">
                 <div class="col-sm-1">
-                    <img class="rounded-circle mx-auto d-block" width="54" height="54" alt="" th:if="${reply.user.profileImg} != null" th:src="${postdetail.user.profileImg}"/>
+                    <img class="rounded-circle mx-auto d-block" width="54" height="54" alt="" th:if="${reply.user.profileImg} != null" th:src="${reply.user.profileImg}"/>
                     <img class="rounded-circle mx-auto d-block" width="54" height="54" alt="" th:unless="${reply.user.profileImg} != null" src="/images/clog_logo.png"/>
                 </div>
                 <div class="col-sm-6">

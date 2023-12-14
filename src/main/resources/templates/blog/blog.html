@@ -19,7 +19,8 @@
                 <a class="d-inline-block mb-1" th:href="'/blog/' + ${userData.userBlogName}">
                     <span class="nickname" th:text="${userData.userNickname}"></span>
                 </a>
-                <p class="description mb-1" th:text="${userData.userIntroduce}"></p>
+                <p class="description mb-1" th:if="${userData.userIntroduce} != null" th:text="${userData.userIntroduce}"></p>
+                <p class="description mb-1" th:unless="${userData.userIntroduce} != null">소개글이 없습니다.</p>
             </div>
         </div>
     </div>

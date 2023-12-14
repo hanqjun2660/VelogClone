@@ -28,7 +28,7 @@
                     <div class="mb-3">
                         <div class="mb-3">
                             <label for="usernickname">닉네임</label>
-                            <input type="text" class="form-control" id="usernickname" placeholder="" value="">
+                            <input type="text" class="form-control" id="usernickname" placeholder="영문 or 한글 7자리 이하" value="" maxlength="7">
                         </div>
                     </div>
 
@@ -65,6 +65,10 @@
             var pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
             return pattern.test(email);
         },
+        validateNickname : function (nickname) {
+            var pattern = /^[A-Za-z가-힣]{1,7}$/;
+            return pattern.test(nickname);
+        },
         sha512 : function (password) {
             var sha512 = new jsSHA('SHA-512', 'TEXT');
             sha512.update(password);
@@ -85,6 +89,8 @@
             alert("사용자 ID는 6자리 이상의 영문 숫자조합이어야 합니다.");
         } else if (!fn.validatePassword(password)) {
             alert("비밀번호는 6자리 이상의 영문 숫자조합이어야 합니다.");
+        } else if(!fn.validateNickname(usernickname)) {
+            alert("닉네임은 7자리 이하여야 합니다.")
         } else if (!fn.validateEmail(email)) {
             alert("유효한 이메일 주소를 입력해주세요.");
         } else {
@@ -101,7 +107,11 @@
                 contentType: "application/json",
                 success: function(response) {
                     alert(response.msg);
-                    location.href = "/login";
+                    if(response.status === '500') {
+                        return;
+                    } else {
+                        location.href = "/login";
+                    }
                 },
                 error: function(error) {
                     alert(error.msg);
