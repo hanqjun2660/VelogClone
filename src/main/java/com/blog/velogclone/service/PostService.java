@@ -30,7 +30,27 @@ public class PostService {
     @Transactional
     public List<PostDTO> findAll(int page, int pageSize) {
         Page<Post> postList = postRepository.findAll(PageRequest.of(page, pageSize));
-        return postList.stream().map(post -> modelMapper.map(post, PostDTO.class)).collect(Collectors.toList());
+        List<PostDTO> list;
+
+        if(!postList.isEmpty()) {
+            list = postList.stream()
+                    .map(post -> {
+                        List<ReplyDTO> filteredReplies = post.getReplies().stream()
+                                .filter(reply -> "N".equals(reply.getReplyStatus()))
+                                .map(reply -> modelMapper.map(reply, ReplyDTO.class))
+                                .collect(Collectors.toList());
+
+                        PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+                        postDTO.setReplies(filteredReplies);
+
+                        return postDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            return list;
+        }
+
+        return Collections.emptyList();
     }
 
     public PostDTO findByPostNo(int postNo) {

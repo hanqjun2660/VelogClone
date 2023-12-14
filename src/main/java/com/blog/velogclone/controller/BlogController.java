@@ -24,6 +24,8 @@ public class BlogController {
         try {
             UserDTO userDTO = memberService.selectUser(blogname);
             model.addAttribute("userData", userDTO);
+
+            model.addAttribute("title", blogname + ".log");
         } catch (EntityNotFoundException e) {
             log.info("User Not Found : { }", e);
         }

@@ -34,9 +34,9 @@ public class SecurityConfig {
         http.csrf().disable().cors().disable()
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/USER/**", "/board/write").authenticated()        // 인증이 필요한 요청
-                        .requestMatchers("/ADMIN/**").hasAuthority("ADMIN")       // 해당 요청은 해당 권한만 가진 인증된 사용자만
-                        .anyRequest().permitAll()                      // 그 외의 요청은 모두에게 허용한다.
+                        .requestMatchers("/USER/**", "/board/write").authenticated()         // 인증이 필요한 요청
+                        .requestMatchers("/ADMIN/**").hasAuthority("ADMIN")                    // 해당 요청은 해당 권한만 가진 인증된 사용자만
+                        .anyRequest().permitAll()                                                // 그 외의 요청은 모두에게 허용한다.
                 )
                 .formLogin(login -> login
                         .loginPage("/login")

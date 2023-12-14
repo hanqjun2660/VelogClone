@@ -86,7 +86,8 @@
                     var dateElement = container.find('.text-body-secondary.ps-3.mb-2:last');
                     var createDate = new Date(post.createDate);
                     var formattedDate = createDate.getFullYear() + '년 ' + (createDate.getMonth() + 1) + '월 ' + createDate.getDate() + '일';
-                    dateElement.text(formattedDate);
+                    var relpiesCount = post.replies.length;
+                    dateElement.text(formattedDate + ' · ' + relpiesCount + '개의 댓글');
 
                     // 프로필 이미지 및 사용자 닉네임 설정
                     var postElement = container.find('.col:last'); // 각 게시글을 감싸는 부모 엘리먼트
