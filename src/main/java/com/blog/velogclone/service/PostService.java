@@ -4,6 +4,7 @@ import com.blog.velogclone.entity.Post;
 import com.blog.velogclone.entity.User;
 import com.blog.velogclone.model.PostDTO;
 import com.blog.velogclone.model.ReplyDTO;
+import com.blog.velogclone.repository.LikeRepository;
 import com.blog.velogclone.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
+
+    private final LikeRepository likeRepository;
 
     private final ModelMapper modelMapper;
 
@@ -111,7 +114,7 @@ public class PostService {
         List<Post> findPostList;
 
         if (!postTag.equals("all")) {
-            findPostList = postRepository.findByUserUserNoAndPostTagAndPostStatusAndRepliesReplyStatus(userNo, postTag, "N", "N");
+            findPostList = postRepository.findByUserUserNoAndPostTagAndPostStatus(userNo, postTag, "N");
         } else {
             findPostList = postRepository.findByUserUserNoAndPostStatus(userNo, "N");
         }
@@ -119,6 +122,7 @@ public class PostService {
         Map<String, Object> response = new HashMap<>();
 
         if (!findPostList.isEmpty()) {
+
             List<PostDTO> postList = findPostList.stream()
                     .map(post -> {
                         List<ReplyDTO> filteredReplies = post.getReplies().stream()
@@ -126,9 +130,12 @@ public class PostService {
                                 .map(reply -> modelMapper.map(reply, ReplyDTO.class))
                                 .collect(Collectors.toList());
 
+                        String likeCount = likeRepository.countByPostPostNo(post.getPostNo());
+
                         PostDTO postDTO = modelMapper.map(post, PostDTO.class);
                         postDTO.setReplies(filteredReplies);
                         postDTO.setReplyCount(filteredReplies.size());
+                        postDTO.setLikeCount(Integer.parseInt(likeCount));
 
                         return postDTO;
                     })

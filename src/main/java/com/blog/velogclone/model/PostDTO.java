@@ -1,5 +1,6 @@
 package com.blog.velogclone.model;
 
+import com.blog.velogclone.entity.Like;
 import com.blog.velogclone.entity.Reply;
 import lombok.*;
 

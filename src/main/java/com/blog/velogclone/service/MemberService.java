@@ -119,6 +119,7 @@ public class MemberService {
                 .userIntroduce(userDTO.getUserIntroduce())
                 .userTwitter(findUser.get().getUserTwitter())
                 .userBlogName(findUser.get().getUserBlogName())
+                .userFacebook(findUser.get().getUserFacebook())
                 .roleNo(findUser.get().getRoleNo())
                 .userRegistDate(findUser.get().getUserRegistDate())
                 .userStatus(findUser.get().getUserStatus())
@@ -229,5 +230,23 @@ public class MemberService {
         } else {
             return 0L;
         }
+    }
+
+    public String withDrawal(Long userNo) {
+
+        Optional<User> optionalUser = userRepository.findByUserNo(userNo);
+
+        if(optionalUser.isPresent()) {
+            optionalUser.get().setUserStatus("Y");
+            try {
+                userRepository.save(optionalUser.get());
+                return "Y";
+            } catch(IllegalArgumentException e) {
+                log.error("withDrawal IllegalArgumentException : { }", e);
+                return "N";
+            }
+        }
+
+        return "N";
     }
 }

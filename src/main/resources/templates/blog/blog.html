@@ -16,7 +16,7 @@
                      th:unless="${userData.profileImg} != null" src="/images/clog_logo.png"/>
             </div>
             <div class="flex-column text-start justify-content-center ps-5 align-self-center">
-                <a class="d-inline-block mb-1" href="#">
+                <a class="d-inline-block mb-1" th:href="'/blog/' + ${userData.userBlogName}">
                     <span class="nickname" th:text="${userData.userNickname}"></span>
                 </a>
                 <p class="description mb-1" th:text="${userData.userIntroduce}"></p>

@@ -10,11 +10,13 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    public User findByUserId(String userId);
+    public User findByUserIdAndUserStatus(String userId, String userStatus);
 
     @Modifying
     @Query(value = "UPDATE TBL_USER SET PROFILE_IMG = NULL WHERE USER_NO = :userNo", nativeQuery = true)
     int deleteProfileImage(@Param("userNo") Long userNo);
 
     Optional<User> findByUserBlogNameAndUserStatus(String blogname, String n);
+
+    Optional<User> findByUserNo(Long userNo);
 }

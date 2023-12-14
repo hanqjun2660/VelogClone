@@ -20,5 +20,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findByUserUserNoAndPostStatus(Long userNo, String postStatus);
 
-    List<Post> findByUserUserNoAndPostTagAndPostStatusAndRepliesReplyStatus (Long userNo, String postTag, String postStatus, String replyStatus);
+    List<Post> findByUserUserNoAndPostTagAndPostStatus(Long userNo, String postTag, String postStatus);
 }

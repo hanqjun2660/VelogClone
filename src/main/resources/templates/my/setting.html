@@ -108,7 +108,7 @@
                     <h3><strong>회원 탈퇴</strong></h3>
                 </div>
                 <div class="col-9">
-                    <button class="btn btn-danger">회원 탈퇴</button>
+                    <button id="withdrawal" class="btn btn-danger">회원 탈퇴</button>
                 </div>
             </div>
             <div class="row">
@@ -195,6 +195,23 @@
                 console.log(response.msg);
                 location.reload();
             });
+        },
+        withdrawal : function () {
+            if(confirm('회원탈퇴 하시겠습니까?\n모든 게시글 및 댓글이 삭제되며, 복구되지 않습니다.')) {
+                paramMap = {
+                    dataParam : {},
+                    url : '/user/withdrawal'
+                }
+
+                Utils.request(paramMap, function (response) {
+                    if(response.status === 'Y') {
+                        alert('성공적으로 탈퇴되었습니다.');
+                        location.href='/logout';
+                    } else {
+                        alert('탈퇴 실패');
+                    }
+                });
+            }
         }
     }
 
@@ -209,6 +226,7 @@
             this.saveBlogName();
             this.modifySocialInfo();
             this.saveSocialInfo();
+            this.withdrawal();
         },
         triggerImgInput : function () {
             document.querySelector('#uploadImgBtn').addEventListener('click', function () {
@@ -304,6 +322,11 @@
                     twitter: document.querySelector('#twitter').value,
                     homepage: document.querySelector('#homepage').value
                 });
+            });
+        },
+        withdrawal : function() {
+            document.querySelector('#withdrawal').addEventListener('click', function () {
+               fn.withdrawal();
             });
         }
     }

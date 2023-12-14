@@ -35,7 +35,7 @@ public class PrincipalOauthUserService extends DefaultOAuth2UserService {
         String email = (String) account.get("email");
         String profileImg = (String) properties.get("profile_image");
 
-        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUserId(loginId));
+        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUserIdAndUserStatus(loginId, "N"));
         User user;
 
         // 로그인을 시도한 계정이 DB에 존재하지 않는다면

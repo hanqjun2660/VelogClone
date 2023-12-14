@@ -166,6 +166,18 @@ public class MemberController {
         return response;
     }
 
+    @PostMapping("/withdrawal")
+    @ResponseBody
+    public Map<String, String> withDrawal(Authentication authentication) {
+        Map<String, String> response = new HashMap<>();
+        Long userNo = ((PrincipalDetails)authentication.getPrincipal()).getUserNo();
+
+        String result = memberService.withDrawal(userNo);
+        response.put("status", result);
+
+        return response;
+    }
+
     public static String convertToWebPath(String localPath) {
         return localPath.replace("C:\\profile\\upload\\", "/profile/upload/");
     }
