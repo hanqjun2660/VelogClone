@@ -1,9 +1,11 @@
 package com.blog.velogclone.repository;
 
 import com.blog.velogclone.entity.Like;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
@@ -13,8 +15,7 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     void deleteByReadNo(Long readNo);
 
-    @Query("select m from Like m join fetch m.user join fetch m.post where m.post.postStatus = 'N' and m.user.userNo = :userNo ORDER BY m.createDate DESC")
-    List<Like> findByUserNo(Long userNo);
-
     String countByPostPostNo(Long postNo);
+
+    List<Like> findByUserUserNo(Long userNo);
 }

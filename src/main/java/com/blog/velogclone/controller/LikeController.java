@@ -2,13 +2,17 @@ package com.blog.velogclone.controller;
 
 import com.blog.velogclone.model.LikeDTO;
 import com.blog.velogclone.model.PostDTO;
+import com.blog.velogclone.model.PrincipalDetails;
 import com.blog.velogclone.service.LikeService;
+import com.blog.velogclone.service.PostService;
+import com.blog.velogclone.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +30,10 @@ public class LikeController {
     final String DEFAULT_IMG = "/images/clog_text_logo.png";
 
     private final LikeService likeService;
+
+    private final PostService postService;
+
+    private final ReplyService replyService;
 
     @PostMapping("/add")
     @ResponseBody
@@ -75,29 +83,17 @@ public class LikeController {
     }
 
     @GetMapping("/list")
-    public String findLikeList(Model model) {
-        List<PostDTO> likePostList = likeService.findLikeList();
+    public String readingListPage() {
+        return "/my/readingList";
+    }
 
-        try {
-            for (PostDTO post : likePostList) {
-                String postBody = post.getPostBody();
-                Document doc = Jsoup.parse(postBody);
-                Elements imgTags = doc.select("img");
+    @GetMapping("/findlist")
+    @ResponseBody
+    public List<PostDTO> getUserLikePostList(@RequestParam(defaultValue = "0") int page) {
+        int pageSize = 8;
 
-                if (!imgTags.isEmpty()) {
-                    Element firstImg = imgTags.first();
-                    String srcAttribute = firstImg.attr("src");
-                    post.setSrcAttr(srcAttribute); // PostDTO에 속성 추가
-                } else {
-                    post.setSrcAttr(DEFAULT_IMG); // 이미지가 없는 경우 기본 이미지로 설정
-                }
-            }
-        } catch (Exception e) {
-            log.info("parsing error");
-        }
+        List<PostDTO> likePostList = likeService.findByUserUserNoAndPostStatus(page, pageSize);
 
-        model.addAttribute("posts", likePostList);
-        model.addAttribute("title", "읽기 목록");
-        return "/my/redinglist";
+        return likePostList;
     }
 }

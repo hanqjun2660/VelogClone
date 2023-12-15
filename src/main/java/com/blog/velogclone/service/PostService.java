@@ -3,13 +3,18 @@ package com.blog.velogclone.service;
 import com.blog.velogclone.entity.Post;
 import com.blog.velogclone.entity.User;
 import com.blog.velogclone.model.PostDTO;
+import com.blog.velogclone.model.PrincipalDetails;
 import com.blog.velogclone.model.ReplyDTO;
 import com.blog.velogclone.repository.LikeRepository;
 import com.blog.velogclone.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -18,6 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PostService {
 
