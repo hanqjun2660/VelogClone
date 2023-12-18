@@ -173,6 +173,18 @@ public class LikeService {
                     return modelMapper.map(post, PostDTO.class);
                 })
                 .collect(Collectors.toList());
+
+                // 조회된 게시글에 대한 LikeCount 조회
+                list.stream().map(post -> {
+                    int likeCount = Integer.parseInt(likeRepository.countByPostPostNo(post.getPostNo()));
+                    if(!(likeCount <= 0)) {
+                        post.setLikeCount(likeCount);
+                    } else {
+                        post.setLikeCount(0);
+                    }
+                    return modelMapper.map(post, PostDTO.class);
+                })
+                .collect(Collectors.toList());
             }
 
             return list;
