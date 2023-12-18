@@ -27,13 +27,7 @@ import java.util.Map;
 @RequestMapping("/like")
 public class LikeController {
 
-    final String DEFAULT_IMG = "/images/clog_text_logo.png";
-
     private final LikeService likeService;
-
-    private final PostService postService;
-
-    private final ReplyService replyService;
 
     @PostMapping("/add")
     @ResponseBody

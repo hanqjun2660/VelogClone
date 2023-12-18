@@ -1,5 +1,6 @@
 package com.blog.velogclone.controller;
 
+import com.blog.velogclone.entity.Post;
 import com.blog.velogclone.model.PostDTO;
 import com.blog.velogclone.model.PrincipalDetails;
 import com.blog.velogclone.model.ReReplyDTO;
@@ -267,6 +268,27 @@ public class PostController {
         Map<String, Object> findPostMap = postService.findByUserUserNoAndPostTag(Long.parseLong(request.get("userNo")), request.get("postTag"));
 
         return findPostMap;
+    }
+
+    @GetMapping("/search")
+    public String search() {
+        return "/post/search";
+    }
+
+    @GetMapping("/search/list")
+    @ResponseBody
+    public List<PostDTO> getSearchList(@RequestParam(defaultValue = "0") int page, @RequestParam String keyword) {
+        int pageSize = 4;
+        log.info("searchList Request Page : {}", page);
+        log.info("searchList Request Keyword : {}", keyword);
+
+        if(!keyword.isEmpty()) {
+            List<PostDTO> findList = postService.findByPostTitleAndPostStatus(keyword, page, pageSize);
+            log.info("searchList Response findList : {}", findList);
+            return findList;
+        }
+
+        return Collections.emptyList();
     }
 
     public int countReply(Long postNo) {

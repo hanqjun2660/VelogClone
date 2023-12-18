@@ -170,7 +170,7 @@ public class LikeService {
 
                     post.setReplies(replyDTOList);
 
-                    return modelMapper.map(post, PostDTO.class);
+                    return post;
                 })
                 .collect(Collectors.toList());
 
@@ -182,7 +182,7 @@ public class LikeService {
                     } else {
                         post.setLikeCount(0);
                     }
-                    return modelMapper.map(post, PostDTO.class);
+                    return post;
                 })
                 .collect(Collectors.toList());
             }

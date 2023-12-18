@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <div th:replace="common/layout/dependencies :: fragment-dependencies"></div>
+    <link rel="stylesheet" href="/css/search.css"/>
+</head>
+<body>
+<div th:replace="common/layout/nav :: fragment-nav"></div>
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-column w-50">
+        <div class="d-flex flex-row justify-content-start align-items-center input-box ps-3 py-3 mt-5">
+            <svg width="17" height="17" viewBox="0 0 17 17">
+                <path fill-rule="evenodd" d="M13.66 7.36a6.3 6.3 0 1 1-12.598 0 6.3 6.3 0 0 1 12.598 0zm-1.73 5.772a7.36 7.36 0 1 1 1.201-1.201l3.636 3.635c.31.31.31.815 0 1.126l-.075.075a.796.796 0 0 1-1.126 0l-3.636-3.635z" clip-rule="evenodd" fill="currentColor"></path>
+            </svg>
+            <input id="searchInput" class="w-100 ps-2" type="text" placeholder="검색어를 입력하세요.">
+        </div>
+        <div class="d-flex flex-column contents">
+
+        </div>
+    </div>
+</div>
+<script>
+    var page = 0;
+    var keyword;
+    var container = $('.contents');
+    var loading = false;
+
+    var evt = {
+        init : function () {
+            this.searchPost();
+        },
+        searchPost : function () {
+            var timeoutId;
+
+            var searchInput = document.querySelector('#searchInput');
+
+            searchInput.addEventListener('change', function (event) {
+                clearTimeout(timeoutId);
+                page = 0;
+                container.empty();
+                timeoutId = setTimeout(function () {
+                    console.log(event.target.value);
+                    keyword = event.target.value;
+                    loadPosts();
+                }, 500);
+            });
+        }
+    }
+
+    function loadPosts() {
+        if(loading) {
+            return;
+        }
+
+        loading = true;
+
+        $.ajax({
+            url: '/search/list',
+            data: {page: page, keyword: keyword},
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                createPost(response);
+                page++;
+            },
+            error : function (error) {
+                console.error('포스트 로딩 중 에러 발생:', error);
+            },
+            complete: function () {
+                loading = false;
+            }
+        });
+    }
+
+    function createPost(response) {
+        var appendHtml;
+
+        if (response.length === 0) {
+            console.log('No more posts to load. Stopping infinite scroll.');
+            // 무한 스크롤을 중지하는 메서드를 호출하거나, 다른 중지 로직을 추가할 수 있음
+            container.infiniteScroll('destroy');
+            return;
+        }
+
+        // 게시글이 존재하지 않을 때
+        if (response.length <= 0) {
+            appendHtml = `
+                        <div class="d-flex row justify-content-center px-0 mx-0 py-5">
+                            <div class="d-flex flex-column col-8 text-start px-0 mx-0">
+                                <h1 class="text-secondary">검색된 게시글이 없습니다.</h1>
+                            </div>
+                        </div>
+                    `;
+            container.append(appendHtml);
+            page = 0;
+            return;
+        }
+
+        // 게시글이 존재할때 동적으로 랜더링
+        response.forEach(function (post) {
+            appendHtml = `
+                        <div class="d-flex row justify-content-start px-0 mx-0 py-5">
+                            <div class="d-flex flex-column col-12 text-start px-0 mx-0">
+                                <a href="/post/${post.postNo}">
+                                    <img class="card-img-top pb-2" height="200" alt="...">
+                                </a>
+                                <h3 class="post-title"><a href="/post/${post.postNo}"></a></h3>
+                                <p class="post-body"></p>
+                                <div class="d-inline-block">
+                                    <span class="post-tag"></span>
+                                </div>
+                                <div class="d-flex flex-row text-start pt-2 sub-text">
+                                    <span class="pe-2"></span>
+                                    <span class="pe-2"></span>
+                                    <span class="pe-2"></span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            container.append(appendHtml);
+
+            // 이미지 설정
+            var imgElement = container.find('.card-img-top:last');
+            imgElement.attr('src', post.srcAttr)
+
+            // 제목 설정
+            var titleElement = container.find('.post-title:last');
+            var anchorElement = titleElement.find('a');
+            if (post.postTitle.length > 22) {
+                anchorElement.html(post.postTitle.substring(0, 23));
+            } else {
+                anchorElement.html(post.postTitle);
+            }
+
+            // 본문 설정
+            var bodyElement = container.find('.post-body:last');
+            var parsedPostBody = document.createElement('div');
+            parsedPostBody.innerHTML = post.postBody;
+
+            // 텍스트 추출
+            var plainText = parsedPostBody.textContent || parsedPostBody.innerText;
+
+            // 텍스트 설정
+            if (plainText.length > 150) {
+                bodyElement.html(plainText.substring(0, 150));
+            } else {
+                bodyElement.html(plainText);
+            }
+
+            // 태그 설정
+            var tagElement = container.find('.post-tag:last');
+            tagElement.html(post.postTag);
+
+            // 날짜 설정
+            var dateElement = container.find('.sub-text:last');
+            var createDate = new Date(post.createDate);
+            var formattedDate = createDate.getFullYear() + '년 ' + (createDate.getMonth() + 1) + '월 ' + createDate.getDate() + '일';
+            dateElement.children('.pe-2').first().text(formattedDate + ' ·');
+
+            // 댓글 설정
+            var replyElement = container.find('.sub-text:last');
+            if (post.replies === undefined || post.replies.length <= 0) {
+                replyElement.children('.pe-2:eq(1)').text(' 0개의 댓글  ·');
+            } else {
+                replyElement.children('.pe-2:eq(1)').text(post.replies.length + '개의 댓글  ·');
+            }
+
+            // 좋아요 설정
+            var likeElement = container.find('.sub-text:last');
+            if (post.likeCount == undefined || post.likeCount <= 0) {
+                likeElement.children('.pe-2').last().html(' &hearts; 0');
+            } else {
+                likeElement.children('.pe-2').last().html(' &hearts; ' + post.likeCount);
+            }
+        });
+    }
+
+    function setupInfiniteScroll() {
+        container.infiniteScroll({
+            path: function () {
+                var nextPageUrl = '/search/list?page=' + page + '&keyword=' + keyword;
+                console.log('Next page URL:', nextPageUrl);
+                return nextPageUrl;
+            },
+            append: container,
+            history: false,
+            status: '.scroll-status',
+        });
+    }
+
+    setupInfiniteScroll();
+
+    // 스크롤 이벤트가 끝에 도달했을 때 추가적인 페이지를 로드
+    container.on('scrollThreshold.infiniteScroll', function (event, body, path) {
+        loadPosts();
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        evt.init();
+    });
+</script>
+</body>
+</html>
