@@ -58,6 +58,7 @@
             url: '/search/list',
             data: {page: page, keyword: keyword},
             method: 'GET',
+            async : false,
             dataType: 'json',
             success: function (response) {
                 createPost(response);
