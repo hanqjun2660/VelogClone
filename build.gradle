@@ -43,6 +43,12 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 }
 
+bootJar{
+    archiveBaseName = 'clog'
+    archiveFileName = 'clog.jar'
+    archiveVersion = "0.0.0"
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
