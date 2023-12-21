@@ -43,6 +43,7 @@ public class PrincipalOauthUserService extends DefaultOAuth2UserService {
             user = User.builder()       // oAuth 정보를 이용해 회원가입을 진행시킨다.
                     .userId(loginId)
                     .userEmail(email)
+                    .userBlogName(extractUserEmailId(email))
                     .provider(provider)
                     .profileImg(profileImg)
                     .userNickname((String) properties.get("nickname"))
@@ -53,5 +54,20 @@ public class PrincipalOauthUserService extends DefaultOAuth2UserService {
         }
 
         return new PrincipalDetails(user, oAuth2User.getAttributes());
+    }
+
+    /**
+     * 이메일 @ 앞자리만 추출
+     * @param email
+     * @return
+     */
+    public String extractUserEmailId(String email) {
+        int atIndex = email.indexOf("@");
+
+        if(atIndex != -1) {
+            return email.substring(0, atIndex);
+        } else {
+            throw new IllegalArgumentException("Invalid email adress: " + email);
+        }
     }
 }

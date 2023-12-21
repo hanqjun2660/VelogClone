@@ -130,6 +130,7 @@ public class MemberService {
                 .roleNo(findUser.get().getRoleNo())
                 .userRegistDate(findUser.get().getUserRegistDate())
                 .userStatus(findUser.get().getUserStatus())
+                .provider(findUser.get().getProvider())
                 .build();
 
         try {

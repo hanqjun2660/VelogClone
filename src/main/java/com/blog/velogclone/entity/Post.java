@@ -49,8 +49,8 @@ public class Post {
     @Column(name="POST_LIKE")
     private int postLike;
 
-    @Column(name="POST_VIEWS")
-    private int postViews;
+    @Column(name="POST_VIEW")
+    private int postView;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="USER_NO")
@@ -60,7 +60,7 @@ public class Post {
     private List<Reply> replies;
 
     @Builder
-    public Post(Long postNo, String postTitle, String postBody, String postTag, Date createDate, String postStatus, int postLike, int postViews, User user) {
+    public Post(Long postNo, String postTitle, String postBody, String postTag, Date createDate, String postStatus, int postLike, int postView, User user) {
         this.postNo = postNo;
         this.postTitle = postTitle;
         this.postBody = postBody;
@@ -68,7 +68,7 @@ public class Post {
         this.createDate = createDate;
         this.postStatus = postStatus;
         this.postLike = postLike;
-        this.postViews = postViews;
+        this.postView = postView;
         this.user = user;
     }
 }

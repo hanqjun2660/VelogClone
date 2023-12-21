@@ -115,7 +115,7 @@ public class PostService {
                 .postTag(postEntity.getPostTag())
                 .postTitle(postEntity.getPostTitle())
                 .postBody(postEntity.getPostBody())
-                .postLike(postEntity.getPostViews())
+                .postLike(postEntity.getPostView())
                 .createDate(postEntity.getCreateDate())
                 .user(postEntity.getUser())
                 .postStatus("Y")
