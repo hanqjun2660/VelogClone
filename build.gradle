@@ -56,8 +56,8 @@ dependencies {
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.1'
     implementation 'org.jsoup:jsoup:1.15.3'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
-    /*implementation 'org.mariadb.jdbc:mariadb-java-client'*/
-    /*implementation 'com.zaxxer:HikariCP:4.0.3'*/
+    implementation 'org.mariadb.jdbc:mariadb-java-client'
+    implementation 'com.zaxxer:HikariCP:4.0.3'
 
     compileOnly 'org.projectlombok:lombok'
 
