@@ -70,6 +70,7 @@ bootJar {
     archiveBaseName = 'clog'
     archiveFileName = 'clog.jar'
     archiveVersion = "0.0.0"
+    mainClassName = 'com.blog.velogclone.VelogCloneApplication'
 }
 
 tasks.named('test') {
