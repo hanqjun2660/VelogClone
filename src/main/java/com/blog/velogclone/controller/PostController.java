@@ -41,7 +41,7 @@ public class PostController {
 
     @GetMapping("/dashboard")
     public String dashbaord() {
-        return "/dashboard";
+        return "dashboard";
     }
 
     @GetMapping("/post/list")
