@@ -120,13 +120,13 @@ public class PostController {
         model.addAttribute("replycount", replyCount);
         model.addAttribute("title", postDTO.getPostTitle());
 
-        return "/post/detail";
+        return "post/detail";
     }
 
     @GetMapping("/post/write")
     public String postWrite(Model model) {
         model.addAttribute("title", "새 글 작성");
-        return "/post/write";
+        return "post/write";
     }
 
     @PostMapping("/post/write")
@@ -185,7 +185,7 @@ public class PostController {
     @GetMapping("/post/modify/{id}")
     public String modifyPost(@PathVariable Long id, Model model) {
         model.addAttribute("title", "게시글 수정");
-        return "/post/write";
+        return "post/write";
     }
 
     @PostMapping("/post/checkdata")
@@ -272,7 +272,7 @@ public class PostController {
 
     @GetMapping("/search")
     public String search() {
-        return "/post/search";
+        return "post/search";
     }
 
     @GetMapping("/search/list")

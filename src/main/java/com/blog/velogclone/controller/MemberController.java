@@ -31,7 +31,7 @@ public class MemberController {
     @GetMapping("/regist")
     public String regist(Model model) {
         model.addAttribute("title", "회원가입");
-        return "/user/regist";
+        return "user/regist";
     }
 
     @PostMapping("/regist")

@@ -30,6 +30,6 @@ public class BlogController {
             log.info("User Not Found : { }", e);
         }
 
-        return "/blog/blog";
+        return "blog/blog";
     }
 }

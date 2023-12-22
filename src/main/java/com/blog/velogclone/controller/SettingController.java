@@ -15,6 +15,6 @@ public class SettingController {
 
     @GetMapping("/setting")
     public String settingUser() {
-        return "/my/setting";
+        return "my/setting";
     }
 }

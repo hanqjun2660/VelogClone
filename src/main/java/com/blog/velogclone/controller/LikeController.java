@@ -78,7 +78,7 @@ public class LikeController {
 
     @GetMapping("/list")
     public String readingListPage() {
-        return "/my/readingList";
+        return "my/readingList";
     }
 
     @GetMapping("/findlist")
