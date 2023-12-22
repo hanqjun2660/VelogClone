@@ -73,7 +73,7 @@ bootJar {
 }
 
 springBoot {
-    mainClassName = 'com.blog.velogclone.VelogCloneApplication'
+    mainClass = 'com.blog.velogclone.VelogCloneApplication'
 }
 
 tasks.named('test') {
