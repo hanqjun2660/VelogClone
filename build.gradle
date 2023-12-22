@@ -70,6 +70,9 @@ bootJar {
     archiveBaseName = 'clog'
     archiveFileName = 'clog.jar'
     archiveVersion = "0.0.0"
+}
+
+springBoot {
     mainClassName = 'com.blog.velogclone.VelogCloneApplication'
 }
 
