@@ -26,16 +26,16 @@
     </div>
     <div class="d-flex align-items-start col-6 socialInfo">
         <div class="d-flex flex-row">
-            <a th:href="${userData.userGithub}" th:if="${userData.userGithub} != null or ${userData.userGithub} != ''" data-bs-toggle="tooltip" data-bs-title="Github" target="_blank">
+            <a th:href="${userData.userGithub}" th:if="${userData.userGithub != null and !userData.userGithub.isEmpty()}" data-bs-toggle="tooltip" data-bs-title="Github" target="_blank">
                 <img src="/images/github-mark.png" width="32" height="32"/>
             </a>
-            <a th:href="${userData.userFacebook}" th:if="${userData.userFacebook} != null or ${userData.userFacebook} != ''" data-bs-toggle="tooltip" data-bs-title="Facebook" target="_blank">
+            <a th:href="${userData.userFacebook}" th:if="${userData.userFacebook != null and !userData.userFacebook.isEmpty()}" data-bs-toggle="tooltip" data-bs-title="Facebook" target="_blank">
                 <img src="/images/facebook-mark.png" width="32" height="32"/>
             </a>
-            <a th:href="${userData.userTwitter}" th:if="${userData.userTwitter} != null or ${userData.userTwitter} != ''" data-bs-toggle="tooltip" data-bs-title="Twitter" target="_blank">
+            <a th:href="${userData.userTwitter}" th:if="${userData.userTwitter != null and !userData.userTwitter.isEmpty()}" data-bs-toggle="tooltip" data-bs-title="Twitter" target="_blank">
                 <img src="/images/twitter-mark.png" width="32" height="32"/>
             </a>
-            <a th:href="${userData.userHomepage}" th:if="${userData.userHomepage} != null or ${userData.userHomepage} != ''" data-bs-toggle="tooltip" data-bs-title="HomePage" target="_blank">
+            <a th:href="${userData.userHomepage}" th:if="${userData.userHomepage != null and !userData.userHomepage.isEmpty()}" data-bs-toggle="tooltip" data-bs-title="HomePage" target="_blank">
                 <img src="/images/home-mark.png" width="32" height="32"/>
             </a>
         </div>
