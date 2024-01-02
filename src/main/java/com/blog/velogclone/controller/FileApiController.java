@@ -1,6 +1,7 @@
 package com.blog.velogclone.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +18,8 @@ import java.util.UUID;
 public class FileApiController {
 
     // 파일 업로드 경로
-    private final String uploadDir = Paths.get("C:", "tui-editor", "upload").toString();
+    @Value("${file.save.path}")
+    private String uploadDir;
 
     @PostMapping("/image-upload")
     public String uploadEditorImage(@RequestParam final MultipartFile image) {

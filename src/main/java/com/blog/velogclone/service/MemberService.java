@@ -74,6 +74,8 @@ public class MemberService {
                 .userBlogName(findUser.get().getUserBlogName())
                 .roleNo(findUser.get().getRoleNo())
                 .userRegistDate(findUser.get().getUserRegistDate())
+                .provider(findUser.get().getProvider())
+                .userPw(findUser.get().getUserPw())
                 .userStatus(findUser.get().getUserStatus())
                 .build();
         try {

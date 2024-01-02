@@ -19,7 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/profile/upload/**")       // 이런 형태의 요청이 들어오면
-                .addResourceLocations("file:///C:/profile/upload/");         // 실제 로컬에 저장된 외부 경로를 알려준다.
+        registry.addResourceHandler("/tui-editor/upload/**")       // 이런 형태의 요청이 들어오면
+                .addResourceLocations("file:///C:/tui-editor/upload/");         // 실제 로컬에 저장된 외부 경로를 알려준다.
     }
 }

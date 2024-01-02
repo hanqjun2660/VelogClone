@@ -3,8 +3,9 @@ package com.blog.velogclone.controller;
 import com.blog.velogclone.model.PrincipalDetails;
 import com.blog.velogclone.model.UserDTO;
 import com.blog.velogclone.service.MemberService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,11 +21,13 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/user")
 public class MemberController {
-    private final String uploadDir = Paths.get("C:", "profile", "upload").toString();
+
+    @Value("${file.save.path}")
+    private String uploadDir;
 
     private final MemberService memberService;
 
@@ -188,7 +191,7 @@ public class MemberController {
     }
 
     public static String convertToWebPath(String localPath) {
-        return localPath.replace("C:\\profile\\upload\\", "/profile/upload/");
+        return localPath.replace("C:\\tui-editor\\upload\\", "/tui-editor/upload/");
     }
 
 }
