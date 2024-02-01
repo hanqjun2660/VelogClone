@@ -31,6 +31,7 @@
 - ERD : [ERD Cloud](https://www.erdcloud.com/d/44wy5HLmnQxEvb6Jq)
 - ORM : Spring Data JPA, Hibernate
 - ETC : CloudFlare, Nginx Proxy Manager
+- AWS 프리티어 -> 개인 서버로 이관
 
 ## URL
-[클릭하면 해당 프로젝트를 볼 수 있습니다.](http://ec2-15-165-212-149.ap-northeast-2.compute.amazonaws.com:9090/dashboard)
+[클릭하면 해당 프로젝트를 볼 수 있습니다.](http://clog.devsj.site)
