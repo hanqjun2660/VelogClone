@@ -47,7 +47,7 @@ public class PostController {
     @GetMapping("/post/list")
     @ResponseBody
     public List<PostDTO> postList(@RequestParam(defaultValue = "0") int page) {
-        int pageSize = 8;
+        int pageSize = 12;
         List<PostDTO> postList = postService.findAll(page, pageSize);
 
         try {

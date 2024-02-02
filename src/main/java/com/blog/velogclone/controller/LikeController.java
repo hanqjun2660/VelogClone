@@ -84,7 +84,7 @@ public class LikeController {
     @GetMapping("/findlist")
     @ResponseBody
     public List<PostDTO> getUserLikePostList(@RequestParam(defaultValue = "0") int page) {
-        int pageSize = 8;
+        int pageSize = 12;
 
         List<PostDTO> likePostList = likeService.findByUserUserNoAndPostStatus(page, pageSize);
 
